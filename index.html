@@ -9,10 +9,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <!-- Three.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/environments/RoomEnvironment.js"></script>
 </head>
 <body>
 
@@ -618,12 +617,9 @@
                 }, 3000);
             });
 
-            /* ---- Environment (RoomEnvironment) ---- */
-            var pmrem   = new THREE.PMREMGenerator(renderer);
-            var roomEnv = new THREE.RoomEnvironment();
-            scene.environment = pmrem.fromScene(roomEnv).texture;
-            roomEnv.dispose();
-            pmrem.dispose();
+            /* ---- Background / clear ---- */
+            renderer.setClearColor(0x000000, 0);
+            scene.background = null;
 
             /* ---- Scene lighting ---- */
             scene.add(new THREE.AmbientLight(0xFFFFE3, 0.3));
@@ -659,22 +655,19 @@
             /* ---- Load GLB model ---- */
             var loader = new THREE.GLTFLoader();
             loader.load(
-                'models/Lamp_Assembly.glb',
+                './models/Lamp_Assembly.glb',
                 function (gltf) {
-                    var model = gltf.scene;
-
-                    /* Center at origin */
-                    var box    = new THREE.Box3().setFromObject(model);
+                    /* Scale and center */
+                    var box    = new THREE.Box3().setFromObject(gltf.scene);
                     var center = box.getCenter(new THREE.Vector3());
                     var size   = box.getSize(new THREE.Vector3());
-                    model.position.sub(center);
-
-                    /* Scale to fit within radius 1.5 */
                     var maxDim = Math.max(size.x, size.y, size.z);
-                    model.scale.setScalar(3.0 / maxDim);
+                    var scale  = 3.0 / maxDim;
+                    gltf.scene.scale.setScalar(scale);
+                    gltf.scene.position.sub(center.multiplyScalar(scale));
 
                     /* Apply metallic PBR properties to all meshes */
-                    model.traverse(function (child) {
+                    gltf.scene.traverse(function (child) {
                         if (child.isMesh) {
                             var mats = Array.isArray(child.material)
                                 ? child.material
@@ -688,13 +681,19 @@
                         }
                     });
 
-                    scene.add(model);
+                    scene.add(gltf.scene);
+
+                    /* Frame camera to model */
+                    camera.position.set(0, 0, 5);
+                    camera.lookAt(0, 0, 0);
+                    controls.target.set(0, 0, 0);
+                    controls.update();
 
                     if (loadingEl) loadingEl.remove();
                 },
                 undefined,
-                function (err) {
-                    console.error('GLTFLoader error:', err);
+                function (error) {
+                    console.error('GLB load error:', error);
                     if (loadingEl) loadingEl.textContent = 'MODEL UNAVAILABLE';
                 }
             );

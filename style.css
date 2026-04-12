@@ -255,12 +255,11 @@ nav {
     color: var(--accent);
 }
 
-/* 3D model placeholder */
+/* ── 3D MODEL ────────────────────────────────────────────────── */
 .hero-visual {
     min-height: 520px;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
     background-color: #0F0F0A;
     border-left: 1px solid rgba(255, 255, 227, 0.04);
     position: relative;
@@ -275,6 +274,8 @@ nav {
     height: 32px;
     border-color: rgba(206, 137, 70, 0.28);
     border-style: solid;
+    z-index: 10;
+    pointer-events: none;
 }
 
 .hero-visual::before {
@@ -287,45 +288,79 @@ nav {
     border-width: 0 1px 1px 0;
 }
 
-.placeholder-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.85rem;
-    text-align: center;
-    padding: 2.5rem;
+#model-container {
+    flex: 1;
+    position: relative;
+    min-height: 420px;
 }
 
-.placeholder-icon {
-    width: 64px;
-    height: 64px;
-    border: 1px solid rgba(206, 137, 70, 0.35);
+#model-container canvas {
+    display: block;
+}
+
+#model-loading {
+    position: absolute;
+    inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.placeholder-icon svg {
-    width: 30px; height: 30px;
-    stroke: var(--accent);
-    fill: none;
-    stroke-width: 1.4;
-    stroke-linejoin: round;
-}
-
-.placeholder-label {
     font-family: var(--font-display);
     font-size: 0.68rem;
-    text-transform: uppercase;
     letter-spacing: 0.24em;
+    text-transform: uppercase;
     color: var(--accent);
+    pointer-events: none;
 }
 
-.placeholder-sub {
-    font-size: 0.67rem;
+.dimmer-control {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid rgba(255, 255, 227, 0.06);
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: rgba(255, 255, 227, 0.25);
+    color: rgba(255, 255, 227, 0.45);
+    flex-shrink: 0;
+}
+
+.dimmer-label { white-space: nowrap; }
+
+input[type="range"]#dimmer {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 140px;
+    height: 2px;
+    background: rgba(255, 255, 227, 0.12);
+    outline: none;
+    cursor: pointer;
+    border: none;
+    flex-shrink: 0;
+}
+
+input[type="range"]#dimmer::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    background: var(--accent);
+    cursor: pointer;
+    border-radius: 0;
+}
+
+input[type="range"]#dimmer::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    background: var(--accent);
+    cursor: pointer;
+    border-radius: 0;
+    border: none;
+}
+
+.dimmer-value {
+    color: var(--accent);
+    min-width: 2rem;
 }
 
 /* stats row */
@@ -1176,6 +1211,12 @@ footer {
     }
 
     .hero-content { padding: 2.5rem 1.5rem 2rem; }
+
+    #model-container {
+        min-height: 300px;
+        flex: none;
+        height: 300px;
+    }
 
     .hero-stats { grid-template-columns: repeat(2, 1fr); }
 

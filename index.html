@@ -8,6 +8,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/environments/RoomEnvironment.js"></script>
 </head>
 <body>
 
@@ -45,23 +50,17 @@
                 </div>
             </div>
 
-            <!-- Right: 3D model placeholder -->
-            <!-- [PLACEHOLDER] Replace this div with a Three.js <canvas> when ready -->
+            <!-- Right: 3D model -->
             <div class="hero-visual">
-                <div class="placeholder-wrap">
-                    <div class="placeholder-icon">
-                        <!-- cube wireframe icon -->
-                        <svg viewBox="0 0 24 24">
-                            <polyline points="1 6 1 22 17 22"/>
-                            <polyline points="5 18 5 2 21 2 21 18 5 18"/>
-                            <line x1="1" y1="6" x2="5" y2="2"/>
-                            <line x1="17" y1="22" x2="21" y2="18"/>
-                            <line x1="1" y1="14" x2="5" y2="10"/>
-                            <line x1="9" y1="18" x2="13" y2="14"/>
-                        </svg>
+                <div id="model-container">
+                    <div id="model-loading">
+                        <span>Loading Model...</span>
                     </div>
-                    <span class="placeholder-label">3D Model</span>
-                    <span class="placeholder-sub">Three.js &mdash; Coming Soon</span>
+                </div>
+                <div class="dimmer-control">
+                    <span class="dimmer-label">Lamp Intensity</span>
+                    <input type="range" id="dimmer" min="0" max="5" step="0.1" value="2">
+                    <span class="dimmer-value">2.0</span>
                 </div>
             </div>
 
@@ -560,6 +559,179 @@
                     field.classList.remove('cf-invalid');
                 });
             });
+        }());
+    </script>
+
+    <!-- ===== THREE.JS LAMP MODEL ===== -->
+    <script>
+        /*
+        ================================================
+        THREE.JS LAMP MODEL
+        Model file: models/Lamp_Assembly.glb
+        To adjust lamp position: edit lampLight.position
+        To adjust camera start: edit camera.position
+        To adjust metal look: edit metalness/roughness values
+        ================================================
+        */
+        (function () {
+            var container = document.getElementById('model-container');
+            if (!container) return;
+
+            var loadingEl = document.getElementById('model-loading');
+
+            /* ---- Renderer ---- */
+            var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.2;
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            container.appendChild(renderer.domElement);
+
+            /* ---- Scene ---- */
+            var scene = new THREE.Scene();
+            scene.background = null;
+
+            /* ---- Camera ---- */
+            var camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+            camera.position.set(0, 0.5, 3.5);
+
+            /* ---- Controls ---- */
+            var controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.autoRotate      = true;
+            controls.autoRotateSpeed = 1.5;
+            controls.enableDamping   = true;
+            controls.dampingFactor   = 0.05;
+            controls.enableZoom      = false;
+            controls.enablePan       = false;
+            controls.target.set(0, 0, 0);
+            controls.update();
+
+            /* Resume autoRotate 3s after user stops dragging */
+            var rotateTimer;
+            controls.addEventListener('start', function () {
+                controls.autoRotate = false;
+                clearTimeout(rotateTimer);
+            });
+            controls.addEventListener('end', function () {
+                rotateTimer = setTimeout(function () {
+                    controls.autoRotate = true;
+                }, 3000);
+            });
+
+            /* ---- Environment (RoomEnvironment) ---- */
+            var pmrem   = new THREE.PMREMGenerator(renderer);
+            var roomEnv = new THREE.RoomEnvironment();
+            scene.environment = pmrem.fromScene(roomEnv).texture;
+            roomEnv.dispose();
+            pmrem.dispose();
+
+            /* ---- Scene lighting ---- */
+            scene.add(new THREE.AmbientLight(0xFFFFE3, 0.3));
+
+            var keyLight = new THREE.DirectionalLight(0xffffff, 1.0);
+            keyLight.position.set(5, 10, 5);
+            scene.add(keyLight);
+
+            var fillLight = new THREE.DirectionalLight(0xCE8946, 0.4);
+            fillLight.position.set(-5, 3, -5);
+            scene.add(fillLight);
+
+            var rimLight = new THREE.PointLight(0xffffff, 0.2);
+            rimLight.position.set(-5, 5, -5);
+            scene.add(rimLight);
+
+            /* ---- Lamp interior light ---- */
+            var lampLight = new THREE.PointLight(0xFFD580, 2.0, 3, 2);
+            lampLight.position.set(0, 0, 0);
+            scene.add(lampLight);
+
+            /* ---- Emissive bulb sphere ---- */
+            var bulbGeo  = new THREE.SphereGeometry(0.05, 12, 12);
+            var bulbMat  = new THREE.MeshStandardMaterial({
+                color: 0x000000,
+                emissive: new THREE.Color(0xFFD580),
+                emissiveIntensity: 2.0
+            });
+            var bulbMesh = new THREE.Mesh(bulbGeo, bulbMat);
+            bulbMesh.position.copy(lampLight.position);
+            scene.add(bulbMesh);
+
+            /* ---- Load GLB model ---- */
+            var loader = new THREE.GLTFLoader();
+            loader.load(
+                'models/Lamp_Assembly.glb',
+                function (gltf) {
+                    var model = gltf.scene;
+
+                    /* Center at origin */
+                    var box    = new THREE.Box3().setFromObject(model);
+                    var center = box.getCenter(new THREE.Vector3());
+                    var size   = box.getSize(new THREE.Vector3());
+                    model.position.sub(center);
+
+                    /* Scale to fit within radius 1.5 */
+                    var maxDim = Math.max(size.x, size.y, size.z);
+                    model.scale.setScalar(3.0 / maxDim);
+
+                    /* Apply metallic PBR properties to all meshes */
+                    model.traverse(function (child) {
+                        if (child.isMesh) {
+                            var mats = Array.isArray(child.material)
+                                ? child.material
+                                : [child.material];
+                            mats.forEach(function (mat) {
+                                mat.metalness       = 0.85;
+                                mat.roughness       = 0.15;
+                                mat.envMapIntensity = 1.0;
+                                mat.needsUpdate     = true;
+                            });
+                        }
+                    });
+
+                    scene.add(model);
+
+                    if (loadingEl) loadingEl.remove();
+                },
+                undefined,
+                function (err) {
+                    console.error('GLTFLoader error:', err);
+                    if (loadingEl) loadingEl.textContent = 'MODEL UNAVAILABLE';
+                }
+            );
+
+            /* ---- Dimmer control ---- */
+            var dimmerInput   = document.getElementById('dimmer');
+            var dimmerValueEl = document.querySelector('.dimmer-value');
+
+            if (dimmerInput) {
+                dimmerInput.addEventListener('input', function () {
+                    var val = parseFloat(this.value);
+                    lampLight.intensity      = val;
+                    bulbMat.emissiveIntensity = val;
+                    if (dimmerValueEl) dimmerValueEl.textContent = val.toFixed(1);
+                });
+            }
+
+            /* ---- Resize handler ---- */
+            function resize() {
+                var w = container.clientWidth;
+                var h = container.clientHeight;
+                if (!w || !h) return;
+                camera.aspect = w / h;
+                camera.updateProjectionMatrix();
+                renderer.setSize(w, h);
+            }
+
+            window.addEventListener('resize', resize, { passive: true });
+            resize();
+
+            /* ---- Animation loop ---- */
+            function animate() {
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene, camera);
+            }
+            animate();
         }());
     </script>
 

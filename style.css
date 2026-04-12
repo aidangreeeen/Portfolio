@@ -19,7 +19,8 @@
     --accent: #CE8946;
     --gray: #888878;
     --light-border: rgba(26, 26, 15, 0.12);
-    --font-display: 'Lobo-Tommy', 'Oswald', sans-serif;
+    --font-display: 'Oswald', sans-serif;
+    --font-accent:  'Lobo-Tommy', 'Oswald', sans-serif;
     --dark-border: rgba(255, 255, 227, 0.08);
 }
 
@@ -307,6 +308,15 @@ nav {
     letter-spacing: 0.22em;
     color: var(--accent);
     margin-bottom: 0.6rem;
+}
+
+/* Lobo-Tommy selectively on hero name + index.html section headings only */
+.hero-name,
+#portfolio .section-title,
+#about .section-title,
+#contact .section-title,
+.contact-headline {
+    font-family: var(--font-accent);
 }
 
 .section-title {

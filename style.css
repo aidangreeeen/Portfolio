@@ -3,6 +3,16 @@
    Shared stylesheet for index.html + portfolio.html
    ============================================================= */
 
+/* ── FONTS ───────────────────────────────────────────────────── */
+@font-face {
+    font-family: 'RedJola';
+    src: url('fonts/Redjola.ttf') format('truetype'),
+         url('fonts/Redjola.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* ── TOKENS ─────────────────────────────────────────────────── */
 :root {
     --cream: #FFFFE3;
@@ -10,6 +20,7 @@
     --accent: #CE8946;
     --gray: #888878;
     --light-border: rgba(26, 26, 15, 0.12);
+    --font-display: 'RedJola', 'Oswald', sans-serif;
     --dark-border: rgba(255, 255, 227, 0.08);
 }
 
@@ -47,7 +58,7 @@ nav {
 }
 
 .nav-logo {
-    font-family: 'Oswald', sans-serif;
+    font-family: var(--font-display);
     font-weight: 700;
     font-size: 1.05rem;
     text-transform: uppercase;
@@ -127,7 +138,7 @@ nav {
 }
 
 .hero-name {
-    font-family: 'Oswald', sans-serif;
+    font-family: var(--font-display);
     font-weight: 700;
     font-size: clamp(3.5rem, 7vw, 6.5rem);
     text-transform: uppercase;
@@ -243,7 +254,7 @@ nav {
 }
 
 .placeholder-label {
-    font-family: 'Oswald', sans-serif;
+    font-family: var(--font-display);
     font-size: 0.68rem;
     text-transform: uppercase;
     letter-spacing: 0.24em;
@@ -272,7 +283,7 @@ nav {
 .stat:last-child { border-right: none; }
 
 .stat-value {
-    font-family: 'Oswald', sans-serif;
+    font-family: var(--font-display);
     font-size: 1.9rem;
     font-weight: 700;
     color: var(--accent);
@@ -300,7 +311,7 @@ nav {
 }
 
 .section-title {
-    font-family: 'Oswald', sans-serif;
+    font-family: var(--font-display);
     font-weight: 700;
     font-size: clamp(2rem, 4vw, 3.5rem);
     text-transform: uppercase;
@@ -381,7 +392,7 @@ nav {
 }
 
 .project-number {
-    font-family: 'Oswald', sans-serif;
+    font-family: var(--font-display);
     font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.1em;
@@ -414,7 +425,7 @@ nav {
 }
 
 .project-title {
-    font-family: 'Oswald', sans-serif;
+    font-family: var(--font-display);
     font-weight: 600;
     font-size: 1.2rem;
     text-transform: uppercase;
@@ -544,7 +555,7 @@ nav {
 }
 
 .contact-headline {
-    font-family: 'Oswald', sans-serif;
+    font-family: var(--font-display);
     font-size: clamp(2.5rem, 5vw, 4rem);
     font-weight: 700;
     text-transform: uppercase;
@@ -591,7 +602,7 @@ nav {
 }
 
 .cl-value {
-    font-family: 'Oswald', sans-serif;
+    font-family: var(--font-display);
     font-size: 0.95rem;
     font-weight: 500;
     text-transform: uppercase;
@@ -642,7 +653,7 @@ nav {
 }
 
 .status-heading {
-    font-family: 'Oswald', sans-serif;
+    font-family: var(--font-display);
     font-size: 1.05rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -672,7 +683,7 @@ footer {
 }
 
 .footer-name {
-    font-family: 'Oswald', sans-serif;
+    font-family: var(--font-display);
     font-size: 1.05rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -738,7 +749,7 @@ footer {
 }
 
 .page-title {
-    font-family: 'Oswald', sans-serif;
+    font-family: var(--font-display);
     font-weight: 700;
     font-size: clamp(3rem, 6vw, 5.5rem);
     text-transform: uppercase;
@@ -831,7 +842,7 @@ footer {
 
 /* "Automotive — 02 Projects" */
 .section-name {
-    font-family: 'Oswald', sans-serif;
+    font-family: var(--font-display);
     font-weight: 700;
     font-size: clamp(1.75rem, 3.5vw, 2.75rem);
     text-transform: uppercase;
@@ -880,7 +891,7 @@ footer {
 }
 
 .edu-card-title {
-    font-family: 'Oswald', sans-serif;
+    font-family: var(--font-display);
     font-weight: 700;
     font-size: clamp(1.5rem, 3vw, 2.25rem);
     text-transform: uppercase;

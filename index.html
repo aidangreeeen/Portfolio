@@ -339,15 +339,39 @@
                 </div>
             </div>
 
-            <!-- Right: status -->
+            <!-- Right: contact form -->
             <div>
-                <div class="status-box">
-                    <div class="status-indicator">
-                        <div class="status-dot"></div>
-                        <span class="status-tag">Current Status</span>
-                    </div>
-                    <p class="status-heading">Open to Opportunities</p>
-                    <p class="status-loc">Reno, NV &nbsp;&middot;&nbsp; Relocate OK</p>
+                <!--
+                CONTACT FORM
+                Powered by Formspree — formspree.io
+                To change endpoint: update action attribute on <form> tag
+                -->
+                <div class="contact-form-wrap">
+                    <form id="contact-form" action="https://formspree.io/f/xvzdppkj" method="POST" novalidate>
+                        <div class="cf-field">
+                            <label for="cf-name" class="cf-label">Name</label>
+                            <input type="text" id="cf-name" name="name" class="cf-input" placeholder="Your name" required>
+                        </div>
+                        <div class="cf-field">
+                            <label for="cf-email" class="cf-label">Email</label>
+                            <input type="email" id="cf-email" name="email" class="cf-input" placeholder="your@email.com" required>
+                        </div>
+                        <div class="cf-field">
+                            <label for="cf-subject" class="cf-label">Subject</label>
+                            <input type="text" id="cf-subject" name="subject" class="cf-input" placeholder="What's this about?" required>
+                        </div>
+                        <div class="cf-field">
+                            <label for="cf-message" class="cf-label">Message</label>
+                            <textarea id="cf-message" name="message" class="cf-input cf-textarea" rows="4" placeholder="Your message..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary cf-submit">Send Message</button>
+                    </form>
+                    <p id="cf-success" class="cf-success" hidden>
+                        Message received. I'll get back to you shortly.
+                    </p>
+                    <p id="cf-error" class="cf-error" hidden>
+                        Something went wrong. Please email me directly at <a href="mailto:[YOUR_EMAIL@unr.edu]">[your.email@unr.edu]</a>.
+                    </p>
                 </div>
             </div>
 
@@ -462,6 +486,58 @@
             }
 
             cycle();
+        }());
+
+        /* ---- contact form ---- */
+        (function () {
+            const form    = document.getElementById('contact-form');
+            const success = document.getElementById('cf-success');
+            const error   = document.getElementById('cf-error');
+
+            if (!form) return;
+
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                /* clear previous states */
+                form.querySelectorAll('.cf-invalid').forEach(el => el.classList.remove('cf-invalid'));
+                error.hidden = true;
+
+                /* validate required fields */
+                let valid = true;
+                form.querySelectorAll('[required]').forEach(function (field) {
+                    if (!field.value.trim()) {
+                        field.classList.add('cf-invalid');
+                        valid = false;
+                    }
+                });
+                if (!valid) return;
+
+                /* submit via fetch — no page reload */
+                try {
+                    const res = await fetch(form.action, {
+                        method: 'POST',
+                        body: new FormData(form),
+                        headers: { 'Accept': 'application/json' }
+                    });
+
+                    if (res.ok) {
+                        form.hidden    = true;
+                        success.hidden = false;
+                    } else {
+                        error.hidden = false;
+                    }
+                } catch (_) {
+                    error.hidden = false;
+                }
+            });
+
+            /* clear invalid highlight as user types */
+            form.querySelectorAll('.cf-input').forEach(function (field) {
+                field.addEventListener('input', function () {
+                    field.classList.remove('cf-invalid');
+                });
+            });
         }());
     </script>
 

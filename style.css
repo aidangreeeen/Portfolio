@@ -737,6 +737,84 @@ nav {
     letter-spacing: 0.05em;
 }
 
+/* ── CONTACT FORM ────────────────────────────────────────────── */
+.contact-form-wrap {
+    background-color: var(--dark);
+    padding: 2.25rem;
+}
+
+.cf-field {
+    margin-bottom: 1.5rem;
+}
+
+.cf-label {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+}
+
+.cf-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #333;
+    border-radius: 0;
+    color: var(--cream);
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 300;
+    padding: 0.75rem 0;
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.cf-input::placeholder { color: #555; }
+
+.cf-input:focus { border-color: var(--accent); }
+
+.cf-input.cf-invalid { border-color: var(--accent); }
+
+.cf-textarea {
+    resize: vertical;
+    min-height: 7rem;
+    line-height: 1.6;
+}
+
+.cf-submit {
+    width: 100%;
+    margin-top: 0.5rem;
+    cursor: pointer;
+    border: none;
+    text-align: center;
+}
+
+.cf-success {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding: 1.5rem 0;
+}
+
+.cf-error {
+    font-size: 0.82rem;
+    color: rgba(255, 255, 227, 0.6);
+    padding: 1rem 0;
+    line-height: 1.6;
+}
+
+.cf-error a {
+    color: var(--accent);
+    text-decoration: underline;
+}
+
 /* ── FOOTER ──────────────────────────────────────────────────── */
 footer {
     background-color: var(--dark);

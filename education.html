@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ME Curriculum — Aidan Green</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ==========================================================
+           SKILL TREE — education.html only
+           ========================================================== */
+
+        /* ── Page body override (dark bg for this page) ─────────── */
+        body { background-color: var(--dark); }
+
+        /* ── Scrollable tree wrapper ─────────────────────────────── */
+        .skill-tree-wrapper {
+            overflow-x: auto;
+            overflow-y: visible;
+            background-color: var(--dark);
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(206,137,70,0.35) rgba(255,255,227,0.04);
+        }
+
+        .skill-tree-wrapper::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .skill-tree-wrapper::-webkit-scrollbar-track {
+            background: rgba(255,255,227,0.04);
+        }
+
+        .skill-tree-wrapper::-webkit-scrollbar-thumb {
+            background: rgba(206,137,70,0.35);
+        }
+
+        /* ── Tree container (inner) ──────────────────────────────── */
+        .skill-tree {
+            display: flex;
+            position: relative;
+            min-width: max-content;
+        }
+
+        /* ── SVG overlay for connections ─────────────────────────── */
+        .connections-svg {
+            position: absolute;
+            top: 0; left: 0;
+            pointer-events: none;
+            overflow: visible;
+        }
+
+        /* ── Year columns ────────────────────────────────────────── */
+        .year-col {
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid rgba(255,255,227,0.07);
+            min-width: 400px;
+        }
+
+        .year-col:last-child { border-right: none; }
+
+        .year-header {
+            padding: 1.5rem 1.5rem 1rem;
+            border-bottom: 1px solid rgba(255,255,227,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .year-label {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--cream);
+        }
+
+        .year-credits-badge {
+            font-size: 0.63rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--accent);
+        }
+
+        /* ── Semester sub-columns ────────────────────────────────── */
+        .semesters {
+            display: flex;
+            flex: 1;
+        }
+
+        .semester {
+            flex: 1;
+            padding: 1rem 1rem 1.5rem;
+            border-right: 1px solid rgba(255,255,227,0.04);
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+            min-width: 190px;
+        }
+
+        .semester:last-child { border-right: none; }
+
+        .sem-label {
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.24em;
+            color: rgba(255,255,227,0.25);
+            margin-bottom: 0.55rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 1px solid rgba(255,255,227,0.05);
+        }
+
+        /* ── Course nodes ────────────────────────────────────────── */
+        .course-node {
+            background: rgba(255,255,227,0.03);
+            border: 1px solid rgba(255,255,227,0.09);
+            padding: 0.5rem 0.65rem;
+            cursor: pointer;
+            transition: border-color 0.18s, background 0.18s, transform 0.15s;
+            position: relative;
+            user-select: none;
+        }
+
+        .course-node:hover {
+            border-color: rgba(206,137,70,0.55);
+            background: rgba(206,137,70,0.06);
+            transform: translateY(-1px);
+        }
+
+        .course-node:focus-visible {
+            outline: 1px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        .course-node.active {
+            border-color: var(--accent);
+            background: rgba(206,137,70,0.1);
+            box-shadow: 0 0 0 1px var(--accent);
+        }
+
+        /* Amber left-border for core technical courses */
+        .course-node.core {
+            border-left: 2px solid rgba(206,137,70,0.5);
+        }
+
+        .course-node.core:hover,
+        .course-node.core.active {
+            border-left-color: var(--accent);
+        }
+
+        /* Entry-point node (no prereqs, shows as special) */
+        .course-node.entry {
+            border-style: dashed;
+            border-color: rgba(255,255,227,0.2);
+        }
+
+        .cn-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 0.3rem;
+            margin-bottom: 0.15rem;
+        }
+
+        .cn-code {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--cream);
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+        }
+
+        .cn-credits {
+            font-size: 0.58rem;
+            color: rgba(255,255,227,0.35);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .cn-title {
+            font-size: 0.67rem;
+            color: rgba(255,255,227,0.5);
+            line-height: 1.3;
+        }
+
+        .cn-tag {
+            display: inline-block;
+            font-size: 0.53rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: rgba(206,137,70,0.55);
+            margin-top: 0.22rem;
+        }
+
+        /* ── Modal overlay ───────────────────────────────────────── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10,10,6,0.75);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal {
+            background: var(--cream);
+            color: var(--dark);
+            width: min(440px, 92vw);
+            padding: 2rem;
+            position: relative;
+            transform: translateY(10px);
+            transition: transform 0.22s ease;
+        }
+
+        .modal-overlay.open .modal {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 0.85rem; right: 0.85rem;
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            line-height: 1;
+            padding: 0.3rem 0.45rem;
+            cursor: pointer;
+            color: rgba(26,26,15,0.35);
+            transition: color 0.15s;
+        }
+
+        .modal-close:hover { color: var(--dark); }
+
+        .modal-eyebrow {
+            display: flex;
+            align-items: baseline;
+            gap: 0.65rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .modal-code {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+        }
+
+        .modal-credits-label {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: rgba(26,26,15,0.38);
+        }
+
+        .modal-title {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            text-transform: uppercase;
+            line-height: 1.1;
+            color: var(--dark);
+            margin-bottom: 1.2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(26,26,15,0.1);
+        }
+
+        .modal-desc {
+            font-size: 0.85rem;
+            line-height: 1.72;
+            color: rgba(26,26,15,0.62);
+        }
+
+        /* ── Legend ──────────────────────────────────────────────── */
+        .tree-legend {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.75rem;
+            padding: 1.5rem 4rem;
+            border-top: 1px solid rgba(255,255,227,0.06);
+            background: var(--dark);
+        }
+
+        .legend-label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: rgba(255,255,227,0.3);
+            margin-right: 0.25rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+        }
+
+        .legend-item-label {
+            font-size: 0.66rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: rgba(255,255,227,0.42);
+        }
+
+        .legend-line {
+            width: 26px;
+            height: 0;
+            border-top: 1.5px solid rgba(206,137,70,0.5);
+        }
+
+        .legend-line.dashed {
+            border-top-style: dashed;
+            border-color: rgba(206,137,70,0.35);
+        }
+
+        .legend-swatch {
+            width: 14px; height: 14px;
+            border: 1px solid rgba(255,255,227,0.09);
+            background: rgba(255,255,227,0.03);
+            flex-shrink: 0;
+        }
+
+        .legend-swatch.core {
+            border-left: 2px solid rgba(206,137,70,0.5);
+            background: rgba(206,137,70,0.06);
+        }
+
+        /* ── Responsive ──────────────────────────────────────────── */
+        @media (max-width: 768px) {
+            .tree-legend { padding: 1.25rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAV ===== -->
+    <nav id="main-nav">
+        <a href="index.html" class="nav-logo">Aidan Green</a>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="portfolio.html">Portfolio</a></li>
+            <li><a href="resume.html">Resume</a></li>
+            <li><a href="skills.html">Skills</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- ===== PAGE HERO ===== -->
+    <header class="page-hero">
+        <span class="page-label">// Education</span>
+        <h1 class="page-title">ME Curriculum</h1>
+        <p class="page-subtitle">
+            University of Nevada, Reno &nbsp;&middot;&nbsp; B.S. Mechanical Engineering
+            &nbsp;&middot;&nbsp; 2021&ndash;2022 Catalog &nbsp;&middot;&nbsp; 126 Credits
+        </p>
+    </header>
+
+    <!--
+    =============================================
+    TO ADD A COURSE DESCRIPTION:
+    Find the node by its comment: <!-- COURSE NODE: [CODE] -->
+    Add your description text to data-description="..." on that element.
+    The modal will display it automatically on click.
+    =============================================
+    -->
+
+    <!-- ===== SKILL TREE ===== -->
+    <div class="skill-tree-wrapper" id="tree-wrapper">
+        <div class="skill-tree" id="skill-tree">
+
+            <!-- SVG overlay — connections drawn by JS after load -->
+            <svg class="connections-svg" id="connections-svg" aria-hidden="true"></svg>
+
+            <!-- ═══════════════════════════════════════════
+                 YEAR 1  —  34 credits
+                 ═══════════════════════════════════════════ -->
+            <div class="year-col">
+                <div class="year-header">
+                    <span class="year-label">Year 1</span>
+                    <span class="year-credits-badge">34 credits</span>
+                </div>
+                <div class="semesters">
+
+                    <!-- Year 1 — Fall (17 credits) -->
+                    <div class="semester">
+                        <div class="sem-label">Fall &nbsp;— 17 cr</div>
+
+                        <!-- COURSE NODE: MATH 127 -->
+                        <div class="course-node entry"
+                             id="cn-math127"
+                             data-code="MATH 127"
+                             data-credits="—"
+                             data-title="Precalculus"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">MATH 127</span>
+                                <span class="cn-credits">(entry)</span>
+                            </div>
+                            <span class="cn-title">Precalculus</span>
+                            <span class="cn-tag">Prereq entry point</span>
+                        </div>
+
+                        <!-- COURSE NODE: ENG 101 -->
+                        <div class="course-node"
+                             id="cn-eng101"
+                             data-code="ENG 101"
+                             data-credits="3"
+                             data-title="Composition I"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">ENG 101</span>
+                                <span class="cn-credits">(3)</span>
+                            </div>
+                            <span class="cn-title">Composition I</span>
+                            <span class="cn-tag">TR</span>
+                        </div>
+
+                        <!-- COURSE NODE: ART-COMP -->
+                        <div class="course-node"
+                             id="cn-art-comp"
+                             data-code="Art. Comp."
+                             data-credits="3"
+                             data-title="Artistic Composition, Interpretation & Expression"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">Art. Comp. Int. &amp; Exp.</span>
+                                <span class="cn-credits">(3)</span>
+                            </div>
+                            <span class="cn-title">Artistic Comp., Interp. &amp; Exp.</span>
+                            <span class="cn-tag">F21</span>
+                        </div>
+
+                        <!-- COURSE NODE: ENGR 100 -->
+                        <div class="course-node core"
+                             id="cn-engr100"
+                             data-code="ENGR 100"
+                             data-credits="3"
+                             data-title="Intro to Engineering Design"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">ENGR 100</span>
+                                <span class="cn-credits">(3)</span>
+                            </div>
+                            <span class="cn-title">Intro to Eng. Design</span>
+                            <span class="cn-tag">F21</span>
+                        </div>
+
+                        <!-- COURSE NODE: MATH 181 -->
+                        <div class="course-node core"
+                             id="cn-math181"
+                             data-code="MATH 181"
+                             data-credits="4"
+                             data-title="Calculus I"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">MATH 181</span>
+                                <span class="cn-credits">(4)</span>
+                            </div>
+                            <span class="cn-title">Calculus I</span>
+                            <span class="cn-tag">F21</span>
+                        </div>
+
+                        <!-- COURSE NODE: CHEM 201 -->
+                        <div class="course-node core"
+                             id="cn-chem201"
+                             data-code="CHEM 201"
+                             data-credits="4"
+                             data-title="General Chemistry"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">CHEM 201</span>
+                                <span class="cn-credits">(4)</span>
+                            </div>
+                            <span class="cn-title">Gen. Chemistry</span>
+                            <span class="cn-tag">or 121A/L</span>
+                        </div>
+
+                    </div><!-- /semester fall y1 -->
+
+                    <!-- Year 1 — Spring (17 credits) -->
+                    <div class="semester">
+                        <div class="sem-label">Spring &nbsp;— 17 cr</div>
+
+                        <!-- COURSE NODE: ENG 102 -->
+                        <div class="course-node"
+                             id="cn-eng102"
+                             data-code="ENG 102"
+                             data-credits="3"
+                             data-title="Composition II"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">ENG 102</span>
+                                <span class="cn-credits">(3)</span>
+                            </div>
+                            <span class="cn-title">Composition II</span>
+                            <span class="cn-tag">S22</span>
+                        </div>
+
+                        <!-- COURSE NODE: ECON 102 -->
+                        <div class="course-node"
+                             id="cn-econ102"
+                             data-code="ECON 102"
+                             data-credits="3"
+                             data-title="Microeconomics"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">ECON 102</span>
+                                <span class="cn-credits">(3)</span>
+                            </div>
+                            <span class="cn-title">Microeconomics</span>
+                            <span class="cn-tag">F21</span>
+                        </div>
+
+                        <!-- COURSE NODE: DIV-EQ -->
+                        <div class="course-node"
+                             id="cn-div-eq"
+                             data-code="Div. &amp; Eq. G"
+                             data-credits="3"
+                             data-title="Diversity &amp; Equity (GE)"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">Diversity &amp; Eq. G</span>
+                                <span class="cn-credits">(3)</span>
+                            </div>
+                            <span class="cn-title">Diversity &amp; Equity</span>
+                            <span class="cn-tag">S22</span>
+                        </div>
+
+                        <!-- COURSE NODE: MATH 182 -->
+                        <div class="course-node core"
+                             id="cn-math182"
+                             data-code="MATH 182"
+                             data-credits="4"
+                             data-title="Calculus II"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">MATH 182</span>
+                                <span class="cn-credits">(4)</span>
+                            </div>
+                            <span class="cn-title">Calculus II</span>
+                            <span class="cn-tag">S22</span>
+                        </div>
+
+                        <!-- COURSE NODE: PHYS 180 -->
+                        <div class="course-node core"
+                             id="cn-phys180"
+                             data-code="PHYS 180"
+                             data-credits="3"
+                             data-title="Engineering Physics I"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">PHYS 180</span>
+                                <span class="cn-credits">(3)</span>
+                            </div>
+                            <span class="cn-title">Eng. Physics I</span>
+                            <span class="cn-tag">SU22</span>
+                        </div>
+
+                        <!-- COURSE NODE: PHYS 180L -->
+                        <div class="course-node core"
+                             id="cn-phys180l"
+                             data-code="PHYS 180L"
+                             data-credits="1"
+                             data-title="Engineering Physics Lab I"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">PHYS 180L</span>
+                                <span class="cn-credits">(1)</span>
+                            </div>
+                            <span class="cn-title">Eng. Physics Lab I</span>
+                            <span class="cn-tag">SU22 · coreq</span>
+                        </div>
+
+                    </div><!-- /semester spring y1 -->
+                </div><!-- /semesters y1 -->
+            </div><!-- /year-col 1 -->
+
+            <!-- ═══════════════════════════════════════════
+                 YEAR 2  —  33 credits
+                 ═══════════════════════════════════════════ -->
+            <div class="year-col">
+                <div class="year-header">
+                    <span class="year-label">Year 2</span>
+                    <span class="year-credits-badge">33 credits</span>
+                </div>
+                <div class="semesters">
+
+                    <!-- Year 2 — Fall (17 credits) -->
+                    <div class="semester">
+                        <div class="sem-label">Fall &nbsp;— 17 cr</div>
+
+                        <!-- COURSE NODE: CH 201-202 -->
+                        <div class="course-node core"
+                             id="cn-ch201"
+                             data-code="CH 201-202"
+                             data-credits="3"
+                             data-title="General Chemistry"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">CH 201-202</span>
+                                <span class="cn-credits">(3)</span>
+                            </div>
+                            <span class="cn-title">General Chemistry</span>
+                            <span class="cn-tag">TR</span>
+                        </div>
+
+                        <!-- COURSE NODE: MSE 250 -->
+                        <div class="course-node core"
+                             id="cn-mse250"
+                             data-code="MSE 250"
+                             data-credits="3"
+                             data-title="Elements of Material Science"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">MSE 250</span>
+                                <span class="cn-credits">(3)</span>
+                            </div>
+                            <span class="cn-title">Ele. of Material Sci.</span>
+                            <span class="cn-tag">F22</span>
+                        </div>
+
+                        <!-- COURSE NODE: ENGR 241 -->
+                        <div class="course-node core"
+                             id="cn-engr241"
+                             data-code="ENGR 241"
+                             data-credits="3"
+                             data-title="Statics"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">ENGR 241</span>
+                                <span class="cn-credits">(3)</span>
+                            </div>
+                            <span class="cn-title">Statics</span>
+                            <span class="cn-tag">F22</span>
+                        </div>
+
+                        <!-- COURSE NODE: MATH 283 -->
+                        <div class="course-node core"
+                             id="cn-math283"
+                             data-code="MATH 283"
+                             data-credits="4"
+                             data-title="Calculus III"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">MATH 283</span>
+                                <span class="cn-credits">(4)</span>
+                            </div>
+                            <span class="cn-title">Calculus III</span>
+                            <span class="cn-tag">F22</span>
+                        </div>
+
+                        <!-- COURSE NODE: PHYS 181 -->
+                        <div class="course-node core"
+                             id="cn-phys181"
+                             data-code="PHYS 181"
+                             data-credits="3"
+                             data-title="Engineering Physics II"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">PHYS 181</span>
+                                <span class="cn-credits">(3)</span>
+                            </div>
+                            <span class="cn-title">Eng. Physics II</span>
+                            <span class="cn-tag">F22</span>
+                        </div>
+
+                        <!-- COURSE NODE: PHYS 181L -->
+                        <div class="course-node core"
+                             id="cn-phys181l"
+                             data-code="PHYS 181L"
+                             data-credits="1"
+                             data-title="Engineering Physics Lab II"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">PHYS 181L</span>
+                                <span class="cn-credits">(1)</span>
+                            </div>
+                            <span class="cn-title">Eng. Physics Lab II</span>
+                            <span class="cn-tag">F22 · coreq</span>
+                        </div>
+
+                    </div><!-- /semester fall y2 -->
+
+                    <!-- Year 2 — Spring (16 credits) -->
+                    <div class="semester">
+                        <div class="sem-label">Spring &nbsp;— 16 cr</div>
+
+                        <!-- COURSE NODE: ME 203 -->
+                        <div class="course-node core"
+                             id="cn-me203"
+                             data-code="ME 203"
+                             data-credits="3"
+                             data-title="Intro to Computational Methods"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">ME 203</span>
+                                <span class="cn-credits">(3)</span>
+                            </div>
+                            <span class="cn-title">Intro to Comp. Methods</span>
+                        </div>
+
+                        <!-- COURSE NODE: ME 242 -->
+                        <div class="course-node core"
+                             id="cn-me242"
+                             data-code="ME 242"
+                             data-credits="3"
+                             data-title="Dynamics"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">ME 242</span>
+                                <span class="cn-credits">(3)</span>
+                            </div>
+                            <span class="cn-title">Dynamics</span>
+                        </div>
+
+                        <!-- COURSE NODE: MATH 285 -->
+                        <div class="course-node core"
+                             id="cn-math285"
+                             data-code="MATH 285"
+                             data-credits="3"
+                             data-title="Differential Equations"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">MATH 285</span>
+                                <span class="cn-credits">(3)</span>
+                            </div>
+                            <span class="cn-title">Differential Equations</span>
+                        </div>
+
+                        <!-- COURSE NODE: CEE 372 -->
+                        <div class="course-node core"
+                             id="cn-cee372"
+                             data-code="CEE 372"
+                             data-credits="3"
+                             data-title="Mechanics of Solids"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">CEE 372</span>
+                                <span class="cn-credits">(3)</span>
+                            </div>
+                            <span class="cn-title">Mech. of Solids</span>
+                        </div>
+
+                        <!-- COURSE NODE: EE 220 -->
+                        <div class="course-node core"
+                             id="cn-ee220"
+                             data-code="EE 220"
+                             data-credits="3"
+                             data-title="Circuits I"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">EE 220</span>
+                                <span class="cn-credits">(3)</span>
+                            </div>
+                            <span class="cn-title">Circuits I</span>
+                        </div>
+
+                        <!-- COURSE NODE: EE 220L -->
+                        <div class="course-node core"
+                             id="cn-ee220l"
+                             data-code="EE 220L"
+                             data-credits="1"
+                             data-title="Circuits I Lab"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">EE 220L</span>
+                                <span class="cn-credits">(1)</span>
+                            </div>
+                            <span class="cn-title">Circuits I Lab</span>
+                            <span class="cn-tag">coreq</span>
+                        </div>
+
+                    </div><!-- /semester spring y2 -->
+                </div><!-- /semesters y2 -->
+            </div><!-- /year-col 2 -->
+
+            <!-- ═══════════════════════════════════════════
+                 YEAR 3  —  30 credits
+                 ═══════════════════════════════════════════ -->
+            <div class="year-col">
+                <div class="year-header">
+                    <span class="year-label">Year 3</span>
+                    <span class="year-credits-badge">30 credits</span>
+                </div>
+                <div class="semesters">
+
+                    <!-- Year 3 — Fall (15 credits) -->
+                    <div class="semester">
+                        <div class="sem-label">Fall &nbsp;— 15 cr</div>
+
+                        <!-- COURSE NODE: CH 203 -->
+                        <div class="course-node"
+                             id="cn-ch203"
+                             data-code="CH 203"
+                             data-credits="3"
+                             data-title="American Experience"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">CH 203</span>
+                                <span class="cn-credits">(3)</span>
+                            </div>
+                            <span class="cn-title">Am. Experience</span>
+                            <span class="cn-tag">U22</span>
+                        </div>
+
+                        <!-- COURSE NODE: ME 350 -->
+                        <div class="course-node core"
+                             id="cn-me350"
+                             data-code="ME 350"
+                             data-credits="3"
+                             data-title="Computer-Aided Design &amp; Manufacturing"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">ME 350</span>
+                                <span class="cn-credits">(3)</span>
+                            </div>
+                            <span class="cn-title">Com-Aided Des. &amp; Mfg.</span>
+                        </div>
+
+                        <!-- COURSE NODE: ME 380 -->
+                        <div class="course-node core"
+                             id="cn-me380"
+                             data-code="ME 380"
+                             data-credits="3"
+                             data-title="Fluid Dynamics for ME"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">ME 380</span>
+                                <span class="cn-credits">(3)</span>
+                            </div>
+                            <span class="cn-title">Fluid Dynamics for ME</span>
+                        </div>
+
+                        <!-- COURSE NODE: ME 311 -->
+                        <div class="course-node core"
+                             id="cn-me311"
+                             data-code="ME 311"
+                             data-credits="3"
+                             data-title="Engineering Thermodynamics I"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">ME 311</span>
+                                <span class="cn-credits">(3)</span>
+                            </div>
+                            <span class="cn-title">Engr. Thermodynamics I</span>
+                        </div>
+
+                        <!-- COURSE NODE: ME 303 -->
+                        <div class="course-node core"
+                             id="cn-me303"
+                             data-code="ME 303"
+                             data-credits="3"
+                             data-title="Applied Numerical Methods"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">ME 303</span>
+                                <span class="cn-credits">(3)</span>
+                            </div>
+                            <span class="cn-title">Appl. Numerical Methods</span>
+                        </div>
+
+                    </div><!-- /semester fall y3 -->
+
+                    <!-- Year 3 — Spring (15 credits) -->
+                    <div class="semester">
+                        <div class="sem-label">Spring &nbsp;— 15 cr</div>
+
+                        <!-- COURSE NODE: ME 351 -->
+                        <div class="course-node core"
+                             id="cn-me351"
+                             data-code="ME 351"
+                             data-credits="4"
+                             data-title="Mechanical Design"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">ME 351</span>
+                                <span class="cn-credits">(4)</span>
+                            </div>
+                            <span class="cn-title">Mechanical Design</span>
+                        </div>
+
+                        <!-- COURSE NODE: ME 314 -->
+                        <div class="course-node core"
+                             id="cn-me314"
+                             data-code="ME 314"
+                             data-credits="3"
+                             data-title="Intro. Heat Transfer"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">ME 314</span>
+                                <span class="cn-credits">(3)</span>
+                            </div>
+                            <span class="cn-title">Intro. Heat Transfer</span>
+                        </div>
+
+                        <!-- COURSE NODE: ME 322 -->
+                        <div class="course-node core"
+                             id="cn-me322"
+                             data-code="ME 322"
+                             data-credits="4"
+                             data-title="Instrumentation"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">ME 322</span>
+                                <span class="cn-credits">(4)</span>
+                            </div>
+                            <span class="cn-title">Instrumentation</span>
+                        </div>
+
+                        <!-- COURSE NODE: ME 310 -->
+                        <div class="course-node core"
+                             id="cn-me310"
+                             data-code="ME 310"
+                             data-credits="4"
+                             data-title="Systems Analysis &amp; Design"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">ME 310</span>
+                                <span class="cn-credits">(4)</span>
+                            </div>
+                            <span class="cn-title">Sys. Analysis &amp; Design</span>
+                        </div>
+
+                    </div><!-- /semester spring y3 -->
+                </div><!-- /semesters y3 -->
+            </div><!-- /year-col 3 -->
+
+            <!-- ═══════════════════════════════════════════
+                 YEAR 4  —  29 credits
+                 ═══════════════════════════════════════════ -->
+            <div class="year-col">
+                <div class="year-header">
+                    <span class="year-label">Year 4</span>
+                    <span class="year-credits-badge">29 credits</span>
+                </div>
+                <div class="semesters">
+
+                    <!-- Year 4 — Fall (15 credits) -->
+                    <div class="semester">
+                        <div class="sem-label">Fall &nbsp;— 15 cr</div>
+
+                        <!-- COURSE NODE: ENGR 301 -->
+                        <div class="course-node core"
+                             id="cn-engr301"
+                             data-code="ENGR 301"
+                             data-credits="3"
+                             data-title="Engineering Communications"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">ENGR 301</span>
+                                <span class="cn-credits">(3)</span>
+                            </div>
+                            <span class="cn-title">Engineering Communications</span>
+                        </div>
+
+                        <!-- COURSE NODE: ENGR 490 -->
+                        <div class="course-node core"
+                             id="cn-engr490"
+                             data-code="ENGR 490"
+                             data-credits="0"
+                             data-title="FE Exam"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">ENGR 490</span>
+                                <span class="cn-credits">(0)</span>
+                            </div>
+                            <span class="cn-title">FE Exam</span>
+                        </div>
+
+                        <!-- COURSE NODE: ME 451 -->
+                        <div class="course-node core"
+                             id="cn-me451"
+                             data-code="ME 451"
+                             data-credits="3"
+                             data-title="System Design"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">ME 451</span>
+                                <span class="cn-credits">(3)</span>
+                            </div>
+                            <span class="cn-title">System Design</span>
+                        </div>
+
+                        <!-- COURSE NODE: ME 300+ E1 -->
+                        <div class="course-node"
+                             id="cn-me300-e1"
+                             data-code="ME 300+"
+                             data-credits="3"
+                             data-title="ME Elective"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">ME 300+</span>
+                                <span class="cn-credits">(3)</span>
+                            </div>
+                            <span class="cn-title">Elective</span>
+                        </div>
+
+                        <!-- COURSE NODE: ME 300+ E2 -->
+                        <div class="course-node"
+                             id="cn-me300-e2"
+                             data-code="ME 300+"
+                             data-credits="3"
+                             data-title="ME Elective"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">ME 300+</span>
+                                <span class="cn-credits">(3)</span>
+                            </div>
+                            <span class="cn-title">Elective</span>
+                        </div>
+
+                        <!-- COURSE NODE: ME 410 -->
+                        <div class="course-node core"
+                             id="cn-me410"
+                             data-code="ME 410"
+                             data-credits="3"
+                             data-title="Intro. Systems Controls"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">ME 410</span>
+                                <span class="cn-credits">(3)</span>
+                            </div>
+                            <span class="cn-title">Intro. Systems Controls</span>
+                        </div>
+
+                    </div><!-- /semester fall y4 -->
+
+                    <!-- Year 4 — Spring (14 credits) -->
+                    <div class="semester">
+                        <div class="sem-label">Spring &nbsp;— 14 cr</div>
+
+                        <!-- COURSE NODE: MATH-SCI ELEC -->
+                        <div class="course-node"
+                             id="cn-mathsci-elec"
+                             data-code="Math/Sci"
+                             data-credits="3"
+                             data-title="Math/Science Elective"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">Math/Sci</span>
+                                <span class="cn-credits">(3)</span>
+                            </div>
+                            <span class="cn-title">Math/Sci Elective</span>
+                        </div>
+
+                        <!-- COURSE NODE: ME 300+ E3 -->
+                        <div class="course-node"
+                             id="cn-me300-e3"
+                             data-code="ME 300+"
+                             data-credits="3"
+                             data-title="ME Elective"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">ME 300+</span>
+                                <span class="cn-credits">(3)</span>
+                            </div>
+                            <span class="cn-title">Elective</span>
+                        </div>
+
+                        <!-- COURSE NODE: ME 452 -->
+                        <div class="course-node core"
+                             id="cn-me452"
+                             data-code="ME 452"
+                             data-credits="4"
+                             data-title="Design Synthesis"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">ME 452</span>
+                                <span class="cn-credits">(4)</span>
+                            </div>
+                            <span class="cn-title">Design Synthesis</span>
+                        </div>
+
+                        <!-- COURSE NODE: ME-REST1 -->
+                        <div class="course-node core"
+                             id="cn-me-rest1"
+                             data-code="ME xxx"
+                             data-credits="3"
+                             data-title="Restricted Elective"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">ME xxx</span>
+                                <span class="cn-credits">(3)</span>
+                            </div>
+                            <span class="cn-title">Restricted Elective</span>
+                        </div>
+
+                        <!-- COURSE NODE: ME-REST2 -->
+                        <div class="course-node core"
+                             id="cn-me-rest2"
+                             data-code="ME xxx Lab"
+                             data-credits="1"
+                             data-title="Restricted Elective Lab"
+                             data-description="[Course description coming soon]"
+                             role="button" tabindex="0">
+                            <div class="cn-top">
+                                <span class="cn-code">ME xxx Lab</span>
+                                <span class="cn-credits">(1)</span>
+                            </div>
+                            <span class="cn-title">Restricted Elective Lab</span>
+                        </div>
+
+                    </div><!-- /semester spring y4 -->
+                </div><!-- /semesters y4 -->
+            </div><!-- /year-col 4 -->
+
+        </div><!-- /skill-tree -->
+    </div><!-- /skill-tree-wrapper -->
+
+    <!-- ===== LEGEND ===== -->
+    <div class="tree-legend">
+        <span class="legend-label">Legend:</span>
+
+        <div class="legend-item">
+            <div class="legend-line"></div>
+            <span class="legend-item-label">Prerequisite</span>
+        </div>
+
+        <div class="legend-item">
+            <div class="legend-line dashed"></div>
+            <span class="legend-item-label">Corequisite</span>
+        </div>
+
+        <div class="legend-item">
+            <div class="legend-swatch core"></div>
+            <span class="legend-item-label">Core / Technical</span>
+        </div>
+
+        <div class="legend-item">
+            <div class="legend-swatch"></div>
+            <span class="legend-item-label">GE / Elective</span>
+        </div>
+
+        <div class="legend-item">
+            <div class="legend-swatch" style="border-style:dashed; border-color:rgba(255,255,227,0.2);"></div>
+            <span class="legend-item-label">Entry point</span>
+        </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="footer-inner">
+            <div>
+                <p class="footer-name">Aidan Green</p>
+                <p class="footer-degree">M.S. Mechanical Engineering &nbsp;&middot;&nbsp; University of Nevada, Reno</p>
+            </div>
+            <div class="footer-right">
+                <div class="footer-links">
+                    <!-- [PLACEHOLDER] Replace href values with your actual email and LinkedIn -->
+                    <a href="mailto:[YOUR_EMAIL@unr.edu]">Email</a>
+                    <a href="[YOUR_LINKEDIN_URL]" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a href="portfolio.html">Portfolio</a>
+                    <a href="#">Resume</a>
+                </div>
+                <p class="footer-copy">&copy; 2025 Aidan Green. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== MODAL ===== -->
+    <div class="modal-overlay" id="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true">
+        <div class="modal" id="modal">
+            <button class="modal-close" id="modal-close" aria-label="Close">&times;</button>
+            <div class="modal-eyebrow">
+                <span class="modal-code" id="modal-code"></span>
+                <span class="modal-credits-label" id="modal-credits"></span>
+            </div>
+            <h2 class="modal-title" id="modal-title"></h2>
+            <p class="modal-desc" id="modal-desc"></p>
+        </div>
+    </div>
+
+    <!-- ===== JS ===== -->
+    <script>
+        /* ---- mobile nav toggle ---- */
+        const hamburger = document.getElementById('hamburger');
+        const navLinks  = document.getElementById('nav-links');
+
+        hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+        navLinks.querySelectorAll('a').forEach(a => {
+            a.addEventListener('click', () => navLinks.classList.remove('open'));
+        });
+
+        /* ---- nav shadow on scroll ---- */
+        const mainNav = document.getElementById('main-nav');
+        window.addEventListener('scroll', () => {
+            mainNav.style.boxShadow = window.scrollY > 20
+                ? '0 2px 24px rgba(26,26,15,0.09)'
+                : 'none';
+        }, { passive: true });
+
+        /* ============================================================
+           MODAL
+           ============================================================ */
+        const overlay    = document.getElementById('modal-overlay');
+        const modalClose = document.getElementById('modal-close');
+        let   activeNode = null;
+
+        function openModal(node) {
+            if (activeNode && activeNode !== node) {
+                activeNode.classList.remove('active');
+            }
+            activeNode = node;
+            node.classList.add('active');
+
+            const credits = node.dataset.credits;
+            document.getElementById('modal-code').textContent    = node.dataset.code;
+            document.getElementById('modal-credits').textContent =
+                credits && credits !== '—' ? credits + ' credit' + (credits === '1' ? '' : 's') : '';
+            document.getElementById('modal-title').textContent   = node.dataset.title;
+            document.getElementById('modal-desc').textContent    =
+                node.dataset.description || '[Course description coming soon]';
+
+            overlay.removeAttribute('aria-hidden');
+            overlay.classList.add('open');
+            modalClose.focus();
+        }
+
+        function closeModal() {
+            overlay.setAttribute('aria-hidden', 'true');
+            overlay.classList.remove('open');
+            if (activeNode) {
+                activeNode.classList.remove('active');
+                activeNode = null;
+            }
+        }
+
+        /* wire up all nodes */
+        document.querySelectorAll('.course-node').forEach(node => {
+            node.addEventListener('click', () => openModal(node));
+            node.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    openModal(node);
+                }
+            });
+        });
+
+        modalClose.addEventListener('click', closeModal);
+        overlay.addEventListener('click', e => {
+            if (e.target === overlay) closeModal();
+        });
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        /* ============================================================
+           PREREQUISITE CONNECTIONS  (SVG overlay)
+           ============================================================ */
+        /*
+         * type 'prereq' → solid amber line
+         * type 'coreq'  → dashed amber line
+         */
+        const connDefs = [
+            /* MATH chain */
+            { from: 'cn-math127',  to: 'cn-math181',  type: 'prereq' },
+            { from: 'cn-math181',  to: 'cn-math182',  type: 'prereq' },
+            { from: 'cn-math182',  to: 'cn-math283',  type: 'prereq' },
+            { from: 'cn-math283',  to: 'cn-math285',  type: 'prereq' },
+            /* PHYS chain */
+            { from: 'cn-math181',  to: 'cn-phys180',  type: 'prereq' },
+            { from: 'cn-phys180',  to: 'cn-phys180l', type: 'coreq'  },
+            { from: 'cn-phys180',  to: 'cn-phys181',  type: 'prereq' },
+            { from: 'cn-phys181',  to: 'cn-phys181l', type: 'coreq'  },
+            /* Statics / Dynamics chain */
+            { from: 'cn-math182',  to: 'cn-engr241',  type: 'prereq' },
+            { from: 'cn-phys180',  to: 'cn-engr241',  type: 'prereq' },
+            { from: 'cn-engr241',  to: 'cn-me242',    type: 'prereq' },
+            { from: 'cn-engr241',  to: 'cn-cee372',   type: 'prereq' },
+            /* Computational / numerical chain */
+            { from: 'cn-math283',  to: 'cn-me203',    type: 'prereq' },
+            { from: 'cn-me203',    to: 'cn-me303',    type: 'prereq' },
+            { from: 'cn-me203',    to: 'cn-me350',    type: 'prereq' },
+            /* Circuits */
+            { from: 'cn-phys181',  to: 'cn-ee220',    type: 'prereq' },
+            { from: 'cn-ee220',    to: 'cn-ee220l',   type: 'coreq'  },
+            /* Fluids / Thermo / Heat */
+            { from: 'cn-me242',    to: 'cn-me380',    type: 'prereq' },
+            { from: 'cn-math285',  to: 'cn-me311',    type: 'prereq' },
+            { from: 'cn-me380',    to: 'cn-me314',    type: 'prereq' },
+            { from: 'cn-me311',    to: 'cn-me314',    type: 'prereq' },
+            /* Design chain */
+            { from: 'cn-me350',    to: 'cn-me351',    type: 'prereq' },
+            { from: 'cn-cee372',   to: 'cn-me351',    type: 'prereq' },
+            /* Capstone chain */
+            { from: 'cn-me351',    to: 'cn-me451',    type: 'prereq' },
+            { from: 'cn-me314',    to: 'cn-me451',    type: 'prereq' },
+            { from: 'cn-me451',    to: 'cn-me452',    type: 'prereq' },
+            { from: 'cn-me322',    to: 'cn-me452',    type: 'coreq'  },
+        ];
+
+        function drawConnections() {
+            const svg     = document.getElementById('connections-svg');
+            const tree    = document.getElementById('skill-tree');
+            const wrapper = document.getElementById('tree-wrapper');
+            if (!svg || !tree) return;
+
+            const w = tree.scrollWidth;
+            const h = tree.scrollHeight;
+            svg.setAttribute('width',   w);
+            svg.setAttribute('height',  h);
+            svg.style.width  = w + 'px';
+            svg.style.height = h + 'px';
+            svg.innerHTML = '';
+
+            const treeRect = tree.getBoundingClientRect();
+
+            connDefs.forEach(({ from, to, type }) => {
+                const fromEl = document.getElementById(from);
+                const toEl   = document.getElementById(to);
+                if (!fromEl || !toEl) return;
+
+                const fr = fromEl.getBoundingClientRect();
+                const tr = toEl.getBoundingClientRect();
+
+                /*
+                 * Positions relative to tree top-left.
+                 * getBoundingClientRect is viewport-relative; subtracting
+                 * treeRect cancels the scroll offset automatically.
+                 */
+                const x1 = fr.right  - treeRect.left;
+                const y1 = fr.top    + fr.height / 2 - treeRect.top;
+                const x2 = tr.left   - treeRect.left;
+                const y2 = tr.top    + tr.height / 2 - treeRect.top;
+
+                /* cubic bezier: exit right, enter left */
+                const cx = (x1 + x2) / 2;
+                const d  = `M ${x1},${y1} C ${cx},${y1} ${cx},${y2} ${x2},${y2}`;
+
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', d);
+                path.setAttribute('fill', 'none');
+
+                if (type === 'prereq') {
+                    path.setAttribute('stroke',       'rgba(206,137,70,0.32)');
+                    path.setAttribute('stroke-width', '1.5');
+                } else {
+                    path.setAttribute('stroke',            'rgba(206,137,70,0.22)');
+                    path.setAttribute('stroke-width',      '1.5');
+                    path.setAttribute('stroke-dasharray',  '4,3');
+                }
+
+                svg.appendChild(path);
+            });
+        }
+
+        /* Draw after fonts + layout have settled */
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(drawConnections);
+        } else {
+            window.addEventListener('load', drawConnections);
+        }
+
+        window.addEventListener('resize', drawConnections, { passive: true });
+
+        /* Redraw when wrapper is scrolled (treeRect shifts) */
+        document.getElementById('tree-wrapper')
+            .addEventListener('scroll', drawConnections, { passive: true });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio — Aidan Green</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ===== NAV ===== -->
+    <nav id="main-nav">
+        <a href="index.html" class="nav-logo">Aidan Green</a>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="portfolio.html" class="nav-active">Portfolio</a></li>
+            <li><a href="resume.html">Resume</a></li>
+            <li><a href="skills.html">Skills</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- ===== PAGE HERO ===== -->
+    <header class="page-hero">
+        <span class="page-label">// Portfolio</span>
+        <h1 class="page-title">Selected<br>Work</h1>
+        <p class="page-subtitle">
+            Engineering projects across mechanical systems,
+            tribology, and autonomous vehicles.
+        </p>
+    </header>
+
+    <!-- ===== FILTER BAR ===== -->
+    <div class="filter-bar" role="navigation" aria-label="Filter projects by category">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="automotive">Automotive</button>
+        <button class="filter-btn" data-filter="aerospace">Aerospace</button>
+        <button class="filter-btn" data-filter="other">Other</button>
+        <button class="filter-btn" data-filter="education">Education</button>
+    </div>
+
+    <!-- ===== PROJECT SECTIONS ===== -->
+    <main>
+
+        <!-- ════════════════════════════════════════════════════════
+             SECTION: AUTOMOTIVE
+             ════════════════════════════════════════════════════════ -->
+        <section class="project-section" data-section="automotive">
+
+            <!-- Section divider header -->
+            <div class="section-divider-header">
+                <div class="section-divider-left">
+                    <span class="section-code">// Automotive</span>
+                    <!-- Update count when adding/removing cards -->
+                    <h2 class="section-name">
+                        Automotive &nbsp;<span class="section-count">— 02 Projects</span>
+                    </h2>
+                </div>
+                <p class="section-desc-text">
+                    Projects in vehicle dynamics, tribology,
+                    and mechanical systems.
+                </p>
+            </div>
+
+            <!-- Card grid -->
+            <div class="project-grid">
+
+                <!-- PROJECT: [PLACEHOLDER] -->
+                <div class="project-card" data-category="automotive">
+                    <div class="card-top">
+                        <!-- [PLACEHOLDER] Update number once defined -->
+                        <span class="project-number">01</span>
+                        <div class="project-arrow">&#8599;</div>
+                    </div>
+                    <!-- [PLACEHOLDER] Fill in year and subcategory -->
+                    <p class="project-meta">[YEAR] &nbsp;&middot;&nbsp; [Subcategory]</p>
+                    <!-- [PLACEHOLDER] Fill in project title -->
+                    <h3 class="project-title">[Automotive Project Title]</h3>
+                    <!-- [PLACEHOLDER] Fill in project description -->
+                    <p class="project-desc">
+                        [Project description. Describe the problem, approach, tools used,
+                        and key outcomes. Replace this entire paragraph with your content.]
+                    </p>
+                    <div class="project-tags">
+                        <!-- [PLACEHOLDER] Add relevant tags -->
+                        <span class="tag">[Tag 1]</span>
+                        <span class="tag">[Tag 2]</span>
+                        <span class="tag">[Tag 3]</span>
+                    </div>
+                </div>
+
+                <!-- PROJECT: [PLACEHOLDER] -->
+                <div class="project-card" data-category="automotive">
+                    <div class="card-top">
+                        <!-- [PLACEHOLDER] Update number once defined -->
+                        <span class="project-number">02</span>
+                        <div class="project-arrow">&#8599;</div>
+                    </div>
+                    <!-- [PLACEHOLDER] Fill in year and subcategory -->
+                    <p class="project-meta">[YEAR] &nbsp;&middot;&nbsp; [Subcategory]</p>
+                    <!-- [PLACEHOLDER] Fill in project title -->
+                    <h3 class="project-title">[Automotive Project Title]</h3>
+                    <!-- [PLACEHOLDER] Fill in project description -->
+                    <p class="project-desc">
+                        [Project description. Describe the problem, approach, tools used,
+                        and key outcomes. Replace this entire paragraph with your content.]
+                    </p>
+                    <div class="project-tags">
+                        <!-- [PLACEHOLDER] Add relevant tags -->
+                        <span class="tag">[Tag 1]</span>
+                        <span class="tag">[Tag 2]</span>
+                    </div>
+                </div>
+
+            </div>
+            <!--
+            =============================================
+            TO ADD A NEW AUTOMOTIVE PROJECT:
+            1. Copy a .project-card block above
+            2. Set data-category="automotive"
+            3. Fill in title, description, tags, and link
+            4. Update "02 Projects" count in the section header above
+            =============================================
+            -->
+
+        </section>
+
+        <!-- ════════════════════════════════════════════════════════
+             SECTION: AEROSPACE
+             ════════════════════════════════════════════════════════ -->
+        <section class="project-section" data-section="aerospace">
+
+            <!-- Section divider header -->
+            <div class="section-divider-header">
+                <div class="section-divider-left">
+                    <span class="section-code">// Aerospace</span>
+                    <!-- Update count when adding/removing cards -->
+                    <h2 class="section-name">
+                        Aerospace &nbsp;<span class="section-count">— 02 Projects</span>
+                    </h2>
+                </div>
+                <p class="section-desc-text">
+                    Work in autonomous aerial systems
+                    and computational fluid dynamics.
+                </p>
+            </div>
+
+            <!-- Card grid -->
+            <div class="project-grid">
+
+                <!-- PROJECT: Avalanche SAR Drone -->
+                <div class="project-card" data-category="aerospace">
+                    <div class="card-top">
+                        <span class="project-number">01 &mdash; 2024</span>
+                        <div class="project-arrow">&#8599;</div>
+                    </div>
+                    <p class="project-meta">2024 &nbsp;&middot;&nbsp; Autonomous Systems</p>
+                    <h3 class="project-title">Avalanche Search &amp; Rescue Drone</h3>
+                    <p class="project-desc">
+                        Multi-rotor autonomous drone for locating avalanche burial victims using a 457&nbsp;kHz
+                        beacon transceiver. Implements lawnmower grid search, gradient ascent signal following,
+                        and 4-point bracketing via MAVSDK-Python on PX4 + Raspberry Pi 4.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">PX4</span>
+                        <span class="tag">MAVSDK-Python</span>
+                        <span class="tag">Raspberry Pi</span>
+                        <span class="tag">Autonomous Systems</span>
+                        <span class="tag">Python</span>
+                    </div>
+                </div>
+
+                <!-- PROJECT: [PLACEHOLDER] -->
+                <div class="project-card" data-category="aerospace">
+                    <div class="card-top">
+                        <!-- [PLACEHOLDER] Update number once defined -->
+                        <span class="project-number">02</span>
+                        <div class="project-arrow">&#8599;</div>
+                    </div>
+                    <!-- [PLACEHOLDER] Fill in year and subcategory -->
+                    <p class="project-meta">[YEAR] &nbsp;&middot;&nbsp; [Subcategory]</p>
+                    <!-- [PLACEHOLDER] Fill in project title -->
+                    <h3 class="project-title">[Aerospace Project Title]</h3>
+                    <!-- [PLACEHOLDER] Fill in project description -->
+                    <p class="project-desc">
+                        [Project description. Describe the problem, approach, tools used,
+                        and key outcomes. Replace this entire paragraph with your content.]
+                    </p>
+                    <div class="project-tags">
+                        <!-- [PLACEHOLDER] Add relevant tags -->
+                        <span class="tag">[Tag 1]</span>
+                        <span class="tag">[Tag 2]</span>
+                    </div>
+                </div>
+
+            </div>
+            <!--
+            =============================================
+            TO ADD A NEW AEROSPACE PROJECT:
+            1. Copy a .project-card block above
+            2. Set data-category="aerospace"
+            3. Fill in title, description, tags, and link
+            4. Update "02 Projects" count in the section header above
+            =============================================
+            -->
+
+        </section>
+
+        <!-- ════════════════════════════════════════════════════════
+             SECTION: OTHER
+             ════════════════════════════════════════════════════════ -->
+        <section class="project-section" data-section="other">
+
+            <!-- Section divider header -->
+            <div class="section-divider-header">
+                <div class="section-divider-left">
+                    <span class="section-code">// Other</span>
+                    <!-- Update count when adding/removing cards -->
+                    <h2 class="section-name">
+                        Other &nbsp;<span class="section-count">— 02 Projects</span>
+                    </h2>
+                </div>
+                <p class="section-desc-text">
+                    Research, publications, and computational work.
+                </p>
+            </div>
+
+            <!-- Card grid -->
+            <div class="project-grid">
+
+                <!-- PROJECT: 2D PDE Solver -->
+                <div class="project-card" data-category="other">
+                    <div class="card-top">
+                        <span class="project-number">01 &mdash; 2024</span>
+                        <div class="project-arrow">&#8599;</div>
+                    </div>
+                    <p class="project-meta">2024 &nbsp;&middot;&nbsp; Computational Methods</p>
+                    <h3 class="project-title">2D PDE Solver &mdash; Transient Heat Equation</h3>
+                    <p class="project-desc">
+                        Sparse Laplacian matrix solver with mixed Dirichlet/Neumann boundary conditions.
+                        Crank-Nicolson time stepping implemented in MATLAB.
+                        Full LaTeX report writeup in Overleaf.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">MATLAB</span>
+                        <span class="tag">Numerical Methods</span>
+                        <span class="tag">LaTeX</span>
+                        <span class="tag">Heat Transfer</span>
+                    </div>
+                </div>
+
+                <!-- PROJECT: Fibers Journal Publication -->
+                <div class="project-card dark" data-category="other">
+                    <div class="card-top">
+                        <span class="project-number">02 &mdash; 2024</span>
+                        <div class="project-arrow">&#8599;</div>
+                    </div>
+                    <p class="project-meta">2024 &nbsp;&middot;&nbsp; Research &nbsp;&middot;&nbsp; Publication</p>
+                    <!-- [PLACEHOLDER] Replace with actual paper title once known -->
+                    <h3 class="project-title">Co-authored Publication &mdash; Fibers Journal</h3>
+                    <p class="project-desc">
+                        <!-- [PLACEHOLDER] Add paper title, DOI, and one sentence on key findings -->
+                        [Paper title and one-sentence summary of findings — to be filled in.]
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Tribology</span>
+                        <span class="tag">Materials Science</span>
+                        <span class="tag">Research</span>
+                        <span class="tag">Publication</span>
+                    </div>
+                </div>
+
+            </div>
+            <!--
+            =============================================
+            TO ADD A NEW OTHER PROJECT:
+            1. Copy a .project-card block above
+            2. Set data-category="other"
+            3. Fill in title, description, tags, and link
+            4. Update "02 Projects" count in the section header above
+            =============================================
+            -->
+
+        </section>
+
+        <!-- ════════════════════════════════════════════════════════
+             SECTION: EDUCATION
+             ════════════════════════════════════════════════════════ -->
+        <section class="project-section" data-section="education">
+
+            <!-- Section divider header -->
+            <div class="section-divider-header">
+                <div class="section-divider-left">
+                    <span class="section-code">// Education</span>
+                    <h2 class="section-name">
+                        Academic Curriculum <span class="section-count">— 4 Years</span>
+                    </h2>
+                </div>
+                <p class="section-desc-text">
+                    Four-year Mechanical Engineering program at the
+                    University of Nevada, Reno.
+                </p>
+            </div>
+
+            <!-- Full-width dark card linking to education.html -->
+            <div class="edu-overview-card">
+                <div class="edu-card-body">
+                    <span class="edu-card-eyebrow">Interactive Map &nbsp;&middot;&nbsp; 126 Credits</span>
+                    <h3 class="edu-card-title">UNR Mechanical Engineering<br>B.S. Curriculum</h3>
+                    <p class="edu-card-sub">University of Nevada, Reno &nbsp;&middot;&nbsp; 2021&ndash;2022 Catalog</p>
+                    <p class="edu-card-desc">
+                        Interactive prerequisite map of the full four-year ME program.
+                        Click any course to view curriculum details.
+                    </p>
+                </div>
+                <div class="edu-card-action">
+                    <a href="education.html" class="btn btn-accent">Explore Skill Tree &rarr;</a>
+                </div>
+            </div>
+
+            <!--
+            =============================================
+            TO ADD A NEW EDUCATION PROJECT:
+            1. Copy a .project-card block from another section
+            2. Set data-category="education"
+            3. Fill in title, description, tags, and link
+            4. Update the section project count in the header
+            =============================================
+            -->
+
+        </section>
+
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="footer-inner">
+            <div>
+                <p class="footer-name">Aidan Green</p>
+                <p class="footer-degree">M.S. Mechanical Engineering &nbsp;&middot;&nbsp; University of Nevada, Reno</p>
+            </div>
+            <div class="footer-right">
+                <div class="footer-links">
+                    <!-- [PLACEHOLDER] Replace href values with your actual email and LinkedIn -->
+                    <a href="mailto:[YOUR_EMAIL@unr.edu]">Email</a>
+                    <a href="[YOUR_LINKEDIN_URL]" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a href="portfolio.html">Portfolio</a>
+                    <a href="#">Resume</a>
+                </div>
+                <p class="footer-copy">&copy; 2025 Aidan Green. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== JS ===== -->
+    <script>
+        /* ---- mobile nav toggle ---- */
+        const hamburger = document.getElementById('hamburger');
+        const navLinks  = document.getElementById('nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+        });
+
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => navLinks.classList.remove('open'));
+        });
+
+        /* ---- nav shadow on scroll ---- */
+        const mainNav = document.getElementById('main-nav');
+        window.addEventListener('scroll', () => {
+            mainNav.style.boxShadow = window.scrollY > 20
+                ? '0 2px 24px rgba(26,26,15,0.09)'
+                : 'none';
+        }, { passive: true });
+
+        /* ---- filter bar ---- */
+        const filterBtns      = document.querySelectorAll('.filter-btn');
+        const projectSections = document.querySelectorAll('.project-section');
+
+        function setFilter(filter) {
+            /* update button active state */
+            filterBtns.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.filter === filter);
+            });
+
+            projectSections.forEach(section => {
+                const match = filter === 'all' || section.dataset.section === filter;
+
+                if (match) {
+                    /* reveal: remove display:none then fade in */
+                    section.style.display = '';
+                    /* force a reflow so the transition fires */
+                    void section.offsetHeight;
+                    section.style.opacity = '1';
+                    section.style.pointerEvents = '';
+                } else {
+                    /* fade out then collapse */
+                    section.style.opacity = '0';
+                    section.style.pointerEvents = 'none';
+                    section.addEventListener('transitionend', function once() {
+                        /* only hide if still supposed to be hidden */
+                        if (section.style.opacity === '0') {
+                            section.style.display = 'none';
+                        }
+                        section.removeEventListener('transitionend', once);
+                    }, { once: true });
+                }
+            });
+        }
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => setFilter(btn.dataset.filter));
+        });
+
+        /* initialise — all sections visible */
+        setFilter('all');
+    </script>
+
+</body>
+</html>

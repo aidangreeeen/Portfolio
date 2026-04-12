@@ -5,9 +5,8 @@
 
 /* ── FONTS ───────────────────────────────────────────────────── */
 @font-face {
-    font-family: 'RedJola';
-    src: url('fonts/Redjola.ttf') format('truetype'),
-         url('fonts/Redjola.otf') format('opentype');
+    font-family: 'Lobo-Tommy';
+    src: url('fonts/Lobo-Tommy-Expanded/lobotommy.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -20,7 +19,7 @@
     --accent: #CE8946;
     --gray: #888878;
     --light-border: rgba(26, 26, 15, 0.12);
-    --font-display: 'RedJola', 'Oswald', sans-serif;
+    --font-display: 'Lobo-Tommy', 'Oswald', sans-serif;
     --dark-border: rgba(255, 255, 227, 0.08);
 }
 

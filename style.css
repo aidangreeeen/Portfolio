@@ -538,6 +538,7 @@ nav {
     grid-template-columns: 1fr 1fr;
     gap: 5rem;
     margin-top: 3rem;
+    align-items: stretch;
 }
 
 /* bio */
@@ -578,6 +579,22 @@ nav {
     background: rgba(255,255,227,0.04);
     border: 1px solid rgba(255,255,227,0.1);
     color: rgba(255,255,227,0.58);
+}
+
+/* about photo */
+.about-photo-wrap {
+    position: relative;
+    min-height: 400px;
+}
+
+.about-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-left: 3px solid #CE8946;
+    display: block;
+    position: absolute;
+    inset: 0;
 }
 
 /* meta table */
@@ -1123,6 +1140,15 @@ footer {
     .about-grid {
         grid-template-columns: 1fr;
         gap: 3rem;
+    }
+
+    .about-photo-wrap {
+        min-height: 300px;
+    }
+
+    .about-photo {
+        position: static;
+        height: 300px;
     }
 
     #contact { padding: 4rem 1.5rem; }

@@ -11,6 +11,7 @@
     <!-- Three.js -->
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <!--
     ================================================
@@ -846,8 +847,8 @@
         ================================================
         SANDRAIL CONTROL ARM — 3D VIEWERS
         Two independent Three.js renderer instances.
-        Model files: Models/sandrail-scan.glb
-                     Models/sandrail-arm.glb
+        Model files: Models/sandrail-scan.obj  (left viewer — OBJLoader)
+                     Models/sandrail-arm.glb   (right viewer — GLTFLoader)
         To adjust camera distance: edit camera.position in initModelViewer
         To adjust materials: edit metalness/roughness values in traverse
         ================================================
@@ -982,7 +983,112 @@
             animate();
         }
 
-        initModelViewer('scan-viewer', './Models/sandrail-scan.glb');
+        /* ---- OBJ viewer for left (scan) model ---- */
+        (function () {
+            var container = document.getElementById('scan-viewer');
+            if (!container) return;
+
+            var loadingEl = container.querySelector('.model-loading');
+
+            var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.toneMapping = THREE.NoToneMapping;
+            renderer.toneMappingExposure = 1.0;
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            renderer.setClearColor(0x000000, 0);
+            container.appendChild(renderer.domElement);
+
+            var scene = new THREE.Scene();
+            scene.background = null;
+            scene.environment = null;
+
+            var camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+            camera.position.set(0, 0, 5);
+
+            var controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.autoRotate      = true;
+            controls.autoRotateSpeed = 1.2;
+            controls.enableDamping   = true;
+            controls.dampingFactor   = 0.05;
+            controls.enableZoom      = false;
+            controls.enablePan       = false;
+            controls.target.set(0, 0, 0);
+            controls.update();
+
+            var rotateTimer;
+            controls.addEventListener('start', function () {
+                controls.autoRotate = false;
+                clearTimeout(rotateTimer);
+            });
+            controls.addEventListener('end', function () {
+                rotateTimer = setTimeout(function () { controls.autoRotate = true; }, 3000);
+            });
+
+            scene.add(new THREE.AmbientLight(0xFFFFE3, 0.4));
+            var keyLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            keyLight.position.set(5, 8, 5);
+            scene.add(keyLight);
+            var fillLight = new THREE.DirectionalLight(0xCE8946, 0.3);
+            fillLight.position.set(-4, 2, -4);
+            scene.add(fillLight);
+            var rimLight = new THREE.DirectionalLight(0x333333, 0.4);
+            rimLight.position.set(-2, -4, -2);
+            scene.add(rimLight);
+
+            var objLoader = new THREE.OBJLoader();
+            objLoader.load(
+                'Models/sandrail-scan.obj',
+                function (object) {
+                    var box    = new THREE.Box3().setFromObject(object);
+                    var center = box.getCenter(new THREE.Vector3());
+                    var size   = box.getSize(new THREE.Vector3());
+                    var maxDim = Math.max(size.x, size.y, size.z);
+                    var scale  = 3.0 / maxDim;
+                    object.scale.setScalar(scale);
+                    object.position.sub(center.multiplyScalar(scale));
+
+                    object.traverse(function (child) {
+                        if (child.isMesh) {
+                            child.material = new THREE.MeshStandardMaterial({
+                                color:     0xAAAAAA,
+                                metalness: 0.7,
+                                roughness: 0.35
+                            });
+                        }
+                    });
+
+                    scene.add(object);
+
+                    camera.position.set(0, 0, 5);
+                    camera.lookAt(0, 0, 0);
+                    controls.target.set(0, 0, 0);
+                    controls.update();
+
+                    if (loadingEl) loadingEl.remove();
+                },
+                function (progress) { console.log('OBJ loading:', progress); },
+                function (error)    { console.error('OBJ load error:', error); if (loadingEl) loadingEl.textContent = 'MODEL UNAVAILABLE'; }
+            );
+
+            function resize() {
+                var w = container.clientWidth;
+                var h = container.clientHeight;
+                if (!w || !h) return;
+                camera.aspect = w / h;
+                camera.updateProjectionMatrix();
+                renderer.setSize(w, h);
+            }
+            window.addEventListener('resize', resize, { passive: true });
+            resize();
+
+            function animate() {
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene, camera);
+            }
+            animate();
+        }());
+
         initModelViewer('arm-viewer',  './Models/sandrail-arm.glb');
     </script>
 

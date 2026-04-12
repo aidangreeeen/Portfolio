@@ -148,15 +148,75 @@ nav {
     margin-bottom: 1.75rem;
 }
 
-.hero-tagline {
-    font-size: 0.88rem;
-    font-weight: 300;
-    line-height: 1.75;
-    color: rgba(255, 255, 227, 0.62);
-    max-width: 400px;
+/* ── VHS CYCLER ─────────────────────────────────────────────── */
+#vhs-cycler {
+    min-height: 2.2rem;
     margin-bottom: 2.5rem;
-    border-left: 2px solid var(--accent);
-    padding-left: 1rem;
+}
+
+#vhs-text {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    position: relative;
+    white-space: nowrap;
+    text-shadow: -2px 0 rgba(255,0,0,0.35), 2px 0 rgba(0,255,255,0.35);
+}
+
+#vhs-text::before {
+    content: '';
+    position: absolute;
+    inset: -2px -6px;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px, transparent 2px,
+        rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px
+    );
+    opacity: 0;
+}
+
+#vhs-text.vhs-in  { animation: vhsIn  0.4s linear forwards; }
+#vhs-text.vhs-out { animation: vhsOut 0.4s linear forwards; }
+
+#vhs-text.vhs-in::before,
+#vhs-text.vhs-out::before { animation: scanlines 0.1s steps(3, end) infinite; }
+
+@keyframes scanlines {
+    0%   { opacity: 0.7; }
+    33%  { opacity: 0.2; }
+    66%  { opacity: 0.9; }
+    100% { opacity: 0.4; }
+}
+
+@keyframes vhsIn {
+    0%   { opacity: 0;    transform: translateX(-14px) skewX(-5deg);  text-shadow: -8px 0 rgba(255,0,0,0.9),  8px 0 rgba(0,255,255,0.9); }
+    10%  { opacity: 0.8;  transform: translateX(6px) skewX(4deg);     text-shadow:  6px 0 rgba(255,0,0,0.7), -6px 0 rgba(0,255,255,0.7); }
+    18%  { opacity: 0.1;  transform: translateX(-8px) skewX(-6deg);   text-shadow:-10px 0 rgba(255,0,0,0.9), 10px 0 rgba(0,255,255,0.9); }
+    26%  { opacity: 0.85; transform: translateX(5px) skewX(3deg);     text-shadow:  4px 0 rgba(255,0,0,0.6), -4px 0 rgba(0,255,255,0.6); }
+    34%  { opacity: 0.2;  transform: translateX(-4px) skewX(-4deg);   text-shadow: -7px 0 rgba(255,0,0,0.8),  7px 0 rgba(0,255,255,0.8); }
+    44%  { opacity: 0.9;  transform: translateX(3px) skewX(2deg);     text-shadow:  3px 0 rgba(255,0,0,0.5), -3px 0 rgba(0,255,255,0.5); }
+    55%  { opacity: 0.4;  transform: translateX(-2px) skewX(-2deg);   text-shadow: -4px 0 rgba(255,0,0,0.6),  4px 0 rgba(0,255,255,0.6); }
+    66%  { opacity: 0.95; transform: translateX(2px) skewX(1deg);     text-shadow:  2px 0 rgba(255,0,0,0.35),-2px 0 rgba(0,255,255,0.35); }
+    78%  { opacity: 0.7;  transform: translateX(-1px) skewX(-0.5deg); text-shadow: -3px 0 rgba(255,0,0,0.5),  3px 0 rgba(0,255,255,0.5); }
+    90%  { opacity: 1;    transform: translateX(0.5px) skewX(0.5deg); text-shadow: -2px 0 rgba(255,0,0,0.4),  2px 0 rgba(0,255,255,0.4); }
+    100% { opacity: 1;    transform: translateX(0) skewX(0deg);       text-shadow: -3px 0 rgba(255,0,0,0.6),  3px 0 rgba(0,255,255,0.6); }
+}
+
+@keyframes vhsOut {
+    0%   { opacity: 1;    transform: translateX(0) skewX(0deg);       text-shadow: -3px 0 rgba(255,0,0,0.6),   3px 0 rgba(0,255,255,0.6); }
+    12%  { opacity: 0.3;  transform: translateX(8px) skewX(5deg);     text-shadow:  9px 0 rgba(255,0,0,0.8),  -9px 0 rgba(0,255,255,0.8); }
+    22%  { opacity: 0.8;  transform: translateX(-5px) skewX(-3deg);   text-shadow: -5px 0 rgba(255,0,0,0.7),   5px 0 rgba(0,255,255,0.7); }
+    35%  { opacity: 0.15; transform: translateX(10px) skewX(6deg);    text-shadow: 12px 0 rgba(255,0,0,0.9), -12px 0 rgba(0,255,255,0.9); }
+    48%  { opacity: 0.7;  transform: translateX(-3px) skewX(-2deg);   text-shadow: -4px 0 rgba(255,0,0,0.6),   4px 0 rgba(0,255,255,0.6); }
+    60%  { opacity: 0.2;  transform: translateX(6px) skewX(4deg);     text-shadow:  8px 0 rgba(255,0,0,0.8),  -8px 0 rgba(0,255,255,0.8); }
+    75%  { opacity: 0.5;  transform: translateX(-2px) skewX(-1deg);   text-shadow: -2px 0 rgba(255,0,0,0.5),   2px 0 rgba(0,255,255,0.5); }
+    88%  { opacity: 0.1;  transform: translateX(4px) skewX(2deg);     text-shadow:  6px 0 rgba(255,0,0,0.7),  -6px 0 rgba(0,255,255,0.7); }
+    100% { opacity: 0;    transform: translateX(-8px) skewX(-3deg);   text-shadow: -8px 0 rgba(255,0,0,0.9),   8px 0 rgba(0,255,255,0.9); }
 }
 
 .hero-cta {

@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sandrail Control Arm — Aidan Green</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Three.js -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <!--
+    ================================================
+    SANDRAIL CONTROL ARM — PROJECT PAGE
+    To add content: search [PLACEHOLDER]
+    To update models: replace files in /Models/
+    To add gallery images: add <img> tags in .gallery-grid
+    and add src to the lightbox images array in JS
+    ================================================
+    -->
+    <style>
+        /* ── PROJECT PAGE — SANDRAIL CONTROL ARM ───────────────── */
+
+        /* Metadata row (lives inside dark .page-hero) */
+        .proj-meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            border-top: 1px solid rgba(255,255,227,0.1);
+            margin-top: 2.5rem;
+        }
+
+        .proj-meta-item {
+            display: flex;
+            flex-direction: column;
+            padding: 0.9rem 2.5rem 0.9rem 0;
+            margin-right: 2.5rem;
+            border-right: 1px solid rgba(255,255,227,0.08);
+        }
+
+        .proj-meta-item:last-child {
+            border-right: none;
+            margin-right: 0;
+        }
+
+        .proj-meta-key {
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: rgba(255,255,227,0.35);
+            margin-bottom: 0.3rem;
+        }
+
+        .proj-meta-val {
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--cream);
+        }
+
+        /* Section containers */
+        .proj-section {
+            padding: 5rem 4rem;
+        }
+
+        .proj-section.dark {
+            background-color: var(--dark);
+            color: var(--cream);
+        }
+
+        .proj-section-header {
+            margin-bottom: 3rem;
+        }
+
+        /* Section title color fix for dark sections */
+        .proj-section.dark .section-title {
+            color: var(--cream);
+        }
+
+        /* ── OVERVIEW ─────────────────────────────────────────── */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .overview-desc {
+            font-size: 0.95rem;
+            line-height: 1.88;
+            color: rgba(26,26,15,0.72);
+        }
+
+        .specs-card {
+            background-color: var(--dark);
+            color: var(--cream);
+            padding: 2rem;
+        }
+
+        .specs-card-title {
+            font-family: var(--font-display);
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: rgba(255,255,227,0.32);
+            margin-bottom: 1.25rem;
+        }
+
+        .specs-row {
+            display: flex;
+            gap: 1rem;
+            padding: 0.65rem 0;
+            border-bottom: 1px solid rgba(255,255,227,0.07);
+            align-items: baseline;
+        }
+
+        .specs-row:first-of-type {
+            border-top: 1px solid rgba(255,255,227,0.07);
+        }
+
+        .specs-key {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--accent);
+            min-width: 90px;
+            flex-shrink: 0;
+        }
+
+        .specs-val {
+            font-size: 0.82rem;
+            color: rgba(255,255,227,0.6);
+        }
+
+        /* ── 3D MODEL VIEWERS ─────────────────────────────────── */
+        .model-viewers {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .viewer-wrap {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .viewer-canvas {
+            height: 400px;
+            position: relative;
+            background-color: #09090a;
+            overflow: hidden;
+        }
+
+        .viewer-canvas canvas {
+            display: block;
+        }
+
+        .model-loading {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-size: 0.65rem;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: var(--accent);
+            pointer-events: none;
+        }
+
+        .viewer-label {
+            font-family: var(--font-display);
+            font-size: 0.65rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(255,255,227,0.4);
+            padding: 0.75rem 0;
+            border-top: 1px solid rgba(255,255,227,0.07);
+            text-align: center;
+        }
+
+        /* ── PROCESS TIMELINE ─────────────────────────────────── */
+        .timeline-steps {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            position: relative;
+            margin-top: 3rem;
+        }
+
+        .timeline-steps::before {
+            content: '';
+            position: absolute;
+            top: 19px;
+            left: calc(100% / 12);
+            right: calc(100% / 12);
+            height: 1px;
+            background: rgba(206,137,70,0.25);
+            z-index: 0;
+        }
+
+        .timeline-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 0 0.75rem;
+        }
+
+        .step-node {
+            width: 38px;
+            height: 38px;
+            background: var(--accent);
+            color: var(--dark);
+            font-family: var(--font-display);
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 1.1rem;
+        }
+
+        .step-title {
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .step-desc {
+            font-size: 0.74rem;
+            color: rgba(26,26,15,0.52);
+            line-height: 1.65;
+        }
+
+        /* ── GALLERY ──────────────────────────────────────────── */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.6rem;
+            margin-top: 3rem;
+        }
+
+        .gallery-item {
+            overflow: hidden;
+        }
+
+        .gallery-img {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            cursor: pointer;
+            display: block;
+            transition: transform 0.28s ease;
+        }
+
+        .gallery-img:hover {
+            transform: scale(1.03);
+        }
+
+        /* Lightbox */
+        .lightbox-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.92);
+            z-index: 2000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lb-img-wrap {
+            max-width: 90vw;
+            max-height: 80vh;
+        }
+
+        .lb-img-wrap img {
+            max-width: 90vw;
+            max-height: 80vh;
+            object-fit: contain;
+            display: block;
+        }
+
+        .lb-caption {
+            font-family: var(--font-display);
+            font-size: 0.62rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255,255,227,0.38);
+            margin-top: 1.25rem;
+            text-align: center;
+        }
+
+        .lb-close {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: none;
+            border: 1px solid rgba(255,255,227,0.2);
+            color: var(--cream);
+            font-size: 1.1rem;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            transition: border-color 0.2s;
+        }
+
+        .lb-close:hover { border-color: var(--accent); color: var(--accent); }
+
+        .lb-prev,
+        .lb-next {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: 1px solid rgba(255,255,227,0.18);
+            color: var(--cream);
+            font-size: 1rem;
+            width: 44px;
+            height: 44px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .lb-prev { left: 1.5rem; }
+        .lb-next { right: 1.5rem; }
+        .lb-prev:hover,
+        .lb-next:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* ── VIDEO ────────────────────────────────────────────── */
+        .video-wrap {
+            max-width: 900px;
+            margin: 3rem auto 0;
+        }
+
+        .video-wrap video {
+            width: 100%;
+            display: block;
+        }
+
+        /* ── SKILLS ───────────────────────────────────────────── */
+        .skills-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .skill-card {
+            background-color: var(--dark);
+            padding: 2rem;
+            color: var(--cream);
+        }
+
+        .skill-card-title {
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--accent);
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(255,255,227,0.09);
+        }
+
+        .skill-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .skill-item {
+            font-size: 0.82rem;
+            color: rgba(255,255,227,0.6);
+            padding: 0.45rem 0;
+            border-bottom: 1px solid rgba(255,255,227,0.05);
+        }
+
+        .skill-item:last-child { border-bottom: none; }
+
+        /* ── BOTTOM NAVIGATION ────────────────────────────────── */
+        .proj-nav {
+            background-color: var(--dark);
+            padding: 3rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            border-top: 1px solid rgba(255,255,227,0.06);
+        }
+
+        .proj-nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            padding: 1rem 1.75rem;
+            border: 1px solid rgba(255,255,227,0.18);
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .proj-nav-btn:hover {
+            border-color: var(--accent);
+        }
+
+        .proj-nav-btn:hover .proj-nav-title {
+            color: var(--accent);
+        }
+
+        .proj-nav-label {
+            display: block;
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: rgba(255,255,227,0.32);
+            margin-bottom: 0.3rem;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 300;
+        }
+
+        .proj-nav-title {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--cream);
+            transition: color 0.2s;
+        }
+
+        /* ── RESPONSIVE ───────────────────────────────────────── */
+        @media (max-width: 1023px) {
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 767px) {
+            .proj-section { padding: 3.5rem 1.5rem; }
+
+            .proj-meta-row { flex-wrap: wrap; }
+            .proj-meta-item {
+                padding: 0.7rem 1.5rem 0.7rem 0;
+                margin-right: 1.5rem;
+            }
+
+            .overview-grid {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+
+            .model-viewers { grid-template-columns: 1fr; }
+            .viewer-canvas { height: 280px; }
+
+            .timeline-steps {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .timeline-steps::before { display: none; }
+            .timeline-step {
+                flex-direction: row;
+                align-items: flex-start;
+                text-align: left;
+                gap: 1.25rem;
+            }
+            .step-node { margin-bottom: 0; }
+
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+
+            .skills-cards { grid-template-columns: 1fr; }
+
+            .proj-nav {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 2.5rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gallery-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAV ===== -->
+    <nav id="main-nav">
+        <a href="index.html" class="nav-logo">Aidan Green</a>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="portfolio.html" class="nav-active">Portfolio</a></li>
+            <li><a href="resume.html">Resume</a></li>
+            <li><a href="skills.html">Skills</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- ===== PAGE HEADER ===== -->
+    <header class="page-hero">
+        <span class="page-label">// Automotive &nbsp;&middot;&nbsp; 01</span>
+        <h1 class="page-title">Sandrail<br>Control Arm</h1>
+        <p class="page-subtitle">
+            3D scanning, reverse engineering, and fabrication
+            in 4130 Chromoly Steel
+        </p>
+        <div class="proj-meta-row">
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Year</span>
+                <span class="proj-meta-val">2024</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Category</span>
+                <span class="proj-meta-val">Automotive</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Material</span>
+                <span class="proj-meta-val">4130 Chromoly Steel</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Software</span>
+                <span class="proj-meta-val">SolidWorks</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Status</span>
+                <span class="proj-meta-val">Complete &nbsp;&middot;&nbsp; Installed</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== SECTION 1: OVERVIEW ===== -->
+    <section class="proj-section">
+        <div class="proj-section-header">
+            <span class="section-eyebrow">// Overview</span>
+        </div>
+        <div class="overview-grid">
+
+            <!-- Left: description -->
+            <div class="overview-desc">
+                <p>
+                    Reverse engineering project involving 3D scanning an original offroad vehicle
+                    control arm (four bar linkage) and redesigning it in 4130 Chromoly Steel for
+                    significantly improved durability. The original arm was scanned, measured, and
+                    used as a reference to build a new assembly from scratch in SolidWorks.
+                </p>
+            </div>
+
+            <!-- Right: specs card -->
+            <div class="specs-card">
+                <p class="specs-card-title">// Key Specifications</p>
+                <div class="specs-row">
+                    <span class="specs-key">Material</span>
+                    <span class="specs-val">4130 Chromoly Steel</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">Process</span>
+                    <span class="specs-val">3D Scan &rarr; CAD &rarr; Fabrication</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">Software</span>
+                    <span class="specs-val">SolidWorks</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">Type</span>
+                    <span class="specs-val">Four Bar Linkage</span>
+                </div>
+                <!-- [PLACEHOLDER — add more specs after fabrication data confirmed] -->
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===== SECTION 2: INTERACTIVE 3D MODELS ===== -->
+    <section class="proj-section dark">
+        <div class="proj-section-header">
+            <span class="section-eyebrow">// 3D Assets</span>
+            <h2 class="section-title">Interactive Models</h2>
+        </div>
+        <div class="model-viewers">
+
+            <!-- Left viewer: Original Scan -->
+            <div class="viewer-wrap">
+                <div class="viewer-canvas" id="scan-viewer">
+                    <div class="model-loading">Loading Model...</div>
+                </div>
+                <p class="viewer-label">Original &mdash; 3D Scan</p>
+            </div>
+
+            <!-- Right viewer: Redesigned Assembly -->
+            <div class="viewer-wrap">
+                <div class="viewer-canvas" id="arm-viewer">
+                    <div class="model-loading">Loading Model...</div>
+                </div>
+                <p class="viewer-label">Redesigned &mdash; SolidWorks Assembly</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===== SECTION 3: BUILD PROCESS ===== -->
+    <section class="proj-section">
+        <div class="proj-section-header">
+            <span class="section-eyebrow">// Process</span>
+            <h2 class="section-title">Build Process</h2>
+        </div>
+        <div class="timeline-steps">
+
+            <div class="timeline-step">
+                <div class="step-node">01</div>
+                <div>
+                    <h4 class="step-title">3D Scan</h4>
+                    <p class="step-desc">[PLACEHOLDER — description coming]</p>
+                </div>
+            </div>
+
+            <div class="timeline-step">
+                <div class="step-node">02</div>
+                <div>
+                    <h4 class="step-title">Reverse Engineering</h4>
+                    <p class="step-desc">[PLACEHOLDER — description coming]</p>
+                </div>
+            </div>
+
+            <div class="timeline-step">
+                <div class="step-node">03</div>
+                <div>
+                    <h4 class="step-title">SolidWorks Modeling</h4>
+                    <p class="step-desc">[PLACEHOLDER — description coming]</p>
+                </div>
+            </div>
+
+            <div class="timeline-step">
+                <div class="step-node">04</div>
+                <div>
+                    <h4 class="step-title">Material Selection</h4>
+                    <p class="step-desc">[PLACEHOLDER — description coming]</p>
+                </div>
+            </div>
+
+            <div class="timeline-step">
+                <div class="step-node">05</div>
+                <div>
+                    <h4 class="step-title">Fabrication</h4>
+                    <p class="step-desc">[PLACEHOLDER — description coming]</p>
+                </div>
+            </div>
+
+            <div class="timeline-step">
+                <div class="step-node">06</div>
+                <div>
+                    <h4 class="step-title">Install &amp; Test</h4>
+                    <p class="step-desc">[PLACEHOLDER — description coming]</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===== SECTION 4: GALLERY ===== -->
+    <section class="proj-section dark">
+        <div class="proj-section-header">
+            <span class="section-eyebrow">// Gallery</span>
+            <h2 class="section-title">Build Gallery</h2>
+        </div>
+        <div class="gallery-grid">
+
+            <div class="gallery-item">
+                <img src="Assets/Parts-1.jpg" alt="Parts 1" class="gallery-img" loading="lazy">
+            </div>
+            <div class="gallery-item">
+                <img src="Assets/Parts-2.jpg" alt="Parts 2" class="gallery-img" loading="lazy">
+            </div>
+            <div class="gallery-item">
+                <img src="Assets/Parts-3.jpg" alt="Parts 3" class="gallery-img" loading="lazy">
+            </div>
+            <div class="gallery-item">
+                <img src="Assets/Set-Up-1.jpg" alt="Set Up 1" class="gallery-img" loading="lazy">
+            </div>
+            <div class="gallery-item">
+                <img src="Assets/Set-Up-2.jpg" alt="Set Up 2" class="gallery-img" loading="lazy">
+            </div>
+            <div class="gallery-item">
+                <img src="Assets/Test-Fit-1.jpg" alt="Test Fit 1" class="gallery-img" loading="lazy">
+            </div>
+            <div class="gallery-item">
+                <img src="Assets/Test-Fit-2.jpg" alt="Test Fit 2" class="gallery-img" loading="lazy">
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===== SECTION 5: VIDEO ===== -->
+    <section class="proj-section dark" style="border-top: 1px solid rgba(255,255,227,0.05);">
+        <div class="proj-section-header">
+            <span class="section-eyebrow">// Video</span>
+            <h2 class="section-title">Build Process Video</h2>
+        </div>
+        <div class="video-wrap">
+            <video controls poster="Assets/Parts-1.jpg">
+                <source src="Assets/Movie.mp4" type="video/mp4">
+            </video>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 6: SKILLS ===== -->
+    <section class="proj-section">
+        <div class="proj-section-header">
+            <span class="section-eyebrow">// Skills</span>
+            <h2 class="section-title">Skills Demonstrated</h2>
+        </div>
+        <div class="skills-cards">
+
+            <!-- Card 1: Engineering -->
+            <div class="skill-card">
+                <h3 class="skill-card-title">Engineering</h3>
+                <div class="skill-list">
+                    <span class="skill-item">3D Scanning</span>
+                    <span class="skill-item">Reverse Engineering</span>
+                    <span class="skill-item">Four Bar Linkage Analysis</span>
+                    <span class="skill-item">Technical Measurement</span>
+                </div>
+            </div>
+
+            <!-- Card 2: CAD & Design -->
+            <div class="skill-card">
+                <h3 class="skill-card-title">CAD &amp; Design</h3>
+                <div class="skill-list">
+                    <span class="skill-item">SolidWorks Assembly</span>
+                    <span class="skill-item">Part Modeling</span>
+                    <span class="skill-item">Design for Fabrication</span>
+                    <span class="skill-item">[PLACEHOLDER]</span>
+                </div>
+            </div>
+
+            <!-- Card 3: Fabrication -->
+            <div class="skill-card">
+                <h3 class="skill-card-title">Fabrication</h3>
+                <div class="skill-list">
+                    <span class="skill-item">4130 Chromoly Steel</span>
+                    <span class="skill-item">[PLACEHOLDER &mdash; fabrication methods]</span>
+                    <span class="skill-item">Fitment &amp; Installation</span>
+                    <span class="skill-item">[PLACEHOLDER]</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===== BOTTOM NAVIGATION ===== -->
+    <nav class="proj-nav">
+        <a href="portfolio.html" class="proj-nav-btn">
+            <span>
+                <span class="proj-nav-label">Back</span>
+                <span class="proj-nav-title">&larr; Portfolio</span>
+            </span>
+        </a>
+        <a href="ball-joint-delete.html" class="proj-nav-btn">
+            <span>
+                <span class="proj-nav-label">Next Project</span>
+                <span class="proj-nav-title">Ball Joint Delete Kit &rarr;</span>
+            </span>
+        </a>
+    </nav>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="footer-inner">
+            <div>
+                <p class="footer-name">Aidan Green</p>
+                <p class="footer-degree">M.S. Aerospace Engineering &nbsp;&middot;&nbsp; University of Nevada, Reno</p>
+            </div>
+            <div class="footer-right">
+                <div class="footer-links">
+                    <a href="mailto:aidangreeeen@gmail.com">Email</a>
+                    <a href="https://www.linkedin.com/in/aidangreeeen/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a href="portfolio.html">Portfolio</a>
+                    <a href="#">Resume</a>
+                </div>
+                <p class="footer-copy">&copy; 2025 Aidan Green. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== LIGHTBOX ===== -->
+    <div id="lightbox" class="lightbox-overlay">
+        <button class="lb-close" id="lb-close">&times;</button>
+        <button class="lb-prev" id="lb-prev">&#8592;</button>
+        <button class="lb-next" id="lb-next">&#8594;</button>
+        <div class="lb-img-wrap">
+            <img id="lb-img" src="" alt="">
+        </div>
+        <p class="lb-caption" id="lb-caption"></p>
+    </div>
+
+    <!-- ===== JS ===== -->
+    <script>
+        /* ---- mobile nav toggle ---- */
+        var hamburger = document.getElementById('hamburger');
+        var navLinks  = document.getElementById('nav-links');
+
+        hamburger.addEventListener('click', function () {
+            navLinks.classList.toggle('open');
+        });
+
+        navLinks.querySelectorAll('a').forEach(function (link) {
+            link.addEventListener('click', function () {
+                navLinks.classList.remove('open');
+            });
+        });
+
+        /* ---- nav shadow on scroll ---- */
+        var mainNav = document.getElementById('main-nav');
+        window.addEventListener('scroll', function () {
+            mainNav.style.boxShadow = window.scrollY > 20
+                ? '0 2px 24px rgba(26,26,15,0.09)'
+                : 'none';
+        }, { passive: true });
+    </script>
+
+    <!-- ===== THREE.JS MODEL VIEWERS ===== -->
+    <script>
+        /*
+        ================================================
+        SANDRAIL CONTROL ARM — 3D VIEWERS
+        Two independent Three.js renderer instances.
+        Model files: Models/sandrail-scan.glb
+                     Models/sandrail-arm.glb
+        To adjust camera distance: edit camera.position in initModelViewer
+        To adjust materials: edit metalness/roughness values in traverse
+        ================================================
+        */
+        function initModelViewer(containerId, modelPath) {
+            var container = document.getElementById(containerId);
+            if (!container) return;
+
+            var loadingEl = container.querySelector('.model-loading');
+
+            /* ---- Renderer ---- */
+            var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.toneMapping = THREE.NoToneMapping;
+            renderer.toneMappingExposure = 1.0;
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            renderer.setClearColor(0x000000, 0);
+            container.appendChild(renderer.domElement);
+
+            /* ---- Scene ---- */
+            var scene = new THREE.Scene();
+            scene.background = null;
+            scene.environment = null;
+
+            /* ---- Camera ---- */
+            var camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+            camera.position.set(0, 0, 5);
+
+            /* ---- Controls ---- */
+            var controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.autoRotate      = true;
+            controls.autoRotateSpeed = 1.2;
+            controls.enableDamping   = true;
+            controls.dampingFactor   = 0.05;
+            controls.enableZoom      = false;
+            controls.enablePan       = false;
+            controls.target.set(0, 0, 0);
+            controls.update();
+
+            /* Resume autoRotate 3s after user stops dragging */
+            var rotateTimer;
+            controls.addEventListener('start', function () {
+                controls.autoRotate = false;
+                clearTimeout(rotateTimer);
+            });
+            controls.addEventListener('end', function () {
+                rotateTimer = setTimeout(function () {
+                    controls.autoRotate = true;
+                }, 3000);
+            });
+
+            /* ---- Lighting ---- */
+            scene.add(new THREE.AmbientLight(0xFFFFE3, 0.4));
+
+            var keyLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            keyLight.position.set(5, 8, 5);
+            scene.add(keyLight);
+
+            var fillLight = new THREE.DirectionalLight(0xCE8946, 0.3);
+            fillLight.position.set(-4, 2, -4);
+            scene.add(fillLight);
+
+            var rimLight = new THREE.DirectionalLight(0x333333, 0.4);
+            rimLight.position.set(-2, -4, -2);
+            scene.add(rimLight);
+
+            /* ---- Load GLB model ---- */
+            var loader = new THREE.GLTFLoader();
+            loader.load(
+                modelPath,
+                function (gltf) {
+                    /* Center and scale to fit radius 1.5 */
+                    var box    = new THREE.Box3().setFromObject(gltf.scene);
+                    var center = box.getCenter(new THREE.Vector3());
+                    var size   = box.getSize(new THREE.Vector3());
+                    var maxDim = Math.max(size.x, size.y, size.z);
+                    var scale  = 3.0 / maxDim;
+                    gltf.scene.scale.setScalar(scale);
+                    gltf.scene.position.sub(center.multiplyScalar(scale));
+
+                    /* Apply PBR material properties */
+                    gltf.scene.traverse(function (child) {
+                        if (child.isMesh) {
+                            var mats = Array.isArray(child.material)
+                                ? child.material
+                                : [child.material];
+                            mats.forEach(function (mat) {
+                                mat.metalness       = 0.7;
+                                mat.roughness       = 0.35;
+                                mat.envMapIntensity = 0.0;
+                                mat.needsUpdate     = true;
+                            });
+                        }
+                    });
+
+                    scene.add(gltf.scene);
+
+                    /* Frame camera */
+                    camera.position.set(0, 0, 5);
+                    camera.lookAt(0, 0, 0);
+                    controls.target.set(0, 0, 0);
+                    controls.update();
+
+                    if (loadingEl) loadingEl.remove();
+                },
+                undefined,
+                function (error) {
+                    console.error('GLB load error (' + modelPath + '):', error);
+                    if (loadingEl) loadingEl.textContent = 'MODEL UNAVAILABLE';
+                }
+            );
+
+            /* ---- Resize handler ---- */
+            function resize() {
+                var w = container.clientWidth;
+                var h = container.clientHeight;
+                if (!w || !h) return;
+                camera.aspect = w / h;
+                camera.updateProjectionMatrix();
+                renderer.setSize(w, h);
+            }
+
+            window.addEventListener('resize', resize, { passive: true });
+            resize();
+
+            /* ---- Animation loop ---- */
+            function animate() {
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene, camera);
+            }
+            animate();
+        }
+
+        initModelViewer('scan-viewer', './Models/sandrail-scan.glb');
+        initModelViewer('arm-viewer',  './Models/sandrail-arm.glb');
+    </script>
+
+    <!-- ===== LIGHTBOX JS ===== -->
+    <script>
+        (function () {
+            var galleryImages = [
+                { src: 'Assets/Parts-1.jpg',    caption: 'Parts-1.jpg' },
+                { src: 'Assets/Parts-2.jpg',    caption: 'Parts-2.jpg' },
+                { src: 'Assets/Parts-3.jpg',    caption: 'Parts-3.jpg' },
+                { src: 'Assets/Set-Up-1.jpg',   caption: 'Set-Up-1.jpg' },
+                { src: 'Assets/Set-Up-2.jpg',   caption: 'Set-Up-2.jpg' },
+                { src: 'Assets/Test-Fit-1.jpg', caption: 'Test-Fit-1.jpg' },
+                { src: 'Assets/Test-Fit-2.jpg', caption: 'Test-Fit-2.jpg' }
+            ];
+
+            var overlay    = document.getElementById('lightbox');
+            var lbImg      = document.getElementById('lb-img');
+            var lbCaption  = document.getElementById('lb-caption');
+            var currentIdx = 0;
+
+            function openLightbox(idx) {
+                currentIdx    = idx;
+                lbImg.src     = galleryImages[idx].src;
+                lbCaption.textContent = galleryImages[idx].caption;
+                overlay.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeLightbox() {
+                overlay.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+
+            function showPrev() {
+                currentIdx = (currentIdx - 1 + galleryImages.length) % galleryImages.length;
+                lbImg.src  = galleryImages[currentIdx].src;
+                lbCaption.textContent = galleryImages[currentIdx].caption;
+            }
+
+            function showNext() {
+                currentIdx = (currentIdx + 1) % galleryImages.length;
+                lbImg.src  = galleryImages[currentIdx].src;
+                lbCaption.textContent = galleryImages[currentIdx].caption;
+            }
+
+            /* Attach click to each gallery image */
+            document.querySelectorAll('.gallery-img').forEach(function (img, idx) {
+                img.addEventListener('click', function () { openLightbox(idx); });
+            });
+
+            document.getElementById('lb-close').addEventListener('click', closeLightbox);
+            document.getElementById('lb-prev').addEventListener('click', showPrev);
+            document.getElementById('lb-next').addEventListener('click', showNext);
+
+            /* Close on overlay background click */
+            overlay.addEventListener('click', function (e) {
+                if (e.target === overlay) closeLightbox();
+            });
+
+            /* Keyboard navigation */
+            document.addEventListener('keydown', function (e) {
+                if (overlay.style.display === 'none' || !overlay.style.display) return;
+                if (e.key === 'Escape')     closeLightbox();
+                if (e.key === 'ArrowLeft')  showPrev();
+                if (e.key === 'ArrowRight') showNext();
+            });
+        }());
+    </script>
+
+</body>
+</html>

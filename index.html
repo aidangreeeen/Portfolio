@@ -312,7 +312,7 @@
             <!-- Right: photo -->
             <div class="about-photo-wrap">
                 <img
-                    src="assets/pali-photo.webp"
+                    src="Assets/pali-photo.webp"
                     alt="Aidan Green"
                     class="about-photo"
                     loading="lazy"
@@ -566,7 +566,7 @@
         /*
         ================================================
         THREE.JS LAMP MODEL
-        Model file: models/Lamp_Assembly.glb
+        Model file: Models/Lamp_Assembly.glb
         To adjust lamp position: edit lampLight.position
         To adjust camera start: edit camera.position
         To adjust metal look: edit metalness/roughness values
@@ -678,7 +678,7 @@
             /* ---- Load GLB model ---- */
             var loader = new THREE.GLTFLoader();
             loader.load(
-                './models/Lamp_Assembly.glb',
+                './Models/Lamp_Assembly.glb',
                 function (gltf) {
                     /* Scale and center */
                     var box    = new THREE.Box3().setFromObject(gltf.scene);

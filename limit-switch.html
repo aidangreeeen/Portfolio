@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Limit Switch Bracket — Aidan Green</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!--
+    ================================================
+    LIMIT SWITCH BRACKET — PROJECT PAGE
+    Aircraft: Long-EZ Experimental
+    Outcome: Prototype complete — not implemented
+    Full system replacement selected
+    ================================================
+    -->
+    <style>
+        /* ── PROJECT PAGE — LIMIT SWITCH BRACKET ──────────────── */
+
+        /* ── METADATA ROW ── */
+        .proj-meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            border-top: 1px solid rgba(255,255,227,0.1);
+            margin-top: 2.5rem;
+        }
+
+        .proj-meta-item {
+            display: flex;
+            flex-direction: column;
+            padding: 0.9rem 2.5rem 0.9rem 0;
+            margin-right: 2.5rem;
+            border-right: 1px solid rgba(255,255,227,0.08);
+        }
+
+        .proj-meta-item:last-child {
+            border-right: none;
+            margin-right: 0;
+        }
+
+        .proj-meta-key {
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: rgba(255,255,227,0.35);
+            margin-bottom: 0.3rem;
+        }
+
+        .proj-meta-val {
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--cream);
+        }
+
+        /* ── HERO IMAGE ── */
+        .project-hero-image {
+            position: relative;
+            width: 100%;
+            max-height: 520px;
+            overflow: hidden;
+        }
+
+        .project-hero-image img {
+            width: 100%;
+            height: 520px;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+
+        .project-hero-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.25rem 2rem;
+            background: linear-gradient(transparent, rgba(10,10,8,0.72));
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+        }
+
+        .caption-tag {
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--accent);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .caption-text {
+            font-size: 0.8rem;
+            color: rgba(255,255,227,0.65);
+        }
+
+        /* ── SECTION CONTAINERS ── */
+        .proj-section {
+            padding: 5rem 4rem;
+        }
+
+        .proj-section.dark {
+            background-color: var(--dark);
+            color: var(--cream);
+        }
+
+        .proj-section-header {
+            margin-bottom: 3rem;
+        }
+
+        .proj-section.dark .section-title {
+            color: var(--cream);
+        }
+
+        /* ── OVERVIEW ── */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .overview-desc {
+            font-size: 0.95rem;
+            line-height: 1.88;
+            color: rgba(26,26,15,0.72);
+        }
+
+        .overview-desc p + p {
+            margin-top: 1.25rem;
+        }
+
+        .specs-card {
+            background-color: var(--dark);
+            color: var(--cream);
+            padding: 2rem;
+        }
+
+        .specs-card-title {
+            font-family: var(--font-display);
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: rgba(255,255,227,0.32);
+            margin-bottom: 1.25rem;
+        }
+
+        .specs-row {
+            display: flex;
+            gap: 1rem;
+            padding: 0.65rem 0;
+            border-bottom: 1px solid rgba(255,255,227,0.07);
+            align-items: baseline;
+        }
+
+        .specs-row:first-of-type {
+            border-top: 1px solid rgba(255,255,227,0.07);
+        }
+
+        .specs-key {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--accent);
+            min-width: 100px;
+            flex-shrink: 0;
+        }
+
+        .specs-val {
+            font-size: 0.82rem;
+            color: rgba(255,255,227,0.6);
+            line-height: 1.6;
+        }
+
+        .specs-note {
+            margin-top: 1.5rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid rgba(206,137,70,0.2);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.72rem;
+            line-height: 1.7;
+            color: var(--accent);
+        }
+
+        /* ── FAILURE ANALYSIS ── */
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .analysis-card {
+            background-color: rgba(255,255,227,0.04);
+            border: 1px solid rgba(255,255,227,0.07);
+            padding: 2rem;
+        }
+
+        .analysis-card-label {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: var(--accent);
+            margin-bottom: 0.9rem;
+        }
+
+        .analysis-card-title {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--cream);
+            margin-bottom: 1rem;
+        }
+
+        .analysis-card-body {
+            font-size: 0.85rem;
+            line-height: 1.8;
+            color: rgba(255,255,227,0.55);
+        }
+
+        /* ── DOCUMENTATION CARDS ── */
+        .doc-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .doc-card {
+            background-color: var(--bg-offset, #f5f4ec);
+            border: 1px solid var(--border, rgba(26,26,15,0.1));
+            overflow: hidden;
+        }
+
+        .doc-card-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .doc-card-body {
+            padding: 1.25rem 1.5rem 1.5rem;
+        }
+
+        .doc-card-title {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 0.65rem;
+        }
+
+        .doc-card-desc {
+            font-size: 0.82rem;
+            line-height: 1.75;
+            color: rgba(26,26,15,0.6);
+        }
+
+        /* ── PHASE TIMELINE ── */
+        .phase-timeline {
+            position: relative;
+            padding-left: 3rem;
+            margin-top: 1rem;
+        }
+
+        .phase-timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #CE8946;
+        }
+
+        .phase-entry {
+            position: relative;
+            margin-bottom: 3.5rem;
+        }
+
+        .phase-entry:last-child {
+            margin-bottom: 0;
+        }
+
+        .phase-node {
+            position: absolute;
+            left: -3rem;
+            top: 0.15rem;
+            width: 20px;
+            height: 20px;
+            background: #CE8946;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        /* Phase 07 — Pivoted: muted gray node */
+        .phase-entry.phase-pivoted .phase-node {
+            background: rgba(255,255,227,0.2);
+        }
+
+        .phase-entry.phase-pivoted .phase-label {
+            color: rgba(255,255,227,0.35);
+        }
+
+        .phase-entry.phase-pivoted .phase-title {
+            color: rgba(255,255,227,0.65);
+        }
+
+        .phase-entry.phase-pivoted .phase-desc {
+            color: rgba(255,255,227,0.4);
+        }
+
+        .phase-entry.phase-pivoted .phase-action {
+            color: rgba(255,255,227,0.4);
+        }
+
+        .phase-entry.phase-pivoted .phase-action-arrow {
+            color: rgba(255,255,227,0.25);
+        }
+
+        .phase-label {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #CE8946;
+            margin-bottom: 0.4rem;
+            display: block;
+        }
+
+        .phase-badge {
+            display: inline-block;
+            margin-left: 0.75rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.52rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(255,255,227,0.3);
+            border: 1px solid rgba(255,255,227,0.15);
+            padding: 0.1rem 0.45rem;
+            vertical-align: middle;
+            position: relative;
+            top: -0.05em;
+        }
+
+        .phase-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.2rem, 2.5vw, 1.75rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--cream);
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .phase-desc {
+            font-size: 0.88rem;
+            line-height: 1.8;
+            color: rgba(255,255,227,0.55);
+            margin-bottom: 1.25rem;
+            max-width: 68ch;
+        }
+
+        .phase-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            max-width: 60ch;
+        }
+
+        .phase-action {
+            display: flex;
+            align-items: baseline;
+            gap: 0.75rem;
+            padding: 0.55rem 0;
+            border-bottom: 1px solid rgba(255,255,227,0.06);
+            font-size: 0.82rem;
+            color: rgba(255,255,227,0.65);
+        }
+
+        .phase-action:first-child {
+            border-top: 1px solid rgba(255,255,227,0.06);
+        }
+
+        .phase-action-arrow {
+            color: #CE8946;
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            flex-shrink: 0;
+        }
+
+        /* ── SKILLS ── */
+        .skills-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .skill-card {
+            background-color: var(--dark);
+            padding: 2rem;
+            color: var(--cream);
+        }
+
+        .skill-card-title {
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--accent);
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(255,255,227,0.09);
+        }
+
+        .skill-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .skill-item {
+            font-size: 0.82rem;
+            color: rgba(255,255,227,0.6);
+            padding: 0.45rem 0;
+            border-bottom: 1px solid rgba(255,255,227,0.05);
+        }
+
+        .skill-item:last-child { border-bottom: none; }
+
+        /* ── BOTTOM NAV ── */
+        .proj-nav {
+            background-color: var(--dark);
+            padding: 3rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            border-top: 1px solid rgba(255,255,227,0.06);
+        }
+
+        .proj-nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            padding: 1rem 1.75rem;
+            border: 1px solid rgba(255,255,227,0.18);
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .proj-nav-btn:hover {
+            border-color: var(--accent);
+        }
+
+        .proj-nav-btn:hover .proj-nav-title {
+            color: var(--accent);
+        }
+
+        .proj-nav-label {
+            display: block;
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: rgba(255,255,227,0.32);
+            margin-bottom: 0.3rem;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 300;
+        }
+
+        .proj-nav-title {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--cream);
+            transition: color 0.2s;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1023px) {
+            .analysis-grid { grid-template-columns: 1fr; }
+            .doc-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 767px) {
+            .project-hero-image { max-height: 300px; }
+            .project-hero-image img { height: 300px; }
+            .proj-section { padding: 3.5rem 1.5rem; }
+            .proj-meta-row { flex-wrap: wrap; }
+            .proj-meta-item { padding: 0.7rem 1.5rem 0.7rem 0; margin-right: 1.5rem; }
+            .overview-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+            .analysis-grid { grid-template-columns: 1fr; }
+            .doc-grid { grid-template-columns: 1fr; }
+            .phase-timeline { padding-left: 2rem; }
+            .phase-node { left: -2rem; }
+            .skills-cards { grid-template-columns: 1fr; }
+            .proj-nav { flex-direction: column; align-items: stretch; padding: 2.5rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAV ===== -->
+    <nav id="main-nav">
+        <a href="index.html" class="nav-logo">Aidan Green</a>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="portfolio.html" class="nav-active">Portfolio</a></li>
+            <li><a href="resume.html">Resume</a></li>
+            <li><a href="skills.html">Skills</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- ===== PAGE HEADER ===== -->
+    <header class="page-hero">
+        <span class="page-label">// Aerospace &nbsp;&middot;&nbsp; 01</span>
+        <h1 class="page-title">Limit Switch Bracket</h1>
+        <p class="page-subtitle">Long-EZ Experimental Aircraft &mdash; Nose Gear Retraction System</p>
+        <div class="proj-meta-row">
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Year</span>
+                <span class="proj-meta-val">2024</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Category</span>
+                <span class="proj-meta-val">Aerospace</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Aircraft</span>
+                <span class="proj-meta-val">Long-EZ Experimental</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Software</span>
+                <span class="proj-meta-val">SolidWorks</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Material</span>
+                <span class="proj-meta-val">FormLabs Tough 2000 Resin</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Status</span>
+                <span class="proj-meta-val">Prototype Complete &nbsp;&middot;&nbsp; Not Implemented</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== HERO IMAGE ===== -->
+    <div class="project-hero-image">
+        <img src="Assets/finished-bracket.jpeg"
+             alt="Limit Switch Bracket — Finished Prototype"
+             loading="lazy">
+        <div class="project-hero-caption">
+            <span class="caption-tag">// Finished Prototype</span>
+            <span class="caption-text">
+                FormLabs Tough 2000 Resin prototype — Long-EZ
+                nose gear retraction system &nbsp;&middot;&nbsp; 2024
+            </span>
+        </div>
+    </div>
+
+    <!-- ===== SECTION 1 — OVERVIEW ===== -->
+    <section class="proj-section">
+        <div class="proj-section-header">
+            <span class="section-label">// Overview</span>
+        </div>
+        <div class="overview-grid">
+            <!-- Left: Description -->
+            <div class="overview-desc">
+                <p>Analyzed and resolved a critical landing gear malfunction
+                on a Long-EZ experimental aircraft by diagnosing issues
+                within the nose gear retraction system. The original
+                bracket had sheared off due to incorrect positioning
+                caused by malfunctioning limit switches — a damaged
+                microswitch resulted in incorrect position indications,
+                causing the actuator to over-travel. When the override
+                was activated without accurate feedback, excessive force
+                was applied to the bracket, ultimately shearing it off.</p>
+
+                <p>A replacement bracket was redesigned in SolidWorks and
+                prototyped in FormLabs Tough 2000 Resin. The new design
+                positions the sled close to the limit switches, ensuring
+                the ramps on the top and bottom make contact to activate
+                the up and down switches accurately — stopping rollers
+                from falling into adjustment slots and restoring reliable
+                nose gear position feedback.</p>
+
+                <p>The prototype was not ultimately implemented. During the
+                process, it was determined that the limit switch the
+                bracket was designed for was extremely cheap and prone
+                to failure. Rather than continuing with a redesigned
+                bracket around an unreliable component, the decision
+                was made to invest in a full replacement of the original
+                system — a more robust long-term solution.</p>
+            </div>
+
+            <!-- Right: Key Specs -->
+            <div class="specs-card">
+                <p class="specs-card-title">// Key Specifications</p>
+                <div class="specs-row">
+                    <span class="specs-key">Aircraft</span>
+                    <span class="specs-val">Long-EZ Experimental</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">System</span>
+                    <span class="specs-val">Nose Gear Retraction</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">Material</span>
+                    <span class="specs-val">FormLabs Tough 2000 Resin</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">Software</span>
+                    <span class="specs-val">SolidWorks</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">Microswitch</span>
+                    <span class="specs-val">Widely available replacement</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">Outcome</span>
+                    <span class="specs-val">Prototype complete — system fully replaced</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">Status</span>
+                    <span class="specs-val">Not Implemented</span>
+                </div>
+                <p class="specs-note">// NOTE — This prototype was not implemented.<br>
+                Full system replacement was ultimately selected<br>
+                over redesigning around an unreliable component.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 2 — FAILURE ANALYSIS ===== -->
+    <section class="proj-section dark">
+        <div class="proj-section-header">
+            <span class="section-label" style="color: rgba(255,255,227,0.4);">// Failure Analysis</span>
+            <h2 class="section-title" style="color: var(--cream); margin-top: 0.5rem;">What Went Wrong</h2>
+        </div>
+        <div class="analysis-grid">
+            <!-- Card 1 -->
+            <div class="analysis-card">
+                <p class="analysis-card-label">01 — Root Cause</p>
+                <h3 class="analysis-card-title">Root Cause</h3>
+                <p class="analysis-card-body">A damaged microswitch provided incorrect position
+                indications to the nose gear retraction system,
+                causing the actuator to over-travel beyond its
+                intended range of motion.</p>
+            </div>
+            <!-- Card 2 -->
+            <div class="analysis-card">
+                <p class="analysis-card-label">02 — Failure Mode</p>
+                <h3 class="analysis-card-title">Failure Mode</h3>
+                <p class="analysis-card-body">When the override was activated without accurate
+                limit switch feedback, excessive force was applied
+                to the bracket. The bracket sheared off due to the
+                combined effect of incorrect positioning and
+                actuator over-travel.</p>
+            </div>
+            <!-- Card 3 -->
+            <div class="analysis-card">
+                <p class="analysis-card-label">03 — Parts Scarcity</p>
+                <h3 class="analysis-card-title">Parts Scarcity</h3>
+                <p class="analysis-card-body">The original limit switch components were obsolete
+                and no longer available. The redesign adapted widely
+                available microswitches as direct replacements,
+                addressing both the mechanical failure and the
+                parts scarcity problem.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 3 — GALLERY / DOCUMENTATION ===== -->
+    <section class="proj-section">
+        <div class="proj-section-header">
+            <span class="section-label">// Documentation</span>
+            <h2 class="section-title" style="margin-top: 0.5rem;">Project Documentation</h2>
+        </div>
+        <div class="doc-grid">
+            <!-- Card 1 -->
+            <div class="doc-card">
+                <img class="doc-card-img"
+                     src="Assets/bracket-sheared.jpeg"
+                     alt="Original Bracket — Shear Failure"
+                     loading="lazy">
+                <div class="doc-card-body">
+                    <p class="doc-card-title">Original Bracket — Shear Failure</p>
+                    <p class="doc-card-desc">The original bracket sheared off due
+                    to incorrect positioning caused by malfunctioning
+                    limit switches. Actuator over-travel under override
+                    conditions applied excessive force to the bracket.</p>
+                </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="doc-card">
+                <img class="doc-card-img"
+                     src="Assets/Nose-retraction-system.jpeg"
+                     alt="Nose Retraction System"
+                     loading="lazy">
+                <div class="doc-card-body">
+                    <p class="doc-card-title">Nose Retraction System</p>
+                    <p class="doc-card-desc">This bracket positions the sled
+                    (aluminum bar) close to the limit switches, ensuring
+                    the ramps on the top and bottom make contact to
+                    activate the up and down switches accurately.</p>
+                </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="doc-card">
+                <img class="doc-card-img"
+                     src="Assets/finished-bracket.jpeg"
+                     alt="Redesigned Bracket — Prototype"
+                     loading="lazy">
+                <div class="doc-card-body">
+                    <p class="doc-card-title">Redesigned Bracket — Prototype</p>
+                    <p class="doc-card-desc">The new bracket design stops rollers
+                    from falling into adjustment slots and ensures
+                    accurate gear position feedback. Easy to install
+                    and more durable than the original.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 4 — BUILD LOG ===== -->
+    <section class="proj-section dark">
+        <div class="proj-section-header">
+            <span class="section-label" style="color: rgba(255,255,227,0.4);">// Build Log</span>
+            <h2 class="section-title" style="color: var(--cream); margin-top: 0.5rem;">Build Log</h2>
+        </div>
+        <div class="phase-timeline">
+
+            <!-- PHASE 01 -->
+            <div class="phase-entry">
+                <div class="phase-node"></div>
+                <span class="phase-label">Phase 01</span>
+                <h3 class="phase-title">Diagnose Malfunction</h3>
+                <p class="phase-desc">Performed hands-on inspection of the Long-EZ nose
+                gear retraction system to identify the root cause
+                of the landing gear malfunction. Traced the failure
+                to a damaged microswitch providing incorrect position
+                indications, causing actuator over-travel.</p>
+                <div class="phase-actions">
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Inspected full nose gear retraction assembly</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Identified damaged microswitch as root cause</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Documented actuator over-travel failure mode</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Confirmed bracket shear caused by excessive force</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHASE 02 -->
+            <div class="phase-entry">
+                <div class="phase-node"></div>
+                <span class="phase-label">Phase 02</span>
+                <h3 class="phase-title">Inspect and Document Failed Bracket</h3>
+                <p class="phase-desc">Removed and documented the sheared bracket.
+                Measured and recorded all critical dimensions,
+                interface geometry, and mounting features to
+                establish a baseline for the redesign.</p>
+                <div class="phase-actions">
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Removed sheared bracket from aircraft</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Measured all critical dimensions and geometry</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Documented sled interface and switch positions</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Photographed failure surfaces and context</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHASE 03 -->
+            <div class="phase-entry">
+                <div class="phase-node"></div>
+                <span class="phase-label">Phase 03</span>
+                <h3 class="phase-title">Reverse Engineer Original Geometry</h3>
+                <p class="phase-desc">Reverse engineered the original bracket geometry
+                from the failed part and surrounding system components
+                to fully understand the design intent and identify
+                improvements.</p>
+                <div class="phase-actions">
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Reconstructed original geometry from measurements</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Identified design weakness at shear point</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Mapped sled ramp contact requirements</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Defined improved geometry constraints</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHASE 04 -->
+            <div class="phase-entry">
+                <div class="phase-node"></div>
+                <span class="phase-label">Phase 04</span>
+                <h3 class="phase-title">CAD Redesign — SolidWorks</h3>
+                <p class="phase-desc">Redesigned the bracket in SolidWorks with improved
+                geometry to prevent roller fallout into adjustment
+                slots and ensure accurate up/down switch activation.
+                Adapted design to accommodate widely available
+                replacement microswitches.</p>
+                <div class="phase-actions">
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Modeled replacement bracket in SolidWorks</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Designed ramp geometry for reliable switch activation</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Prevented roller-slot interference in new design</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Adapted mounting to accept replacement microswitches</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Created engineering drawings for prototype</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHASE 05 -->
+            <div class="phase-entry">
+                <div class="phase-node"></div>
+                <span class="phase-label">Phase 05</span>
+                <h3 class="phase-title">3D Print Prototype</h3>
+                <p class="phase-desc">Printed prototype in FormLabs Tough 2000 Resin —
+                selected for its impact resistance and dimensional
+                accuracy, appropriate for functional aerospace
+                prototype validation.</p>
+                <div class="phase-actions">
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Printed in FormLabs Tough 2000 Resin</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Post-processed and cured per FormLabs spec</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Inspected all critical dimensions post-print</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Verified microswitch mounting interfaces</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHASE 06 -->
+            <div class="phase-entry">
+                <div class="phase-node"></div>
+                <span class="phase-label">Phase 06</span>
+                <h3 class="phase-title">Test Fit and Iterate</h3>
+                <p class="phase-desc">Test fitted prototype in the nose gear retraction
+                system. Verified sled positioning, ramp contact
+                geometry, and switch activation timing.
+                Iterated on geometry based on fitment findings.</p>
+                <div class="phase-actions">
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Test fitted in Long-EZ nose gear system</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Verified sled-to-switch clearances</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Confirmed ramp contact activates both switches</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Validated roller containment in new design</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHASE 07 — PIVOTED -->
+            <div class="phase-entry phase-pivoted">
+                <div class="phase-node"></div>
+                <span class="phase-label">Phase 07<span class="phase-badge">Pivoted</span></span>
+                <h3 class="phase-title">Outcome and Decision</h3>
+                <p class="phase-desc">During the validation process, it was determined
+                that the limit switch the bracket was designed for
+                was extremely cheap and prone to premature failure.
+                Continuing to design around an unreliable component
+                was not an acceptable long-term solution. The
+                decision was made to invest in a full replacement
+                of the original system.</p>
+                <div class="phase-actions">
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Evaluated long-term reliability of target microswitch</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Determined component was unsuitable for aircraft use</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Recommended full system replacement over patch repair</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Prototype work concluded — system replacement selected</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===== SECTION 5 — SKILLS ===== -->
+    <section class="proj-section">
+        <div class="proj-section-header">
+            <span class="section-label">// Skills</span>
+            <h2 class="section-title" style="margin-top: 0.5rem;">Skills Demonstrated</h2>
+        </div>
+        <div class="skills-cards">
+            <!-- Card 1 -->
+            <div class="skill-card">
+                <p class="skill-card-title">Engineering Analysis</p>
+                <div class="skill-list">
+                    <span class="skill-item">Failure Mode Analysis</span>
+                    <span class="skill-item">Root Cause Diagnosis</span>
+                    <span class="skill-item">Actuator Over-Travel Analysis</span>
+                    <span class="skill-item">Reverse Engineering</span>
+                    <span class="skill-item">Engineering Judgment</span>
+                </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="skill-card">
+                <p class="skill-card-title">CAD &amp; Design</p>
+                <div class="skill-list">
+                    <span class="skill-item">SolidWorks Modeling</span>
+                    <span class="skill-item">Design for Manufacturing</span>
+                    <span class="skill-item">Iterative Prototype Design</span>
+                    <span class="skill-item">Engineering Drawings</span>
+                    <span class="skill-item">Constraint-Based Design</span>
+                </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="skill-card">
+                <p class="skill-card-title">Fabrication &amp; Process</p>
+                <div class="skill-list">
+                    <span class="skill-item">FormLabs Tough 2000 Resin</span>
+                    <span class="skill-item">SLA 3D Printing</span>
+                    <span class="skill-item">Post-Processing &amp; Curing</span>
+                    <span class="skill-item">Test Fitting &amp; Validation</span>
+                    <span class="skill-item">Hands-On Troubleshooting</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== BOTTOM NAV ===== -->
+    <nav class="proj-nav">
+        <a href="portfolio.html" class="proj-nav-btn">
+            <span style="font-size:1.1rem; color: rgba(255,255,227,0.4);">&#8592;</span>
+            <span>
+                <span class="proj-nav-label">Back to</span>
+                <span class="proj-nav-title">Portfolio</span>
+            </span>
+        </a>
+        <a href="instrumentation-panel.html" class="proj-nav-btn">
+            <span>
+                <span class="proj-nav-label">Next Project</span>
+                <span class="proj-nav-title">Instrumentation Panel</span>
+            </span>
+            <span style="font-size:1.1rem; color: rgba(255,255,227,0.4);">&#8594;</span>
+        </a>
+    </nav>
+
+    <!-- ===== FOOTER ===== -->
+    <footer id="main-footer">
+        <div class="footer-inner">
+            <p class="footer-name">Aidan Green</p>
+            <p class="footer-tagline">Mechanical Engineering — University of Nevada, Reno</p>
+            <div class="footer-links">
+                <a href="mailto:aidangreen@nevada.unr.edu">Email</a>
+                <a href="https://linkedin.com/in/aidan-green-engineer" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="resume.html">Resume</a>
+            </div>
+            <p class="footer-copy">&copy; 2025 Aidan Green. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- ===== NAV SCRIPT ===== -->
+    <script>
+        (function () {
+            var btn = document.getElementById('hamburger');
+            var links = document.getElementById('nav-links');
+            if (btn && links) {
+                btn.addEventListener('click', function () {
+                    links.classList.toggle('open');
+                    btn.classList.toggle('open');
+                });
+            }
+        })();
+    </script>
+
+</body>
+</html>

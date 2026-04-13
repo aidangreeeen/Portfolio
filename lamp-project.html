@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airfoil Lamp — Aidan Green</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Three.js -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <!--
+    ================================================
+    AIRFOIL LAMP — PROJECT PAGE
+    Model: Models/Lamp_Assembly.glb
+    Status: Final design — pre-production
+    Production: 1/8" polished aluminum · Boss HP3655
+    ================================================
+    -->
+    <style>
+        /* ── PROJECT PAGE — AIRFOIL LAMP ──────────────── */
+
+        /* ── METADATA ROW ── */
+        .proj-meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            border-top: 1px solid rgba(255,255,227,0.1);
+            margin-top: 2.5rem;
+        }
+
+        .proj-meta-item {
+            display: flex;
+            flex-direction: column;
+            padding: 0.9rem 2.5rem 0.9rem 0;
+            margin-right: 2.5rem;
+            border-right: 1px solid rgba(255,255,227,0.08);
+        }
+
+        .proj-meta-item:last-child {
+            border-right: none;
+            margin-right: 0;
+        }
+
+        .proj-meta-key {
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: rgba(255,255,227,0.35);
+            margin-bottom: 0.3rem;
+        }
+
+        .proj-meta-val {
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--cream);
+        }
+
+        /* ── HERO IMAGE ── */
+        .project-hero-image {
+            position: relative;
+            width: 100%;
+            max-height: 520px;
+            overflow: hidden;
+        }
+
+        .project-hero-image img {
+            width: 100%;
+            height: 520px;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+
+        .project-hero-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.25rem 2rem;
+            background: linear-gradient(transparent, rgba(10,10,8,0.72));
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+        }
+
+        .caption-tag {
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--accent);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .caption-text {
+            font-size: 0.8rem;
+            color: rgba(255,255,227,0.65);
+        }
+
+        /* ── SECTION CONTAINERS ── */
+        .proj-section {
+            padding: 5rem 4rem;
+        }
+
+        .proj-section.dark {
+            background-color: var(--dark);
+            color: var(--cream);
+        }
+
+        .proj-section-header {
+            margin-bottom: 3rem;
+        }
+
+        .proj-section.dark .section-title {
+            color: var(--cream);
+        }
+
+        /* ── OVERVIEW ── */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .overview-desc {
+            font-size: 0.95rem;
+            line-height: 1.88;
+            color: rgba(26,26,15,0.72);
+        }
+
+        .overview-desc p + p {
+            margin-top: 1.25rem;
+        }
+
+        .specs-card {
+            background-color: var(--dark);
+            color: var(--cream);
+            padding: 2rem;
+        }
+
+        .specs-card-title {
+            font-family: var(--font-display);
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: rgba(255,255,227,0.32);
+            margin-bottom: 1.25rem;
+        }
+
+        .specs-row {
+            display: flex;
+            gap: 1rem;
+            padding: 0.65rem 0;
+            border-bottom: 1px solid rgba(255,255,227,0.07);
+            align-items: baseline;
+        }
+
+        .specs-row:first-of-type {
+            border-top: 1px solid rgba(255,255,227,0.07);
+        }
+
+        .specs-key {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--accent);
+            min-width: 110px;
+            flex-shrink: 0;
+        }
+
+        .specs-val {
+            font-size: 0.82rem;
+            color: rgba(255,255,227,0.6);
+            line-height: 1.6;
+        }
+
+        /* ── 3D VIEWER ── */
+        .single-viewer {
+            position: relative;
+            height: 500px;
+            background-color: #09090a;
+            overflow: hidden;
+        }
+
+        .single-viewer canvas {
+            display: block;
+        }
+
+        .model-loading {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-size: 0.65rem;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: var(--accent);
+            pointer-events: none;
+        }
+
+        .viewer-label {
+            font-family: var(--font-display);
+            font-size: 0.65rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(255,255,227,0.4);
+            padding: 0.75rem 0;
+            border-top: 1px solid rgba(255,255,227,0.07);
+            text-align: center;
+        }
+
+        /* ── PHASE TIMELINE ── */
+        .phase-timeline {
+            position: relative;
+            padding-left: 3rem;
+            margin-top: 1rem;
+        }
+
+        .phase-timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #CE8946;
+        }
+
+        .phase-entry {
+            position: relative;
+            margin-bottom: 3.5rem;
+        }
+
+        .phase-entry:last-child {
+            margin-bottom: 0;
+        }
+
+        .phase-node {
+            position: absolute;
+            left: -3rem;
+            top: 0.15rem;
+            width: 20px;
+            height: 20px;
+            background: #CE8946;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        /* In-progress phase: pulsing node */
+        .phase-entry.phase-in-progress .phase-node {
+            animation: pulse-node 1.6s ease-in-out infinite;
+        }
+
+        @keyframes pulse-node {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(206,137,70,0.5); }
+            50%       { box-shadow: 0 0 0 6px rgba(206,137,70,0); }
+        }
+
+        .phase-label {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #CE8946;
+            margin-bottom: 0.4rem;
+            display: block;
+        }
+
+        /* IN PROGRESS badge */
+        .phase-badge-active {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-left: 0.75rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.52rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 0.1rem 0.5rem;
+            vertical-align: middle;
+            position: relative;
+            top: -0.05em;
+        }
+
+        .badge-dot {
+            width: 5px;
+            height: 5px;
+            background: var(--accent);
+            border-radius: 50%;
+            flex-shrink: 0;
+            animation: pulse-dot 1.6s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50%       { opacity: 0.35; transform: scale(0.6); }
+        }
+
+        .phase-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.2rem, 2.5vw, 1.75rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--cream);
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .phase-desc {
+            font-size: 0.88rem;
+            line-height: 1.8;
+            color: rgba(255,255,227,0.55);
+            margin-bottom: 1.25rem;
+            max-width: 68ch;
+        }
+
+        .phase-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            max-width: 60ch;
+        }
+
+        .phase-action {
+            display: flex;
+            align-items: baseline;
+            gap: 0.75rem;
+            padding: 0.55rem 0;
+            border-bottom: 1px solid rgba(255,255,227,0.06);
+            font-size: 0.82rem;
+            color: rgba(255,255,227,0.65);
+        }
+
+        .phase-action:first-child {
+            border-top: 1px solid rgba(255,255,227,0.06);
+        }
+
+        .phase-action-arrow {
+            color: #CE8946;
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            flex-shrink: 0;
+        }
+
+        /* Pending action in in-progress phase */
+        .phase-action.pending {
+            color: rgba(255,255,227,0.28);
+            font-style: italic;
+        }
+
+        .phase-action.pending .phase-action-arrow {
+            color: rgba(206,137,70,0.35);
+        }
+
+        /* ── DOCUMENTATION CARDS ── */
+        .doc-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .doc-card {
+            background-color: var(--bg-offset, #f5f4ec);
+            border: 1px solid var(--border, rgba(26,26,15,0.1));
+            overflow: hidden;
+        }
+
+        .doc-card-img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .doc-card-body {
+            padding: 1.25rem 1.5rem 1.5rem;
+        }
+
+        .doc-card-title {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 0.65rem;
+        }
+
+        .doc-card-desc {
+            font-size: 0.82rem;
+            line-height: 1.75;
+            color: rgba(26,26,15,0.6);
+        }
+
+        /* ── SKILLS ── */
+        .skills-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .skill-card {
+            background-color: var(--dark);
+            padding: 2rem;
+            color: var(--cream);
+        }
+
+        .skill-card-title {
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--accent);
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(255,255,227,0.09);
+        }
+
+        .skill-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .skill-item {
+            font-size: 0.82rem;
+            color: rgba(255,255,227,0.6);
+            padding: 0.45rem 0;
+            border-bottom: 1px solid rgba(255,255,227,0.05);
+        }
+
+        .skill-item:last-child { border-bottom: none; }
+
+        /* ── BOTTOM NAV ── */
+        .proj-nav {
+            background-color: var(--dark);
+            padding: 3rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            border-top: 1px solid rgba(255,255,227,0.06);
+        }
+
+        .proj-nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            padding: 1rem 1.75rem;
+            border: 1px solid rgba(255,255,227,0.18);
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .proj-nav-btn:hover {
+            border-color: var(--accent);
+        }
+
+        .proj-nav-btn:hover .proj-nav-title {
+            color: var(--accent);
+        }
+
+        .proj-nav-label {
+            display: block;
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: rgba(255,255,227,0.32);
+            margin-bottom: 0.3rem;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 300;
+        }
+
+        .proj-nav-title {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--cream);
+            transition: color 0.2s;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1023px) {
+            .doc-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 767px) {
+            .project-hero-image { max-height: 300px; }
+            .project-hero-image img { height: 300px; }
+            .proj-section { padding: 3.5rem 1.5rem; }
+            .proj-meta-row { flex-wrap: wrap; }
+            .proj-meta-item { padding: 0.7rem 1.5rem 0.7rem 0; margin-right: 1.5rem; }
+            .overview-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+            .single-viewer { height: 320px; }
+            .phase-timeline { padding-left: 2rem; }
+            .phase-node { left: -2rem; }
+            .doc-grid { grid-template-columns: 1fr; }
+            .skills-cards { grid-template-columns: 1fr; }
+            .proj-nav { flex-direction: column; align-items: stretch; padding: 2.5rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAV ===== -->
+    <nav id="main-nav">
+        <a href="index.html" class="nav-logo">Aidan Green</a>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="portfolio.html" class="nav-active">Portfolio</a></li>
+            <li><a href="resume.html">Resume</a></li>
+            <li><a href="skills.html">Skills</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- ===== PAGE HEADER ===== -->
+    <header class="page-hero">
+        <span class="page-label">// Other &nbsp;&middot;&nbsp; 02</span>
+        <h1 class="page-title">Airfoil Lamp</h1>
+        <p class="page-subtitle">Light Diffusion Through Ribbed Airfoil Geometry &mdash; Preparing for Polished Aluminum Production</p>
+        <div class="proj-meta-row">
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Year</span>
+                <span class="proj-meta-val">2026</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Category</span>
+                <span class="proj-meta-val">Other &nbsp;&middot;&nbsp; Product Design</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Current Material</span>
+                <span class="proj-meta-val">Wood (Prototype)</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Production Material</span>
+                <span class="proj-meta-val">Polished Aluminum &nbsp;&middot;&nbsp; 1/8&quot;</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Fabrication</span>
+                <span class="proj-meta-val">Laser Cut &mdash; Boss Laser HP3655 &nbsp;&middot;&nbsp; 155W</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Status</span>
+                <span class="proj-meta-val">Final Design Stage &nbsp;&middot;&nbsp; Pre-Production</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== HERO IMAGE ===== -->
+    <div class="project-hero-image">
+        <img src="Assets/IMG_1410.jpeg"
+             alt="Airfoil Lamp — Test Fit"
+             loading="lazy">
+        <div class="project-hero-caption">
+            <span class="caption-tag">// Prototype Test Fit</span>
+            <span class="caption-text">
+                Wood prototype test fit &mdash; preparing for
+                polished aluminum production &nbsp;&middot;&nbsp; 2026
+            </span>
+        </div>
+    </div>
+
+    <!-- ===== SECTION 1 — OVERVIEW ===== -->
+    <section class="proj-section">
+        <div class="proj-section-header">
+            <span class="section-label">// Overview</span>
+        </div>
+        <div class="overview-grid">
+            <!-- Left: Description -->
+            <div class="overview-desc">
+                <p>A lamp designed to diffuse light through a ribbed
+                airfoil geometry — the internal profile of an airfoil
+                cross-section reflects and distributes light through
+                the structural ribbing, creating a layered, dynamic
+                lighting effect.</p>
+
+                <p>Currently in the final design stage with a wood
+                prototype used to validate geometry, rib spacing,
+                and light diffusion behavior. Part files are being
+                prepared for production in 1/8&quot; polished aluminum,
+                to be laser cut on a Boss Laser HP3655 155W engraver.</p>
+
+                <p>The transition from wood to polished aluminum will
+                dramatically change the light behavior — from warm
+                diffusion to sharp internal reflections characteristic
+                of a polished metal interior.</p>
+            </div>
+
+            <!-- Right: Key Specs -->
+            <div class="specs-card">
+                <p class="specs-card-title">// Key Specifications</p>
+                <div class="specs-row">
+                    <span class="specs-key">Design Inspiration</span>
+                    <span class="specs-val">Airfoil Cross-Section</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">Current Material</span>
+                    <span class="specs-val">Wood (Prototype)</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">Production Material</span>
+                    <span class="specs-val">Polished Aluminum &nbsp;&middot;&nbsp; 1/8&quot;</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">Fabrication Method</span>
+                    <span class="specs-val">Laser Cut</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">Machine</span>
+                    <span class="specs-val">Boss Laser HP3655 &nbsp;&middot;&nbsp; 155W</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">Status</span>
+                    <span class="specs-val">Final Design &nbsp;&middot;&nbsp; Pre-Production</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">Interactive Model</span>
+                    <span class="specs-val">Available below</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 2 — 3D MODEL ===== -->
+    <section class="proj-section dark">
+        <div class="proj-section-header">
+            <span class="section-label" style="color: rgba(255,255,227,0.4);">// 3D Asset</span>
+            <h2 class="section-title" style="color: var(--cream); margin-top: 0.5rem;">Lamp Assembly</h2>
+        </div>
+
+        <div class="single-viewer" id="lamp-container">
+            <div class="model-loading" id="lamp-loading">LOADING MODEL...</div>
+        </div>
+        <div class="dimmer-control">
+            <span class="dimmer-label">LAMP INTENSITY</span>
+            <input type="range" id="dimmer" min="0" max="5" step="0.1" value="2">
+            <span class="dimmer-value">2.0</span>
+        </div>
+        <p class="viewer-label">Lamp Assembly &mdash; SolidWorks Model</p>
+    </section>
+
+    <!-- ===== SECTION 3 — BUILD LOG ===== -->
+    <section class="proj-section dark" style="padding-top: 0;">
+        <div style="border-top: 1px solid rgba(255,255,227,0.06); padding-top: 5rem;">
+            <div class="proj-section-header">
+                <span class="section-label" style="color: rgba(255,255,227,0.4);">// Build Log</span>
+                <h2 class="section-title" style="color: var(--cream); margin-top: 0.5rem;">Build Log</h2>
+            </div>
+            <div class="phase-timeline">
+
+                <!-- PHASE 01 -->
+                <div class="phase-entry">
+                    <div class="phase-node"></div>
+                    <span class="phase-label">Phase 01</span>
+                    <h3 class="phase-title">Concept &amp; Design Intent</h3>
+                    <p class="phase-desc">Developed the lamp concept around the internal
+                    geometry of an airfoil cross-section. The ribbing
+                    structure that defines an airfoil's shape was
+                    adapted to serve as both the structural and
+                    aesthetic element of the lamp — diffusing and
+                    reflecting light through each rib.</p>
+                    <div class="phase-actions">
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">→</span>
+                            <span>Defined airfoil cross-section as design language</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">→</span>
+                            <span>Studied light diffusion through ribbed geometry</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">→</span>
+                            <span>Established design intent — diffuse and reflect</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">→</span>
+                            <span>Began concept modeling in SolidWorks</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PHASE 02 -->
+                <div class="phase-entry">
+                    <div class="phase-node"></div>
+                    <span class="phase-label">Phase 02</span>
+                    <h3 class="phase-title">SolidWorks Modeling</h3>
+                    <p class="phase-desc">Modeled the full lamp assembly in SolidWorks —
+                    including the airfoil profile, rib spacing, base,
+                    and internal light housing. Geometry optimized
+                    for laser cutting in sheet material.</p>
+                    <div class="phase-actions">
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">→</span>
+                            <span>Modeled airfoil profile and rib geometry</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">→</span>
+                            <span>Designed internal light housing and base</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">→</span>
+                            <span>Optimized all geometry for laser cut production</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">→</span>
+                            <span>Created full assembly with part files</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PHASE 03 -->
+                <div class="phase-entry">
+                    <div class="phase-node"></div>
+                    <span class="phase-label">Phase 03</span>
+                    <h3 class="phase-title">Wood Prototype</h3>
+                    <p class="phase-desc">Laser cut wood prototype on the Boss Laser HP3655
+                    155W to validate geometry, rib spacing, assembly
+                    fit, and light diffusion behavior before committing
+                    to aluminum production.</p>
+                    <div class="phase-actions">
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">→</span>
+                            <span>Prepared part files for Boss Laser HP3655 &nbsp;&middot;&nbsp; 155W</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">→</span>
+                            <span>Laser cut wood prototype parts</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">→</span>
+                            <span>Assembled and test fitted all components</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">→</span>
+                            <span>Evaluated light diffusion through wood ribbing</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">→</span>
+                            <span>Documented geometry refinements needed</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PHASE 04 — IN PROGRESS -->
+                <div class="phase-entry phase-in-progress">
+                    <div class="phase-node"></div>
+                    <span class="phase-label">Phase 04<span class="phase-badge-active"><span class="badge-dot"></span>In Progress</span></span>
+                    <h3 class="phase-title">Final Design &amp; Pre-Production</h3>
+                    <p class="phase-desc">Incorporating lessons from the wood prototype into
+                    the final SolidWorks part files. Preparing production-
+                    ready files for laser cutting in 1/8&quot; polished
+                    aluminum. The polished aluminum interior will create
+                    sharp internal reflections — a significant upgrade
+                    from the warm diffusion of the wood prototype.</p>
+                    <div class="phase-actions">
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">→</span>
+                            <span>Refining geometry based on prototype findings</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">→</span>
+                            <span>Preparing production part files for aluminum</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">→</span>
+                            <span>Specifying 1/8&quot; polished aluminum material</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">→</span>
+                            <span>Finalizing laser cut parameters for Boss HP3655</span>
+                        </div>
+                        <div class="phase-action pending">
+                            <span class="phase-action-arrow">→</span>
+                            <span>[Production run pending]</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 4 — GALLERY ===== -->
+    <section class="proj-section">
+        <div class="proj-section-header">
+            <span class="section-label">// Gallery</span>
+            <h2 class="section-title" style="margin-top: 0.5rem;">Build Documentation</h2>
+        </div>
+        <div class="doc-grid">
+            <!-- Card 1 -->
+            <div class="doc-card">
+                <img class="doc-card-img"
+                     src="Assets/IMG_1410.jpeg"
+                     alt="Prototype Test Fit"
+                     loading="lazy">
+                <div class="doc-card-body">
+                    <p class="doc-card-title">Prototype Test Fit</p>
+                    <p class="doc-card-desc">Wood prototype assembled and test
+                    fitted to validate geometry, rib spacing, and
+                    light diffusion behavior.</p>
+                </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="doc-card">
+                <img class="doc-card-img"
+                     src="Assets/IMG_1350.jpeg"
+                     alt="Laser Cutting"
+                     loading="lazy">
+                <div class="doc-card-body">
+                    <p class="doc-card-title">Laser Cutting</p>
+                    <p class="doc-card-desc">Parts being cut on the Boss Laser
+                    HP3655 155W laser cutter/engraver.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 5 — SKILLS ===== -->
+    <section class="proj-section dark">
+        <div class="proj-section-header">
+            <span class="section-label" style="color: rgba(255,255,227,0.4);">// Skills</span>
+            <h2 class="section-title" style="color: var(--cream); margin-top: 0.5rem;">Skills Demonstrated</h2>
+        </div>
+        <div class="skills-cards">
+            <!-- Card 1 -->
+            <div class="skill-card">
+                <p class="skill-card-title">Design</p>
+                <div class="skill-list">
+                    <span class="skill-item">Product Design</span>
+                    <span class="skill-item">Airfoil Geometry Application</span>
+                    <span class="skill-item">Light Diffusion Design</span>
+                    <span class="skill-item">SolidWorks Assembly Modeling</span>
+                    <span class="skill-item">Design for Laser Cutting</span>
+                </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="skill-card">
+                <p class="skill-card-title">Fabrication</p>
+                <div class="skill-list">
+                    <span class="skill-item">Laser Cutting &mdash; Boss HP3655 155W</span>
+                    <span class="skill-item">Wood Prototyping</span>
+                    <span class="skill-item">Sheet Metal Design &mdash; 1/8&quot; Aluminum</span>
+                    <span class="skill-item">Part File Preparation</span>
+                    <span class="skill-item">Assembly Fit Validation</span>
+                </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="skill-card">
+                <p class="skill-card-title">Process</p>
+                <div class="skill-list">
+                    <span class="skill-item">Concept to Prototype</span>
+                    <span class="skill-item">Iterative Design</span>
+                    <span class="skill-item">Material Transition Planning</span>
+                    <span class="skill-item">Production Preparation</span>
+                    <span class="skill-item">3D Model Visualization</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== BOTTOM NAV ===== -->
+    <nav class="proj-nav">
+        <a href="portfolio.html" class="proj-nav-btn">
+            <span style="font-size:1.1rem; color: rgba(255,255,227,0.4);">&#8592;</span>
+            <span>
+                <span class="proj-nav-label">Back to</span>
+                <span class="proj-nav-title">Portfolio</span>
+            </span>
+        </a>
+    </nav>
+
+    <!-- ===== FOOTER ===== -->
+    <footer id="main-footer">
+        <div class="footer-inner">
+            <p class="footer-name">Aidan Green</p>
+            <p class="footer-tagline">Mechanical Engineering — University of Nevada, Reno</p>
+            <div class="footer-links">
+                <a href="mailto:aidangreen@nevada.unr.edu">Email</a>
+                <a href="https://linkedin.com/in/aidan-green-engineer" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="resume.html">Resume</a>
+            </div>
+            <p class="footer-copy">&copy; 2025 Aidan Green. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- ===== NAV SCRIPT ===== -->
+    <script>
+        (function () {
+            var btn = document.getElementById('hamburger');
+            var links = document.getElementById('nav-links');
+            if (btn && links) {
+                btn.addEventListener('click', function () {
+                    links.classList.toggle('open');
+                    btn.classList.toggle('open');
+                });
+            }
+        })();
+    </script>
+
+    <!-- ===== THREE.JS LAMP MODEL ===== -->
+    <script>
+        /*
+        ================================================
+        THREE.JS LAMP MODEL
+        Model file: Models/Lamp_Assembly.glb
+        ================================================
+        */
+        (function () {
+            var container = document.getElementById('lamp-container');
+            if (!container) return;
+
+            var loadingEl = document.getElementById('lamp-loading');
+
+            /* ---- Renderer ---- */
+            var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.toneMapping = THREE.NoToneMapping;
+            renderer.toneMappingExposure = 1.0;
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            container.appendChild(renderer.domElement);
+
+            /* ---- Scene ---- */
+            var scene = new THREE.Scene();
+            scene.background = null;
+
+            /* ---- Camera ---- */
+            var camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+            camera.position.set(0, 0.5, 3.5);
+
+            /* ---- Controls ---- */
+            var controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.autoRotate      = true;
+            controls.autoRotateSpeed = 1.2;
+            controls.enableDamping   = true;
+            controls.dampingFactor   = 0.05;
+            controls.enableZoom      = false;
+            controls.enablePan       = false;
+            controls.target.set(0, 0, 0);
+            controls.update();
+
+            /* Resume autoRotate 3s after user stops dragging */
+            var rotateTimer;
+            controls.addEventListener('start', function () {
+                controls.autoRotate = false;
+                clearTimeout(rotateTimer);
+            });
+            controls.addEventListener('end', function () {
+                rotateTimer = setTimeout(function () {
+                    controls.autoRotate = true;
+                }, 3000);
+            });
+
+            /* ---- Renderer clear ---- */
+            renderer.setClearColor(0x000000, 0);
+
+            /* ---- No environment map ---- */
+            scene.environment = null;
+
+            /* ---- Scene lighting ---- */
+            scene.add(new THREE.AmbientLight(0xFFFFE3, 0.4));
+
+            var keyLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            keyLight.position.set(5, 8, 5);
+            scene.add(keyLight);
+
+            var fillLight = new THREE.DirectionalLight(0xCE8946, 0.3);
+            fillLight.position.set(-4, 2, -4);
+            scene.add(fillLight);
+
+            var rimLight = new THREE.DirectionalLight(0x333333, 0.4);
+            rimLight.position.set(-2, -4, -2);
+            scene.add(rimLight);
+
+            /* ---- Lamp interior light ---- */
+            var lampLight = new THREE.PointLight(0xFFD580, 2.0, 8, 2);
+            lampLight.position.set(0, 0, 0);
+            scene.add(lampLight);
+
+            /* ---- Spill light ---- */
+            var spillLight = new THREE.PointLight(0xFFB347, 0.6, 4, 2);
+            spillLight.position.set(0.1, -0.1, 0);
+            scene.add(spillLight);
+
+            /* ---- Outer glow sphere ---- */
+            var outerGlowGeo = new THREE.SphereGeometry(0.08, 16, 16);
+            var outerGlowMat = new THREE.MeshStandardMaterial({
+                color: 0xFFD580,
+                emissive: new THREE.Color(0xFFD580),
+                emissiveIntensity: 2.0,
+                transparent: true,
+                opacity: 0.15,
+                side: THREE.BackSide
+            });
+            var outerGlowMesh = new THREE.Mesh(outerGlowGeo, outerGlowMat);
+            outerGlowMesh.position.copy(lampLight.position);
+            scene.add(outerGlowMesh);
+
+            /* ---- Inner filament sphere ---- */
+            var innerFilamentGeo = new THREE.SphereGeometry(0.03, 16, 16);
+            var innerFilamentMat = new THREE.MeshStandardMaterial({
+                color: 0xFFFFFF,
+                emissive: new THREE.Color(0xFFF5C0),
+                emissiveIntensity: 4.0,
+                transparent: false
+            });
+            var innerFilamentMesh = new THREE.Mesh(innerFilamentGeo, innerFilamentMat);
+            innerFilamentMesh.position.copy(lampLight.position);
+            scene.add(innerFilamentMesh);
+
+            /* ---- Load GLB model ---- */
+            var loader = new THREE.GLTFLoader();
+            loader.load(
+                './Models/Lamp_Assembly.glb',
+                function (gltf) {
+                    var box    = new THREE.Box3().setFromObject(gltf.scene);
+                    var center = box.getCenter(new THREE.Vector3());
+                    var size   = box.getSize(new THREE.Vector3());
+                    var maxDim = Math.max(size.x, size.y, size.z);
+                    var scale  = 3.0 / maxDim;
+                    gltf.scene.scale.setScalar(scale);
+                    gltf.scene.position.sub(center.multiplyScalar(scale));
+
+                    gltf.scene.traverse(function (child) {
+                        if (child.isMesh) {
+                            var mats = Array.isArray(child.material)
+                                ? child.material
+                                : [child.material];
+                            mats.forEach(function (mat) {
+                                mat.metalness       = 0.7;
+                                mat.roughness       = 0.35;
+                                mat.envMapIntensity = 0.0;
+                                mat.needsUpdate     = true;
+                            });
+                        }
+                    });
+
+                    /* Create pivot group to handle orientation */
+                    var pivot = new THREE.Group();
+                    pivot.add(gltf.scene);
+                    pivot.rotation.x = -0.3;
+                    pivot.rotation.y = 0.5;
+                    pivot.rotation.z = 0.2;
+                    scene.add(pivot);
+
+                    camera.position.set(0, 0, 5);
+                    camera.lookAt(0, 0, 0);
+                    controls.target.set(0, 0, 0);
+                    controls.update();
+
+                    if (loadingEl) loadingEl.remove();
+                },
+                undefined,
+                function (error) {
+                    console.error('GLB load error:', error);
+                    if (loadingEl) loadingEl.textContent = 'MODEL UNAVAILABLE';
+                }
+            );
+
+            /* ---- Dimmer control ---- */
+            var dimmerInput   = document.getElementById('dimmer');
+            var dimmerValueEl = document.querySelector('.dimmer-value');
+
+            if (dimmerInput) {
+                dimmerInput.addEventListener('input', function () {
+                    var val = parseFloat(this.value);
+                    lampLight.intensity                          = val;
+                    spillLight.intensity                         = val * 0.3;
+                    outerGlowMesh.material.emissiveIntensity     = val;
+                    innerFilamentMesh.material.emissiveIntensity = val * 2;
+                    outerGlowMesh.material.opacity               = 0.05 + (val / 5) * 0.25;
+                    if (dimmerValueEl) dimmerValueEl.textContent = val.toFixed(1);
+                });
+            }
+
+            /* ---- Resize handler ---- */
+            function resize() {
+                var w = container.clientWidth;
+                var h = container.clientHeight;
+                if (!w || !h) return;
+                camera.aspect = w / h;
+                camera.updateProjectionMatrix();
+                renderer.setSize(w, h);
+            }
+
+            window.addEventListener('resize', resize, { passive: true });
+            resize();
+
+            /* ---- Animation loop ---- */
+            function animate() {
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene, camera);
+            }
+            animate();
+        }());
+    </script>
+
+</body>
+</html>

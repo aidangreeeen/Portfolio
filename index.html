@@ -60,6 +60,7 @@
                     <span class="dimmer-label">Lamp Intensity</span>
                     <input type="range" id="dimmer" min="0" max="5" step="0.1" value="2">
                     <span class="dimmer-value">2.0</span>
+                    <a href="lamp-project.html" class="btn-primary dimmer-project-link">View Project &rarr;</a>
                 </div>
             </div>
 
@@ -704,7 +705,13 @@
                         }
                     });
 
-                    scene.add(gltf.scene);
+                    /* Create pivot group to handle orientation */
+                    var pivot = new THREE.Group();
+                    pivot.add(gltf.scene);
+                    pivot.rotation.x = -0.3;
+                    pivot.rotation.y = 0.5;
+                    pivot.rotation.z = 0.2;
+                    scene.add(pivot);
 
                     /* Frame camera to model */
                     camera.position.set(0, 0, 5);

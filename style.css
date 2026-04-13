@@ -255,7 +255,21 @@ nav {
     color: var(--accent);
 }
 
+.btn-secondary {
+    background: transparent;
+    color: rgba(255, 255, 227, 0.55);
+    border: 1px solid rgba(255, 255, 227, 0.2);
+}
+
+.btn-secondary:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
 /* ── 3D MODEL ────────────────────────────────────────────────── */
+.model-project-link {
+    margin-top: 1rem;
+}
 .hero-visual {
     min-height: 520px;
     display: flex;
@@ -316,6 +330,7 @@ nav {
     display: flex;
     align-items: center;
     gap: 1rem;
+    flex-wrap: nowrap;
     padding: 0.75rem 1.25rem;
     border-top: 1px solid rgba(255, 255, 227, 0.06);
     font-family: var(--font-display);
@@ -324,6 +339,13 @@ nav {
     text-transform: uppercase;
     color: rgba(255, 255, 227, 0.45);
     flex-shrink: 0;
+}
+
+.dimmer-project-link {
+    margin-left: auto;
+    font-size: 0.7rem;
+    padding: 0.5rem 1.25rem;
+    white-space: nowrap;
 }
 
 .dimmer-label { white-space: nowrap; }

@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scroodfest Award — Aidan Green</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!--
+    ================================================
+    SCROODFEST AWARD — PROJECT PAGE
+    Machine: Tormach PCNC 1100 CNC Mill
+    Material: Machined Aluminum
+    Video placeholder — add src when available
+    ================================================
+    -->
+    <style>
+        /* ── PROJECT PAGE — SCROODFEST AWARD ──────────────── */
+
+        /* ── METADATA ROW ── */
+        .proj-meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            border-top: 1px solid rgba(255,255,227,0.1);
+            margin-top: 2.5rem;
+        }
+
+        .proj-meta-item {
+            display: flex;
+            flex-direction: column;
+            padding: 0.9rem 2.5rem 0.9rem 0;
+            margin-right: 2.5rem;
+            border-right: 1px solid rgba(255,255,227,0.08);
+        }
+
+        .proj-meta-item:last-child {
+            border-right: none;
+            margin-right: 0;
+        }
+
+        .proj-meta-key {
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: rgba(255,255,227,0.35);
+            margin-bottom: 0.3rem;
+        }
+
+        .proj-meta-val {
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--cream);
+        }
+
+        /* ── HERO IMAGE ── */
+        .project-hero-image {
+            position: relative;
+            width: 100%;
+            max-height: 520px;
+            overflow: hidden;
+        }
+
+        .project-hero-image img {
+            width: 100%;
+            height: 520px;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+
+        .project-hero-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.25rem 2rem;
+            background: linear-gradient(transparent, rgba(10,10,8,0.72));
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+        }
+
+        .caption-tag {
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--accent);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .caption-text {
+            font-size: 0.8rem;
+            color: rgba(255,255,227,0.65);
+        }
+
+        /* ── SECTION CONTAINERS ── */
+        .proj-section {
+            padding: 5rem 4rem;
+        }
+
+        .proj-section.dark {
+            background-color: var(--dark);
+            color: var(--cream);
+        }
+
+        .proj-section-header {
+            margin-bottom: 3rem;
+        }
+
+        .proj-section.dark .section-title {
+            color: var(--cream);
+        }
+
+        /* ── TWO COLUMN OVERVIEW ── */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .overview-desc {
+            font-size: 0.95rem;
+            line-height: 1.88;
+            color: rgba(26,26,15,0.72);
+        }
+
+        .overview-desc p + p {
+            margin-top: 1.25rem;
+        }
+
+        .specs-card {
+            background-color: var(--dark);
+            color: var(--cream);
+            padding: 2rem;
+        }
+
+        .specs-card-title {
+            font-family: var(--font-display);
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: rgba(255,255,227,0.32);
+            margin-bottom: 1.25rem;
+        }
+
+        .specs-row {
+            display: flex;
+            gap: 1rem;
+            padding: 0.65rem 0;
+            border-bottom: 1px solid rgba(255,255,227,0.07);
+            align-items: baseline;
+        }
+
+        .specs-row:first-of-type {
+            border-top: 1px solid rgba(255,255,227,0.07);
+        }
+
+        .specs-key {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--accent);
+            min-width: 90px;
+            flex-shrink: 0;
+        }
+
+        .specs-val {
+            font-size: 0.82rem;
+            color: rgba(255,255,227,0.6);
+            line-height: 1.6;
+        }
+
+        /* ── VIDEO PLACEHOLDER ── */
+        .video-section {
+            padding: 5rem 4rem;
+            background-color: var(--dark);
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 320px;
+            background-color: rgba(255,255,227,0.03);
+            border: 1px solid rgba(255,255,227,0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 2rem;
+        }
+
+        .placeholder-label {
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: rgba(255,255,227,0.22);
+        }
+
+        .placeholder-sub {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(255,255,227,0.14);
+        }
+
+        .placeholder-note {
+            margin-top: 1rem;
+            font-size: 0.78rem;
+            color: rgba(255,255,227,0.28);
+            text-align: center;
+        }
+
+        /* ── PHASE TIMELINE ── */
+        .phase-timeline {
+            position: relative;
+            padding-left: 3rem;
+            margin-top: 1rem;
+        }
+
+        .phase-timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #CE8946;
+        }
+
+        .phase-entry {
+            position: relative;
+            margin-bottom: 3.5rem;
+        }
+
+        .phase-entry:last-child {
+            margin-bottom: 0;
+        }
+
+        .phase-node {
+            position: absolute;
+            left: -3rem;
+            top: 0.15rem;
+            width: 20px;
+            height: 20px;
+            background: #CE8946;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .phase-label {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #CE8946;
+            margin-bottom: 0.4rem;
+            display: block;
+        }
+
+        .phase-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.2rem, 2.5vw, 1.75rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--cream);
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .phase-desc {
+            font-size: 0.88rem;
+            line-height: 1.8;
+            color: rgba(255,255,227,0.55);
+            margin-bottom: 1.25rem;
+            max-width: 68ch;
+        }
+
+        .phase-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            max-width: 60ch;
+        }
+
+        .phase-action {
+            display: flex;
+            align-items: baseline;
+            gap: 0.75rem;
+            padding: 0.55rem 0;
+            border-bottom: 1px solid rgba(255,255,227,0.06);
+            font-size: 0.82rem;
+            color: rgba(255,255,227,0.65);
+        }
+
+        .phase-action:first-child {
+            border-top: 1px solid rgba(255,255,227,0.06);
+        }
+
+        .phase-action-arrow {
+            color: #CE8946;
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            flex-shrink: 0;
+        }
+
+        /* ── DOCUMENTATION CARDS ── */
+        .doc-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .doc-card {
+            background-color: var(--bg-offset, #f5f4ec);
+            border: 1px solid var(--border, rgba(26,26,15,0.1));
+            overflow: hidden;
+        }
+
+        .doc-card-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .doc-card-body {
+            padding: 1.25rem 1.5rem 1.5rem;
+        }
+
+        .doc-card-title {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 0.65rem;
+        }
+
+        .doc-card-video video {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+            border: 1px solid var(--border);
+        }
+
+        .doc-card-desc {
+            font-size: 0.82rem;
+            line-height: 1.75;
+            color: rgba(26,26,15,0.6);
+        }
+
+        /* ── SKILLS ── */
+        .skills-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .skill-card {
+            background-color: var(--dark);
+            padding: 2rem;
+            color: var(--cream);
+        }
+
+        .skill-card-title {
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--accent);
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(255,255,227,0.09);
+        }
+
+        .skill-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .skill-item {
+            font-size: 0.82rem;
+            color: rgba(255,255,227,0.6);
+            padding: 0.45rem 0;
+            border-bottom: 1px solid rgba(255,255,227,0.05);
+        }
+
+        .skill-item:last-child { border-bottom: none; }
+
+        /* ── BOTTOM NAV ── */
+        .proj-nav {
+            background-color: var(--dark);
+            padding: 3rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            border-top: 1px solid rgba(255,255,227,0.06);
+        }
+
+        .proj-nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            padding: 1rem 1.75rem;
+            border: 1px solid rgba(255,255,227,0.18);
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .proj-nav-btn:hover {
+            border-color: var(--accent);
+        }
+
+        .proj-nav-btn:hover .proj-nav-title {
+            color: var(--accent);
+        }
+
+        .proj-nav-label {
+            display: block;
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: rgba(255,255,227,0.32);
+            margin-bottom: 0.3rem;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 300;
+        }
+
+        .proj-nav-title {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--cream);
+            transition: color 0.2s;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1023px) {
+            .doc-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 767px) {
+            .project-hero-image { max-height: 300px; }
+            .project-hero-image img { height: 300px; }
+            .proj-section { padding: 3.5rem 1.5rem; }
+            .video-section { padding: 3.5rem 1.5rem; }
+            .proj-meta-row { flex-wrap: wrap; }
+            .proj-meta-item { padding: 0.7rem 1.5rem 0.7rem 0; margin-right: 1.5rem; }
+            .overview-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+            .video-placeholder { height: 220px; }
+            .phase-timeline { padding-left: 2rem; }
+            .phase-node { left: -2rem; }
+            .doc-grid { grid-template-columns: 1fr; }
+            .skills-cards { grid-template-columns: 1fr; }
+            .proj-nav { flex-direction: column; align-items: stretch; padding: 2.5rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAV ===== -->
+    <nav id="main-nav">
+        <a href="index.html" class="nav-logo">Aidan Green</a>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="portfolio.html" class="nav-active">Portfolio</a></li>
+            <li><a href="resume.html">Resume</a></li>
+            <li><a href="skills.html">Skills</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- ===== PAGE HEADER ===== -->
+    <header class="page-hero">
+        <span class="page-label">// Other &nbsp;&middot;&nbsp; 01</span>
+        <h1 class="page-title">Scroodfest Award</h1>
+        <p class="page-subtitle">Design &amp; CNC Manufacture &mdash; Custom Competition Trophy</p>
+        <div class="proj-meta-row">
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Year</span>
+                <span class="proj-meta-val">2024</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Category</span>
+                <span class="proj-meta-val">Product Design</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Material</span>
+                <span class="proj-meta-val">Machined Aluminum</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Software</span>
+                <span class="proj-meta-val">SolidWorks</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Machine</span>
+                <span class="proj-meta-val">Tormach PCNC 1100 CNC Mill</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Status</span>
+                <span class="proj-meta-val">Complete</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== HERO IMAGE ===== -->
+    <div class="project-hero-image">
+        <img src="Assets/award.jpeg"
+             alt="Scroodfest Award"
+             loading="lazy">
+        <div class="project-hero-caption">
+            <span class="caption-tag">// Finished Award</span>
+            <span class="caption-text">
+                Custom machined aluminum award &mdash; Scroodfest &nbsp;&middot;&nbsp; 2024
+            </span>
+        </div>
+    </div>
+
+    <!-- ===== SECTION 1 — THE CONTEST ===== -->
+    <section class="proj-section">
+        <div class="proj-section-header">
+            <span class="section-label">// About Scroodfest</span>
+        </div>
+        <div class="overview-grid">
+            <!-- Left: Description -->
+            <div class="overview-desc">
+                <p>Scroodfest is a local snowboard contest created by
+                former members and friends of the Northstar snowboard
+                team. Founded to build community, get people into the
+                mountains, and host a competition centered entirely
+                around creativity and style — not scores or rankings
+                in the traditional sense.</p>
+
+                <p>The contest embodies the spirit of snowboarding at
+                its core: progression, expression, and community.
+                Designing and fabricating the award for Scroodfest
+                was an opportunity to bring that same spirit into
+                the workshop.</p>
+            </div>
+
+            <!-- Right: Event Card -->
+            <div class="specs-card">
+                <p class="specs-card-title">// Event Details</p>
+                <div class="specs-row">
+                    <span class="specs-key">Event</span>
+                    <span class="specs-val">Scroodfest</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">Founded by</span>
+                    <span class="specs-val">Former Northstar Snowboard Team Members</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">Focus</span>
+                    <span class="specs-val">Creativity &nbsp;&middot;&nbsp; Style &nbsp;&middot;&nbsp; Community</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">Location</span>
+                    <span class="specs-val">Mountains — Northstar, CA</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">Award</span>
+                    <span class="specs-val">Custom CNC Machined Aluminum Trophy</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== VIDEO PLACEHOLDER ===== -->
+    <div class="video-section">
+        <div class="proj-section-header">
+            <span class="section-label" style="color: rgba(255,255,227,0.4);">// Contest Footage</span>
+            <h2 class="section-title" style="color: var(--cream); margin-top: 0.5rem;">Scroodfest</h2>
+        </div>
+        <div class="video-placeholder">
+            <span class="placeholder-label">Contest Footage</span>
+            <span class="placeholder-sub">Video &middot; Coming Soon</span>
+        </div>
+        <p class="placeholder-note">Full contest footage coming soon.</p>
+    </div>
+
+    <!-- ===== SECTION 2 — OVERVIEW ===== -->
+    <section class="proj-section">
+        <div class="proj-section-header">
+            <span class="section-label">// Overview</span>
+        </div>
+        <div class="overview-grid">
+            <!-- Left: Description -->
+            <div class="overview-desc">
+                <p>Designed and fabricated a custom award for Scroodfest
+                using CNC milling techniques. Led the entire process
+                from concept to production — from initial CAD design
+                through CNC programming and final machining — ensuring
+                precision and a high-quality finish throughout.</p>
+
+                <p>The award was modeled in SolidWorks and machined on a
+                Tormach PCNC 1100 CNC Mill. CAD drawings were translated
+                directly into CNC toolpaths for efficient and accurate
+                manufacturing in machined aluminum.</p>
+            </div>
+
+            <!-- Right: Key Specs -->
+            <div class="specs-card">
+                <p class="specs-card-title">// Key Specifications</p>
+                <div class="specs-row">
+                    <span class="specs-key">Material</span>
+                    <span class="specs-val">Machined Aluminum</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">Machine</span>
+                    <span class="specs-val">Tormach PCNC 1100 CNC Mill</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">Software</span>
+                    <span class="specs-val">SolidWorks</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">Process</span>
+                    <span class="specs-val">CAD &rarr; Drawing &rarr; CNC Program &rarr; Mill &rarr; Finish</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">Quantity</span>
+                    <span class="specs-val" style="color: rgba(255,255,227,0.3); font-style: italic;">[Number of awards produced]</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">Status</span>
+                    <span class="specs-val">Complete</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 3 — BUILD LOG ===== -->
+    <section class="proj-section dark">
+        <div class="proj-section-header">
+            <span class="section-label" style="color: rgba(255,255,227,0.4);">// Build Log</span>
+            <h2 class="section-title" style="color: var(--cream); margin-top: 0.5rem;">Build Log</h2>
+        </div>
+        <div class="phase-timeline">
+
+            <!-- PHASE 01 -->
+            <div class="phase-entry">
+                <div class="phase-node"></div>
+                <span class="phase-label">Phase 01</span>
+                <h3 class="phase-title">Concept &amp; Design</h3>
+                <p class="phase-desc">Developed the award concept in SolidWorks from initial
+                sketch through detailed CAD model. Design balanced
+                aesthetic appeal with machinability constraints on
+                the Tormach PCNC 1100.</p>
+                <div class="phase-actions">
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Developed award concept and form</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Modeled award geometry in SolidWorks</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Validated design against CNC machining constraints</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Created detailed engineering drawings</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHASE 02 -->
+            <div class="phase-entry">
+                <div class="phase-node"></div>
+                <span class="phase-label">Phase 02</span>
+                <h3 class="phase-title">CNC Programming</h3>
+                <p class="phase-desc">Translated SolidWorks CAD drawings into CNC toolpaths
+                for the Tormach PCNC 1100. Programmed tool selection,
+                feed rates, and cutting sequences for efficient and
+                accurate aluminum machining.</p>
+                <div class="phase-actions">
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Generated CNC toolpaths from SolidWorks drawings</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Selected tooling for aluminum stock</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Programmed feed rates and cutting sequences</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Verified program with dry run simulation</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHASE 03 -->
+            <div class="phase-entry">
+                <div class="phase-node"></div>
+                <span class="phase-label">Phase 03</span>
+                <h3 class="phase-title">Machining</h3>
+                <p class="phase-desc">Set up and operated the Tormach PCNC 1100 CNC Mill
+                to machine the award from aluminum stock. Monitored
+                the machining process to ensure dimensional accuracy
+                and surface finish quality throughout.</p>
+                <div class="phase-actions">
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Set up aluminum stock on Tormach PCNC 1100</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Executed CNC program — monitored throughout</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Verified critical dimensions during machining</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Inspected surface finish at each operation</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHASE 04 -->
+            <div class="phase-entry">
+                <div class="phase-node"></div>
+                <span class="phase-label">Phase 04</span>
+                <h3 class="phase-title">Finishing</h3>
+                <p class="phase-desc">Post-machining finishing operations to achieve
+                the final surface quality and appearance of the award.</p>
+                <div class="phase-actions">
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Deburred all machined edges</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Surface finishing to final specification</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Final dimensional inspection</span>
+                    </div>
+                    <div class="phase-action">
+                        <span class="phase-action-arrow">→</span>
+                        <span>Award completed and delivered</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===== SECTION 4 — DOCUMENTATION GALLERY ===== -->
+    <section class="proj-section">
+        <div class="proj-section-header">
+            <span class="section-label">// Gallery</span>
+            <h2 class="section-title" style="margin-top: 0.5rem;">Build Documentation</h2>
+        </div>
+        <div class="doc-grid">
+            <!-- Card 1 -->
+            <div class="doc-card">
+                <img class="doc-card-img"
+                     src="Assets/award-drawing.jpg"
+                     alt="Engineering Drawing"
+                     loading="lazy">
+                <div class="doc-card-body">
+                    <p class="doc-card-title">Engineering Drawing</p>
+                    <p class="doc-card-desc">SolidWorks CAD drawing used to
+                    program the Tormach PCNC 1100 CNC Mill for
+                    award production.</p>
+                </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="doc-card">
+                <div class="doc-card-video">
+                    <video controls poster="Assets/award.jpeg">
+                        <source src="Assets/award-cnc.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="doc-card-body">
+                    <p class="doc-card-title">CNC Machining</p>
+                    <p class="doc-card-desc">Award being machined on the
+                    Tormach PCNC 1100 CNC Mill from aluminum stock.</p>
+                </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="doc-card">
+                <img class="doc-card-img"
+                     src="Assets/award.jpeg"
+                     alt="Finished Award"
+                     loading="lazy">
+                <div class="doc-card-body">
+                    <p class="doc-card-title">Finished Award</p>
+                    <p class="doc-card-desc">Completed custom machined aluminum
+                    award — delivered for Scroodfest 2024.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 5 — SKILLS ===== -->
+    <section class="proj-section dark">
+        <div class="proj-section-header">
+            <span class="section-label" style="color: rgba(255,255,227,0.4);">// Skills</span>
+            <h2 class="section-title" style="color: var(--cream); margin-top: 0.5rem;">Skills Demonstrated</h2>
+        </div>
+        <div class="skills-cards">
+            <!-- Card 1 -->
+            <div class="skill-card">
+                <p class="skill-card-title">Design</p>
+                <div class="skill-list">
+                    <span class="skill-item">Product Design</span>
+                    <span class="skill-item">SolidWorks Modeling</span>
+                    <span class="skill-item">Engineering Drawings</span>
+                    <span class="skill-item">Design for Manufacturability</span>
+                    <span class="skill-item">Concept to Production</span>
+                </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="skill-card">
+                <p class="skill-card-title">Manufacturing</p>
+                <div class="skill-list">
+                    <span class="skill-item">CNC Mill Operation</span>
+                    <span class="skill-item">Tormach PCNC 1100</span>
+                    <span class="skill-item">CNC Programming</span>
+                    <span class="skill-item">Toolpath Generation</span>
+                    <span class="skill-item">Aluminum Machining</span>
+                </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="skill-card">
+                <p class="skill-card-title">Process</p>
+                <div class="skill-list">
+                    <span class="skill-item">End-to-End Production</span>
+                    <span class="skill-item">Surface Finishing</span>
+                    <span class="skill-item">Dimensional Inspection</span>
+                    <span class="skill-item">Quality Control</span>
+                    <span class="skill-item">Project Leadership</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== BOTTOM NAV ===== -->
+    <nav class="proj-nav">
+        <a href="portfolio.html" class="proj-nav-btn">
+            <span style="font-size:1.1rem; color: rgba(255,255,227,0.4);">&#8592;</span>
+            <span>
+                <span class="proj-nav-label">Back to</span>
+                <span class="proj-nav-title">Portfolio</span>
+            </span>
+        </a>
+    </nav>
+
+    <!-- ===== FOOTER ===== -->
+    <footer id="main-footer">
+        <div class="footer-inner">
+            <p class="footer-name">Aidan Green</p>
+            <p class="footer-tagline">Mechanical Engineering — University of Nevada, Reno</p>
+            <div class="footer-links">
+                <a href="mailto:aidangreen@nevada.unr.edu">Email</a>
+                <a href="https://linkedin.com/in/aidan-green-engineer" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="resume.html">Resume</a>
+            </div>
+            <p class="footer-copy">&copy; 2025 Aidan Green. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- ===== NAV SCRIPT ===== -->
+    <script>
+        (function () {
+            var btn = document.getElementById('hamburger');
+            var links = document.getElementById('nav-links');
+            if (btn && links) {
+                btn.addEventListener('click', function () {
+                    links.classList.toggle('open');
+                    btn.classList.toggle('open');
+                });
+            }
+        })();
+    </script>
+
+</body>
+</html>

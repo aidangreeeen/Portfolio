@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cessna 182 Instrumentation Panel — Aidan Green</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Three.js -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <!--
+    ================================================
+    CESSNA 182 INSTRUMENTATION PANEL — PROJECT PAGE
+    Aircraft: Cessna 182
+    Material: 5052 H32 Aluminum .100"
+    V2 currently in fabrication
+    ================================================
+    -->
+    <style>
+        /* ── PROJECT PAGE — INSTRUMENTATION PANEL ──────────────── */
+
+        /* ── METADATA ROW ── */
+        .proj-meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            border-top: 1px solid rgba(255,255,227,0.1);
+            margin-top: 2.5rem;
+        }
+
+        .proj-meta-item {
+            display: flex;
+            flex-direction: column;
+            padding: 0.9rem 2.5rem 0.9rem 0;
+            margin-right: 2.5rem;
+            border-right: 1px solid rgba(255,255,227,0.08);
+        }
+
+        .proj-meta-item:last-child {
+            border-right: none;
+            margin-right: 0;
+        }
+
+        .proj-meta-key {
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: rgba(255,255,227,0.35);
+            margin-bottom: 0.3rem;
+        }
+
+        .proj-meta-val {
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--cream);
+        }
+
+        /* ── HERO IMAGE ── */
+        .project-hero-image {
+            position: relative;
+            width: 100%;
+            max-height: 520px;
+            overflow: hidden;
+        }
+
+        .project-hero-image img {
+            width: 100%;
+            height: 520px;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+
+        .project-hero-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.25rem 2rem;
+            background: linear-gradient(transparent, rgba(10,10,8,0.72));
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+        }
+
+        .caption-tag {
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--accent);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .caption-text {
+            font-size: 0.8rem;
+            color: rgba(255,255,227,0.65);
+        }
+
+        /* ── SECTION CONTAINERS ── */
+        .proj-section {
+            padding: 5rem 4rem;
+        }
+
+        .proj-section.dark {
+            background-color: var(--dark);
+            color: var(--cream);
+        }
+
+        .proj-section-header {
+            margin-bottom: 3rem;
+        }
+
+        .proj-section.dark .section-title {
+            color: var(--cream);
+        }
+
+        /* ── OVERVIEW ── */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .overview-desc {
+            font-size: 0.95rem;
+            line-height: 1.88;
+            color: rgba(26,26,15,0.72);
+        }
+
+        .overview-desc p + p {
+            margin-top: 1.25rem;
+        }
+
+        .specs-card {
+            background-color: var(--dark);
+            color: var(--cream);
+            padding: 2rem;
+        }
+
+        .specs-card-title {
+            font-family: var(--font-display);
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: rgba(255,255,227,0.32);
+            margin-bottom: 1.25rem;
+        }
+
+        .specs-row {
+            display: flex;
+            gap: 1rem;
+            padding: 0.65rem 0;
+            border-bottom: 1px solid rgba(255,255,227,0.07);
+            align-items: baseline;
+        }
+
+        .specs-row:first-of-type {
+            border-top: 1px solid rgba(255,255,227,0.07);
+        }
+
+        .specs-key {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--accent);
+            min-width: 100px;
+            flex-shrink: 0;
+        }
+
+        .specs-val {
+            font-size: 0.82rem;
+            color: rgba(255,255,227,0.6);
+            line-height: 1.6;
+        }
+
+        .specs-val ul {
+            list-style: none;
+            margin: 0.3rem 0 0;
+            padding: 0;
+        }
+
+        .specs-val ul li {
+            padding: 0.15rem 0;
+        }
+
+        .specs-val ul li::before {
+            content: '· ';
+            color: var(--accent);
+        }
+
+        /* ── 3D MODEL VIEWER ── */
+        .single-viewer {
+            position: relative;
+            height: 500px;
+            background-color: #09090a;
+            overflow: hidden;
+        }
+
+        .single-viewer canvas {
+            display: block;
+        }
+
+        .model-loading {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-size: 0.65rem;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: var(--accent);
+            pointer-events: none;
+        }
+
+        .viewer-label {
+            font-family: var(--font-display);
+            font-size: 0.65rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(255,255,227,0.4);
+            padding: 0.75rem 0;
+            border-top: 1px solid rgba(255,255,227,0.07);
+            text-align: center;
+        }
+
+        /* ── PHASE TIMELINE ── */
+        .phase-timeline {
+            position: relative;
+            padding-left: 3rem;
+            margin-top: 1rem;
+        }
+
+        .phase-timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #CE8946;
+        }
+
+        .phase-entry {
+            position: relative;
+            margin-bottom: 3.5rem;
+        }
+
+        .phase-entry:last-child {
+            margin-bottom: 0;
+        }
+
+        .phase-node {
+            position: absolute;
+            left: -3rem;
+            top: 0.15rem;
+            width: 20px;
+            height: 20px;
+            background: #CE8946;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .phase-label {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #CE8946;
+            margin-bottom: 0.4rem;
+            display: block;
+        }
+
+        .phase-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.2rem, 2.5vw, 1.75rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--cream);
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .phase-desc {
+            font-size: 0.88rem;
+            line-height: 1.8;
+            color: rgba(255,255,227,0.55);
+            margin-bottom: 1.25rem;
+            max-width: 68ch;
+        }
+
+        .phase-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            max-width: 60ch;
+        }
+
+        .phase-action {
+            display: flex;
+            align-items: baseline;
+            gap: 0.75rem;
+            padding: 0.55rem 0;
+            border-bottom: 1px solid rgba(255,255,227,0.06);
+            font-size: 0.82rem;
+            color: rgba(255,255,227,0.65);
+        }
+
+        .phase-action:first-child {
+            border-top: 1px solid rgba(255,255,227,0.06);
+        }
+
+        .phase-action-arrow {
+            color: #CE8946;
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            flex-shrink: 0;
+        }
+
+        /* ── V2 STATUS CARD ── */
+        .v2-card {
+            border-left: 3px solid var(--accent);
+            background-color: var(--dark);
+            padding: 2.5rem 3rem;
+            position: relative;
+        }
+
+        .v2-status-badge {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-family: var(--font-display);
+            font-size: 0.62rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 0.3rem 0.8rem;
+        }
+
+        .v2-pulse-dot {
+            width: 7px;
+            height: 7px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse-dot 1.6s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50%       { opacity: 0.35; transform: scale(0.6); }
+        }
+
+        .v2-desc {
+            font-size: 0.92rem;
+            line-height: 1.8;
+            color: rgba(255,255,227,0.65);
+            margin-bottom: 1.75rem;
+            max-width: 65ch;
+        }
+
+        .v2-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+        }
+
+        .v2-list li {
+            font-size: 0.85rem;
+            color: rgba(255,255,227,0.75);
+            padding-left: 1.2rem;
+            position: relative;
+        }
+
+        .v2-list li::before {
+            content: '·';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-size: 1rem;
+            line-height: 1.4;
+        }
+
+        /* ── GALLERY ── */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.6rem;
+            margin-top: 3rem;
+        }
+
+        .gallery-item {
+            overflow: hidden;
+        }
+
+        .gallery-img {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            cursor: pointer;
+            display: block;
+            transition: transform 0.28s ease;
+        }
+
+        .gallery-img:hover {
+            transform: scale(1.03);
+        }
+
+        /* ── LIGHTBOX ── */
+        .lightbox-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.92);
+            z-index: 2000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lb-img-wrap {
+            max-width: 90vw;
+            max-height: 80vh;
+        }
+
+        .lb-img-wrap img {
+            max-width: 90vw;
+            max-height: 80vh;
+            object-fit: contain;
+            display: block;
+        }
+
+        .lb-caption {
+            font-family: var(--font-display);
+            font-size: 0.62rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255,255,227,0.38);
+            margin-top: 1.25rem;
+            text-align: center;
+        }
+
+        .lb-close {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: none;
+            border: 1px solid rgba(255,255,227,0.2);
+            color: var(--cream);
+            font-size: 1.1rem;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            transition: border-color 0.2s;
+        }
+
+        .lb-close:hover { border-color: var(--accent); color: var(--accent); }
+
+        .lb-prev,
+        .lb-next {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: 1px solid rgba(255,255,227,0.18);
+            color: var(--cream);
+            font-size: 1rem;
+            width: 44px;
+            height: 44px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .lb-prev { left: 1.5rem; }
+        .lb-next { right: 1.5rem; }
+        .lb-prev:hover,
+        .lb-next:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* ── SKILLS ── */
+        .skills-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .skill-card {
+            background-color: var(--dark);
+            padding: 2rem;
+            color: var(--cream);
+        }
+
+        .skill-card-title {
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--accent);
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(255,255,227,0.09);
+        }
+
+        .skill-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .skill-item {
+            font-size: 0.82rem;
+            color: rgba(255,255,227,0.6);
+            padding: 0.45rem 0;
+            border-bottom: 1px solid rgba(255,255,227,0.05);
+        }
+
+        .skill-item:last-child { border-bottom: none; }
+
+        /* ── BOTTOM NAV ── */
+        .proj-nav {
+            background-color: var(--dark);
+            padding: 3rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            border-top: 1px solid rgba(255,255,227,0.06);
+        }
+
+        .proj-nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            padding: 1rem 1.75rem;
+            border: 1px solid rgba(255,255,227,0.18);
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .proj-nav-btn:hover {
+            border-color: var(--accent);
+        }
+
+        .proj-nav-btn:hover .proj-nav-title {
+            color: var(--accent);
+        }
+
+        .proj-nav-label {
+            display: block;
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: rgba(255,255,227,0.32);
+            margin-bottom: 0.3rem;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 300;
+        }
+
+        .proj-nav-title {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--cream);
+            transition: color 0.2s;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1023px) {
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 767px) {
+            .project-hero-image { max-height: 300px; }
+            .project-hero-image img { height: 300px; }
+            .proj-section { padding: 3.5rem 1.5rem; }
+            .proj-meta-row { flex-wrap: wrap; }
+            .proj-meta-item { padding: 0.7rem 1.5rem 0.7rem 0; margin-right: 1.5rem; }
+            .overview-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+            .single-viewer { height: 320px; }
+            .phase-timeline { padding-left: 2rem; }
+            .phase-node { left: -2rem; }
+            .v2-card { padding: 2rem 1.5rem; }
+            .v2-status-badge { position: static; margin-bottom: 1.25rem; display: inline-flex; }
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+            .skills-cards { grid-template-columns: 1fr; }
+            .proj-nav { flex-direction: column; align-items: stretch; padding: 2.5rem 1.5rem; }
+        }
+
+        @media (max-width: 480px) {
+            .gallery-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAV ===== -->
+    <nav id="main-nav">
+        <a href="index.html" class="nav-logo">Aidan Green</a>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="portfolio.html" class="nav-active">Portfolio</a></li>
+            <li><a href="resume.html">Resume</a></li>
+            <li><a href="skills.html">Skills</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- ===== PAGE HEADER ===== -->
+    <header class="page-hero">
+        <span class="page-label">// Aerospace &nbsp;&middot;&nbsp; 02</span>
+        <h1 class="page-title">Cessna 182<br>Instrumentation Panel</h1>
+        <p class="page-subtitle">Full Panel Redesign &mdash; Ergonomics, Reliability &amp; Modern Avionics</p>
+        <div class="proj-meta-row">
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Year</span>
+                <span class="proj-meta-val">2025</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Category</span>
+                <span class="proj-meta-val">Aerospace</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Aircraft</span>
+                <span class="proj-meta-val">Cessna 182</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Material</span>
+                <span class="proj-meta-val">5052 H32 Aluminum (.100&quot;)</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Software</span>
+                <span class="proj-meta-val">SolidWorks &nbsp;&middot;&nbsp; Artec Studio</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Status</span>
+                <span class="proj-meta-val">Complete &nbsp;&middot;&nbsp; V2 In Fabrication</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== HERO IMAGE ===== -->
+    <div class="project-hero-image">
+        <img src="Assets/installed.jpeg"
+             alt="Cessna 182 Instrumentation Panel — Installed"
+             loading="lazy">
+        <div class="project-hero-caption">
+            <span class="caption-tag">// Installed</span>
+            <span class="caption-text">
+                Completed panel installed in Cessna 182 &mdash; 2025
+            </span>
+        </div>
+    </div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main>
+
+        <!-- ── SECTION 1: OVERVIEW ── -->
+        <section class="proj-section">
+            <div class="proj-section-header">
+                <span class="section-eyebrow">// Overview</span>
+            </div>
+            <div class="overview-grid">
+
+                <div class="overview-desc">
+                    <p>
+                        A full redesign of the instrumentation panel for a Cessna 182
+                        to improve flight efficiency, ergonomics, and reliability.
+                        Key upgrades included repositioning the compass to eliminate
+                        magnetic interference and lag, designing a custom L-bracket
+                        to mount a Molex USB Type-A/C port, and removing redundant
+                        analog systems in favor of a modern iPad-based Garmin Flight
+                        Instruments setup.
+                    </p>
+                    <p>
+                        The layout of the Airspeed Indicator, Horizontal Situation
+                        Indicator, and Course Deviation Indicator were reconfigured
+                        for a more intuitive and safer flight experience. Engine
+                        monitoring capability was enhanced by integrating a new
+                        JPI 730 Piston Advisory Instrument to replace aging hardware.
+                        An ELT Switch was also added to the panel.
+                    </p>
+                    <p>
+                        This redesign modernizes the cockpit layout while improving
+                        situational awareness, reliability, and overall pilot experience.
+                    </p>
+                </div>
+
+                <div class="specs-card">
+                    <div class="specs-card-title">Key Specs</div>
+                    <div class="specs-row">
+                        <span class="specs-key">Aircraft</span>
+                        <span class="specs-val">Cessna 182</span>
+                    </div>
+                    <div class="specs-row">
+                        <span class="specs-key">Material</span>
+                        <span class="specs-val">5052 H32 Aluminum (.100&quot;)</span>
+                    </div>
+                    <div class="specs-row">
+                        <span class="specs-key">Software</span>
+                        <span class="specs-val">SolidWorks &nbsp;&middot;&nbsp; Artec Studio</span>
+                    </div>
+                    <div class="specs-row">
+                        <span class="specs-key">Key Upgrades</span>
+                        <span class="specs-val">
+                            <ul>
+                                <li>Compass repositioned &mdash; eliminates magnetic interference</li>
+                                <li>Custom L-bracket &mdash; Molex USB Type-A/C port</li>
+                                <li>iPad-based Garmin Flight Instruments</li>
+                                <li>JPI 730 Piston Advisory Instrument</li>
+                                <li>Reconfigured ASI &nbsp;&middot;&nbsp; HSI &nbsp;&middot;&nbsp; CDI layout</li>
+                                <li>ELT Switch added</li>
+                            </ul>
+                        </span>
+                    </div>
+                    <div class="specs-row">
+                        <span class="specs-key">Status</span>
+                        <span class="specs-val">Complete &nbsp;&middot;&nbsp; V2 In Fabrication</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ── SECTION 2: 3D MODEL ── -->
+        <section class="proj-section dark">
+            <div class="proj-section-header">
+                <span class="section-eyebrow">// 3D Asset</span>
+                <h2 class="section-title">Panel Model</h2>
+            </div>
+            <div id="panel-viewer" class="single-viewer">
+                <div class="model-loading">Loading Model...</div>
+            </div>
+            <div class="viewer-label">Front Panel &mdash; SolidWorks Assembly</div>
+        </section>
+
+        <!-- ── SECTION 3: BUILD LOG ── -->
+        <section class="proj-section dark">
+            <div class="proj-section-header">
+                <span class="section-eyebrow">// Build Log</span>
+                <h2 class="section-title">Build Log</h2>
+            </div>
+            <div class="phase-timeline">
+
+                <!-- PHASE 01 -->
+                <div class="phase-entry">
+                    <div class="phase-node"></div>
+                    <span class="phase-label">Phase 01</span>
+                    <h3 class="phase-title">Document Existing Panel</h3>
+                    <p class="phase-desc">
+                        Performed a full survey of the existing Cessna 182 panel
+                        layout using Artec Studio 3D scanning to capture precise
+                        geometry, component positions, and spatial constraints.
+                        Documented all existing instruments, switches, and wiring runs.
+                    </p>
+                    <div class="phase-actions">
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            3D scanned existing panel with Artec Studio
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            Catalogued all existing instruments and avionics
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            Identified interference issues with compass placement
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            Documented wiring layout and spatial constraints
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PHASE 02 -->
+                <div class="phase-entry">
+                    <div class="phase-node"></div>
+                    <span class="phase-label">Phase 02</span>
+                    <h3 class="phase-title">Identify Upgrade Requirements</h3>
+                    <p class="phase-desc">
+                        Evaluated the existing layout against modern avionics
+                        standards and pilot ergonomics best practices. Identified
+                        redundant analog systems, interference sources, and
+                        opportunities to improve situational awareness and reliability.
+                    </p>
+                    <div class="phase-actions">
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            Identified magnetic interference affecting compass
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            Flagged redundant analog systems for removal
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            Specified iPad-based Garmin Flight Instruments upgrade
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            Defined JPI 730 integration requirements
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            Established ergonomic layout goals for ASI, HSI, CDI
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PHASE 03 -->
+                <div class="phase-entry">
+                    <div class="phase-node"></div>
+                    <span class="phase-label">Phase 03</span>
+                    <h3 class="phase-title">SolidWorks Design</h3>
+                    <p class="phase-desc">
+                        Designed the full replacement panel in SolidWorks using
+                        the 3D scan data as a reference. Modeled all cutouts,
+                        mounting features, and the custom L-bracket for the
+                        Molex USB Type-A/C port. Material specified as
+                        5052 H32 Aluminum at .100&quot; thickness.
+                    </p>
+                    <div class="phase-actions">
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            Modeled full panel in SolidWorks from scan reference
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            Designed custom L-bracket for Molex USB Type-A/C port
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            Laid out reconfigured ASI, HSI, CDI positions
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            Repositioned compass to eliminate interference
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            Specified 5052 H32 Aluminum .100&quot; material
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            Created full engineering drawings for fabrication
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PHASE 04 -->
+                <div class="phase-entry">
+                    <div class="phase-node"></div>
+                    <span class="phase-label">Phase 04</span>
+                    <h3 class="phase-title">Fabrication</h3>
+                    <p class="phase-desc">
+                        Panel fabricated from 5052 H32 Aluminum sheet at .100&quot;
+                        thickness. All cutouts and mounting holes machined to
+                        engineering drawing specifications.
+                    </p>
+                    <div class="phase-actions">
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            Material sourced: 5052 H32 Aluminum .100&quot;
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            Panel cut and machined to SolidWorks drawing
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            All instrument cutouts verified to spec
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            Custom L-bracket fabricated and fitted
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            Surface finish applied
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PHASE 05 -->
+                <div class="phase-entry">
+                    <div class="phase-node"></div>
+                    <span class="phase-label">Phase 05</span>
+                    <h3 class="phase-title">Mount and Wire Components</h3>
+                    <p class="phase-desc">
+                        All avionics and instruments mounted and wired to
+                        the new panel. iPad mount, Garmin Flight Instruments,
+                        JPI 730, repositioned compass, and Molex USB port
+                        all installed and connected.
+                    </p>
+                    <div class="phase-actions">
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            Mounted iPad-based Garmin Flight Instruments
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            Installed JPI 730 Piston Advisory Instrument
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            Wired Molex USB Type-A/C port via custom L-bracket
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            Repositioned compass &mdash; interference eliminated
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            Reconfigured ASI, HSI, CDI to new layout
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            Added ELT Switch to panel
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PHASE 06 -->
+                <div class="phase-entry">
+                    <div class="phase-node"></div>
+                    <span class="phase-label">Phase 06</span>
+                    <h3 class="phase-title">Test and Validate</h3>
+                    <p class="phase-desc">
+                        Completed panel installed in aircraft and validated
+                        against all design objectives. Compass accuracy
+                        confirmed, all instruments operational, and pilot
+                        ergonomics verified in-cockpit.
+                    </p>
+                    <div class="phase-actions">
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            Installed completed panel in Cessna 182
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            Validated compass accuracy post-repositioning
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            Confirmed all instruments and avionics operational
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            Verified USB port functionality
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            Pilot ergonomics review completed
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            Panel signed off for flight operations
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ── SECTION 4: VERSION 2 ── -->
+        <section class="proj-section dark" style="border-top: 1px solid rgba(255,255,227,0.05);">
+            <div class="proj-section-header">
+                <span class="section-eyebrow">// V2</span>
+                <h2 class="section-title">Version 2 &mdash; Currently In Fabrication</h2>
+            </div>
+            <div class="v2-card">
+                <div class="v2-status-badge">
+                    <span class="v2-pulse-dot"></span>
+                    In Fabrication
+                </div>
+                <p class="v2-desc">
+                    A second iteration of the panel is currently being
+                    fabricated incorporating lessons learned from Version 1
+                    and additional upgrades requested after initial flight testing.
+                </p>
+                <ul class="v2-list">
+                    <li>New ELT Switch integration</li>
+                    <li>Minor instrument cluster repositioning for further ergonomic refinement</li>
+                    <li>Upgrade to glide slope capability</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ── SECTION 5: GALLERY ── -->
+        <section class="proj-section dark" style="border-top: 1px solid rgba(255,255,227,0.05);">
+            <div class="proj-section-header">
+                <span class="section-eyebrow">// Gallery</span>
+                <h2 class="section-title">Build Gallery</h2>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="Assets/installed.jpeg" alt="Installed Panel" class="gallery-img" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="Assets/panel.jpeg" alt="New Panel" class="gallery-img" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="Assets/old-panel.jpeg" alt="Original Panel" class="gallery-img" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="Assets/cluster.jpeg" alt="Instrument Cluster" class="gallery-img" loading="lazy">
+                </div>
+            </div>
+        </section>
+
+        <!-- ── SECTION 6: SKILLS ── -->
+        <section class="proj-section">
+            <div class="proj-section-header">
+                <span class="section-eyebrow">// Skills</span>
+                <h2 class="section-title">Skills Demonstrated</h2>
+            </div>
+            <div class="skills-cards">
+
+                <div class="skill-card">
+                    <h3 class="skill-card-title">Engineering &amp; Design</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">Avionics Layout Design</span>
+                        <span class="skill-item">Ergonomics &amp; Human Factors</span>
+                        <span class="skill-item">3D Scanning &mdash; Artec Studio</span>
+                        <span class="skill-item">SolidWorks Modeling</span>
+                        <span class="skill-item">Engineering Drawings</span>
+                    </div>
+                </div>
+
+                <div class="skill-card">
+                    <h3 class="skill-card-title">Fabrication</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">5052 H32 Aluminum Sheet</span>
+                        <span class="skill-item">Precision Machining</span>
+                        <span class="skill-item">Custom Bracket Fabrication</span>
+                        <span class="skill-item">Panel Integration</span>
+                    </div>
+                </div>
+
+                <div class="skill-card">
+                    <h3 class="skill-card-title">Avionics &amp; Systems</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">Garmin Flight Instruments</span>
+                        <span class="skill-item">JPI 730 Integration</span>
+                        <span class="skill-item">Compass Interference Resolution</span>
+                        <span class="skill-item">Molex USB Port Design</span>
+                        <span class="skill-item">ELT Switch Integration</span>
+                        <span class="skill-item">ASI &nbsp;&middot;&nbsp; HSI &nbsp;&middot;&nbsp; CDI Configuration</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===== LIGHTBOX ===== -->
+    <div id="lightbox" class="lightbox-overlay">
+        <button class="lb-close" id="lb-close">&times;</button>
+        <button class="lb-prev" id="lb-prev">&#8592;</button>
+        <button class="lb-next" id="lb-next">&#8594;</button>
+        <div class="lb-img-wrap">
+            <img id="lb-img" src="" alt="">
+        </div>
+        <p class="lb-caption" id="lb-caption"></p>
+    </div>
+
+    <!-- ===== BOTTOM NAVIGATION ===== -->
+    <nav class="proj-nav">
+        <a href="portfolio.html" class="proj-nav-btn">
+            <span>
+                <span class="proj-nav-label">Back</span>
+                <span class="proj-nav-title">&larr; Portfolio</span>
+            </span>
+        </a>
+        <a href="limit-switch.html" class="proj-nav-btn">
+            <span>
+                <span class="proj-nav-label">Previous Project</span>
+                <span class="proj-nav-title">&larr; Limit Switch Bracket</span>
+            </span>
+        </a>
+    </nav>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="footer-inner">
+            <div>
+                <p class="footer-name">Aidan Green</p>
+                <p class="footer-degree">M.S. Aerospace Engineering &nbsp;&middot;&nbsp; University of Nevada, Reno</p>
+            </div>
+            <div class="footer-right">
+                <div class="footer-links">
+                    <a href="mailto:aidangreeeen@gmail.com">Email</a>
+                    <a href="https://www.linkedin.com/in/aidangreeeen/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a href="portfolio.html">Portfolio</a>
+                    <a href="#">Resume</a>
+                </div>
+                <p class="footer-copy">&copy; 2025 Aidan Green. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== JS ===== -->
+    <script>
+        /* ---- mobile nav toggle ---- */
+        var hamburger = document.getElementById('hamburger');
+        var navLinks  = document.getElementById('nav-links');
+
+        hamburger.addEventListener('click', function () {
+            navLinks.classList.toggle('open');
+        });
+
+        navLinks.querySelectorAll('a').forEach(function (link) {
+            link.addEventListener('click', function () { navLinks.classList.remove('open'); });
+        });
+
+        /* ---- nav shadow on scroll ---- */
+        var mainNav = document.getElementById('main-nav');
+        window.addEventListener('scroll', function () {
+            mainNav.style.boxShadow = window.scrollY > 20
+                ? '0 2px 24px rgba(26,26,15,0.09)'
+                : 'none';
+        }, { passive: true });
+
+        /* ---- Three.js model viewer ---- */
+        (function () {
+            var container = document.getElementById('panel-viewer');
+            if (!container) return;
+
+            var loadingEl = container.querySelector('.model-loading');
+
+            var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.toneMapping = THREE.NoToneMapping;
+            renderer.toneMappingExposure = 1.0;
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            renderer.setClearColor(0x000000, 0);
+            container.appendChild(renderer.domElement);
+
+            var scene = new THREE.Scene();
+            scene.background = null;
+            scene.environment = null;
+
+            var camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+            camera.position.set(0, 0, 5);
+
+            var controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.autoRotate      = true;
+            controls.autoRotateSpeed = 1.2;
+            controls.enableDamping   = true;
+            controls.dampingFactor   = 0.05;
+            controls.enableZoom      = false;
+            controls.enablePan       = false;
+            controls.target.set(0, 0, 0);
+            controls.update();
+
+            var rotateTimer;
+            controls.addEventListener('start', function () {
+                controls.autoRotate = false;
+                clearTimeout(rotateTimer);
+            });
+            controls.addEventListener('end', function () {
+                rotateTimer = setTimeout(function () { controls.autoRotate = true; }, 3000);
+            });
+
+            scene.add(new THREE.AmbientLight(0xFFFFE3, 0.4));
+
+            var keyLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            keyLight.position.set(5, 8, 5);
+            scene.add(keyLight);
+
+            var fillLight = new THREE.DirectionalLight(0xCE8946, 0.3);
+            fillLight.position.set(-4, 2, -4);
+            scene.add(fillLight);
+
+            var rimLight = new THREE.DirectionalLight(0x333333, 0.4);
+            rimLight.position.set(-2, -4, -2);
+            scene.add(rimLight);
+
+            var loader = new THREE.GLTFLoader();
+            loader.load(
+                'Models/front-panel.glb',
+                function (gltf) {
+                    var box    = new THREE.Box3().setFromObject(gltf.scene);
+                    var center = box.getCenter(new THREE.Vector3());
+                    var size   = box.getSize(new THREE.Vector3());
+                    var maxDim = Math.max(size.x, size.y, size.z);
+                    var scale  = 3.0 / maxDim;
+                    gltf.scene.scale.setScalar(scale);
+                    gltf.scene.position.sub(center.multiplyScalar(scale));
+
+                    gltf.scene.traverse(function (child) {
+                        if (child.isMesh) {
+                            var mats = Array.isArray(child.material)
+                                ? child.material
+                                : [child.material];
+                            mats.forEach(function (mat) {
+                                mat.metalness       = 0.7;
+                                mat.roughness       = 0.35;
+                                mat.envMapIntensity = 0.0;
+                                mat.needsUpdate     = true;
+                            });
+                        }
+                    });
+
+                    scene.add(gltf.scene);
+
+                    camera.position.set(0, 0, 5);
+                    camera.lookAt(0, 0, 0);
+                    controls.target.set(0, 0, 0);
+                    controls.update();
+
+                    if (loadingEl) loadingEl.remove();
+                },
+                undefined,
+                function (error) {
+                    console.error('GLB load error:', error);
+                    if (loadingEl) loadingEl.textContent = 'MODEL UNAVAILABLE';
+                }
+            );
+
+            function resize() {
+                var w = container.clientWidth;
+                var h = container.clientHeight;
+                if (!w || !h) return;
+                camera.aspect = w / h;
+                camera.updateProjectionMatrix();
+                renderer.setSize(w, h);
+            }
+            window.addEventListener('resize', resize, { passive: true });
+            resize();
+
+            function animate() {
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene, camera);
+            }
+            animate();
+        }());
+
+        /* ---- Lightbox ---- */
+        (function () {
+            var galleryImages = [
+                { src: 'Assets/installed.jpeg', caption: 'Installed Panel' },
+                { src: 'Assets/panel.jpeg',     caption: 'New Panel' },
+                { src: 'Assets/old-panel.jpeg', caption: 'Original Panel' },
+                { src: 'Assets/cluster.jpeg',   caption: 'Instrument Cluster' }
+            ];
+
+            var overlay   = document.getElementById('lightbox');
+            var lbImg     = document.getElementById('lb-img');
+            var lbCaption = document.getElementById('lb-caption');
+            var currentIdx = 0;
+
+            function openLightbox(idx) {
+                currentIdx = idx;
+                lbImg.src  = galleryImages[idx].src;
+                lbCaption.textContent = galleryImages[idx].caption;
+                overlay.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeLightbox() {
+                overlay.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+
+            function showPrev() {
+                currentIdx = (currentIdx - 1 + galleryImages.length) % galleryImages.length;
+                lbImg.src  = galleryImages[currentIdx].src;
+                lbCaption.textContent = galleryImages[currentIdx].caption;
+            }
+
+            function showNext() {
+                currentIdx = (currentIdx + 1) % galleryImages.length;
+                lbImg.src  = galleryImages[currentIdx].src;
+                lbCaption.textContent = galleryImages[currentIdx].caption;
+            }
+
+            document.querySelectorAll('.gallery-img').forEach(function (img, idx) {
+                img.addEventListener('click', function () { openLightbox(idx); });
+            });
+
+            document.getElementById('lb-close').addEventListener('click', closeLightbox);
+            document.getElementById('lb-prev').addEventListener('click', showPrev);
+            document.getElementById('lb-next').addEventListener('click', showNext);
+
+            overlay.addEventListener('click', function (e) {
+                if (e.target === overlay) closeLightbox();
+            });
+
+            document.addEventListener('keydown', function (e) {
+                if (overlay.style.display === 'none' || !overlay.style.display) return;
+                if (e.key === 'Escape')     closeLightbox();
+                if (e.key === 'ArrowLeft')  showPrev();
+                if (e.key === 'ArrowRight') showNext();
+            });
+        }());
+    </script>
+
+</body>
+</html>

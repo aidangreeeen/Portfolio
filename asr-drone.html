@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avalanche Search &amp; Rescue Drone — Aidan Green</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Three.js -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <!--
+    ================================================
+    ASR DRONE — PROJECT PAGE
+    Platform: PX4 X500 v2
+    Status: Hardware complete · Algorithm in development
+    Field testing: Summer 2026
+    Model: Models/ASR_Drone.glb
+    ================================================
+    -->
+    <style>
+        /* ── PROJECT PAGE — ASR DRONE ──────────────── */
+
+        /* ── METADATA ROW ── */
+        .proj-meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            border-top: 1px solid rgba(255,255,227,0.1);
+            margin-top: 2.5rem;
+        }
+
+        .proj-meta-item {
+            display: flex;
+            flex-direction: column;
+            padding: 0.9rem 2.5rem 0.9rem 0;
+            margin-right: 2.5rem;
+            border-right: 1px solid rgba(255,255,227,0.08);
+        }
+
+        .proj-meta-item:last-child {
+            border-right: none;
+            margin-right: 0;
+        }
+
+        .proj-meta-key {
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: rgba(255,255,227,0.35);
+            margin-bottom: 0.3rem;
+        }
+
+        .proj-meta-val {
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--cream);
+        }
+
+        /* ── SECTION CONTAINERS ── */
+        .proj-section {
+            padding: 5rem 4rem;
+        }
+
+        .proj-section.dark {
+            background-color: var(--dark);
+            color: var(--cream);
+        }
+
+        .proj-section-header {
+            margin-bottom: 3rem;
+        }
+
+        .proj-section.dark .section-title {
+            color: var(--cream);
+        }
+
+        /* ── OVERVIEW ── */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .overview-desc {
+            font-size: 0.95rem;
+            line-height: 1.88;
+            color: rgba(26,26,15,0.72);
+        }
+
+        .overview-desc p + p {
+            margin-top: 1.25rem;
+        }
+
+        .specs-card {
+            background-color: var(--dark);
+            color: var(--cream);
+            padding: 2rem;
+        }
+
+        .specs-card-title {
+            font-family: var(--font-display);
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: rgba(255,255,227,0.32);
+            margin-bottom: 1.25rem;
+        }
+
+        .specs-row {
+            display: flex;
+            gap: 1rem;
+            padding: 0.65rem 0;
+            border-bottom: 1px solid rgba(255,255,227,0.07);
+            align-items: baseline;
+        }
+
+        .specs-row:first-of-type {
+            border-top: 1px solid rgba(255,255,227,0.07);
+        }
+
+        .specs-key {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--accent);
+            min-width: 120px;
+            flex-shrink: 0;
+        }
+
+        .specs-val {
+            font-size: 0.82rem;
+            color: rgba(255,255,227,0.6);
+            line-height: 1.6;
+        }
+
+        /* ── 3D VIEWER ── */
+        .single-viewer {
+            position: relative;
+            height: 500px;
+            background-color: #09090a;
+            overflow: hidden;
+        }
+
+        .single-viewer canvas {
+            display: block;
+        }
+
+        .model-loading {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-size: 0.65rem;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: var(--accent);
+            pointer-events: none;
+        }
+
+        .viewer-label {
+            font-family: var(--font-display);
+            font-size: 0.65rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(255,255,227,0.4);
+            padding: 0.75rem 0;
+            border-top: 1px solid rgba(255,255,227,0.07);
+            text-align: center;
+        }
+
+        /* ── PHASE TIMELINE ── */
+        .phase-timeline {
+            position: relative;
+            padding-left: 3rem;
+            margin-top: 1rem;
+        }
+
+        .phase-timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #CE8946;
+        }
+
+        .phase-entry {
+            position: relative;
+            margin-bottom: 3.5rem;
+        }
+
+        .phase-entry:last-child {
+            margin-bottom: 0;
+        }
+
+        .phase-node {
+            position: absolute;
+            left: -3rem;
+            top: 0.15rem;
+            width: 20px;
+            height: 20px;
+            background: #CE8946;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        /* IN PROGRESS pulsing node */
+        .phase-entry.phase-in-progress .phase-node {
+            animation: pulse-node 1.6s ease-in-out infinite;
+        }
+
+        @keyframes pulse-node {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(206,137,70,0.5); }
+            50%       { box-shadow: 0 0 0 6px rgba(206,137,70,0); }
+        }
+
+        .phase-label {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #CE8946;
+            margin-bottom: 0.4rem;
+            display: block;
+        }
+
+        /* IN PROGRESS badge */
+        .phase-badge-active {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-left: 0.75rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.52rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 0.1rem 0.5rem;
+            vertical-align: middle;
+            position: relative;
+            top: -0.05em;
+        }
+
+        .badge-dot {
+            width: 5px;
+            height: 5px;
+            background: var(--accent);
+            border-radius: 50%;
+            flex-shrink: 0;
+            animation: pulse-dot 1.6s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50%       { opacity: 0.35; transform: scale(0.6); }
+        }
+
+        .phase-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.2rem, 2.5vw, 1.75rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--cream);
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .phase-desc {
+            font-size: 0.88rem;
+            line-height: 1.8;
+            color: rgba(255,255,227,0.55);
+            margin-bottom: 1.25rem;
+            max-width: 68ch;
+        }
+
+        .phase-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            max-width: 60ch;
+        }
+
+        .phase-action {
+            display: flex;
+            align-items: baseline;
+            gap: 0.75rem;
+            padding: 0.55rem 0;
+            border-bottom: 1px solid rgba(255,255,227,0.06);
+            font-size: 0.82rem;
+            color: rgba(255,255,227,0.65);
+        }
+
+        .phase-action:first-child {
+            border-top: 1px solid rgba(255,255,227,0.06);
+        }
+
+        .phase-action-arrow {
+            color: #CE8946;
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            flex-shrink: 0;
+        }
+
+        .phase-action.pending {
+            color: rgba(255,255,227,0.28);
+            font-style: italic;
+        }
+
+        .phase-action.pending .phase-action-arrow {
+            color: rgba(206,137,70,0.35);
+        }
+
+        /* ── REDACTED PHASES ── */
+        .phase-redacted {
+            opacity: 0.75;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .phase-redacted .phase-title-bar {
+            position: relative;
+            display: inline-block;
+        }
+
+        .redact {
+            background: #0a0a05;
+            color: transparent;
+            border-radius: 1px;
+            padding: 0 2px;
+            user-select: none;
+            letter-spacing: 0.05em;
+        }
+
+        .redact-block {
+            display: inline-block;
+            background: #0a0a05;
+            height: 1em;
+            vertical-align: middle;
+            border-radius: 1px;
+        }
+
+        .timeline-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-family: var(--font-display);
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            color: #CE8946;
+            border: 1px solid #CE8946;
+            padding: 0.2rem 0.6rem;
+        }
+
+        /* Redacted action rows */
+        .phase-action-redact {
+            height: 0.82em;
+            background: #0a0a05;
+            border-radius: 1px;
+            margin: 0.55rem 0;
+        }
+
+        /* ── VHS GLITCH ANIMATIONS ── */
+        @keyframes vhs-glitch {
+            0%, 30%, 70%, 100% {
+                text-shadow: none;
+                transform: translateX(0) skewX(0);
+                opacity: 1;
+                clip-path: none;
+            }
+            31% {
+                text-shadow:
+                    -6px 0 rgba(255, 80, 0, 0.9),
+                     6px 0 rgba(0, 255, 255, 0.7);
+                transform: translateX(-4px) skewX(-1deg);
+                opacity: 0.85;
+            }
+            33% {
+                text-shadow:
+                    -10px 0 rgba(206, 137, 70, 0.95),
+                      8px 0 rgba(0, 255, 255, 0.6);
+                transform: translateX(5px) skewX(1.5deg);
+                opacity: 0.7;
+                clip-path: inset(10% 0 40% 0);
+            }
+            35% {
+                text-shadow:
+                    -4px 0 rgba(255, 100, 0, 0.8),
+                     4px 0 rgba(0, 200, 255, 0.8),
+                     0 0 20px rgba(206, 137, 70, 0.6);
+                transform: translateX(-3px);
+                opacity: 0.9;
+                clip-path: inset(60% 0 10% 0);
+            }
+            37% {
+                text-shadow: none;
+                transform: translateX(8px) skewX(-0.5deg);
+                opacity: 0.6;
+                clip-path: none;
+            }
+            39% {
+                text-shadow:
+                    -8px 0 rgba(255, 60, 0, 1.0),
+                     6px 0 rgba(0, 255, 200, 0.8);
+                transform: translateX(-6px) skewX(2deg);
+                opacity: 0.8;
+            }
+            41% {
+                text-shadow: none;
+                transform: translateX(0);
+                opacity: 1;
+                clip-path: none;
+            }
+            68% {
+                text-shadow:
+                    -3px 0 rgba(206, 137, 70, 0.7),
+                     3px 0 rgba(0, 255, 255, 0.5);
+                transform: translateX(2px);
+                opacity: 0.9;
+            }
+            69% {
+                text-shadow: none;
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes screen-tear {
+            0%, 48%, 52%, 100% {
+                clip-path: none;
+                transform: translateX(0);
+            }
+            49% {
+                clip-path: inset(20% 0 50% 0);
+                transform: translateX(-8px);
+            }
+            50% {
+                clip-path: inset(55% 0 15% 0);
+                transform: translateX(10px);
+            }
+            51% {
+                clip-path: inset(35% 0 30% 0);
+                transform: translateX(-5px);
+            }
+        }
+
+        @keyframes scanline-drift {
+            0%   { background-position: 0 0; }
+            100% { background-position: 0 100px; }
+        }
+
+        .glitch-text {
+            display: inline;
+            animation:
+                vhs-glitch 5s infinite,
+                screen-tear 9s infinite;
+        }
+
+        .phase-redacted::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.06) 2px,
+                rgba(0, 0, 0, 0.06) 4px
+            );
+            animation: scanline-drift 4s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* ── ALGORITHM CARDS ── */
+        .algorithm-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .algo-card {
+            background-color: rgba(255,255,227,0.04);
+            border: 1px solid rgba(255,255,227,0.07);
+            padding: 2rem;
+        }
+
+        .algo-card-label {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: var(--accent);
+            margin-bottom: 0.9rem;
+        }
+
+        .algo-card-title {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--cream);
+            margin-bottom: 1rem;
+        }
+
+        .algo-card-body {
+            font-size: 0.85rem;
+            line-height: 1.8;
+            color: rgba(255,255,227,0.55);
+        }
+
+        /* ── HARDWARE TABLE ── */
+        .hw-table {
+            margin-top: 3rem;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .hw-row {
+            display: flex;
+            gap: 2rem;
+            padding: 0.9rem 1.5rem;
+            border-bottom: 1px solid rgba(255,255,227,0.06);
+            align-items: baseline;
+        }
+
+        .hw-row:first-child {
+            border-top: 1px solid rgba(255,255,227,0.06);
+        }
+
+        .hw-key {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--accent);
+            min-width: 180px;
+            flex-shrink: 0;
+        }
+
+        .hw-val {
+            font-family: var(--font-display);
+            font-size: 0.82rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: rgba(255,255,227,0.65);
+        }
+
+        /* ── SKILLS ── */
+        .skills-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .skill-card {
+            background-color: var(--dark);
+            padding: 2rem;
+            color: var(--cream);
+        }
+
+        .skill-card-title {
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--accent);
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(255,255,227,0.09);
+        }
+
+        .skill-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .skill-item {
+            font-size: 0.82rem;
+            color: rgba(255,255,227,0.6);
+            padding: 0.45rem 0;
+            border-bottom: 1px solid rgba(255,255,227,0.05);
+        }
+
+        .skill-item:last-child { border-bottom: none; }
+
+        /* ── BOTTOM NAV ── */
+        .proj-nav {
+            background-color: var(--dark);
+            padding: 3rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            border-top: 1px solid rgba(255,255,227,0.06);
+        }
+
+        .proj-nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            padding: 1rem 1.75rem;
+            border: 1px solid rgba(255,255,227,0.18);
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .proj-nav-btn:hover { border-color: var(--accent); }
+
+        .proj-nav-btn:hover .proj-nav-title { color: var(--accent); }
+
+        .proj-nav-label {
+            display: block;
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: rgba(255,255,227,0.32);
+            margin-bottom: 0.3rem;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 300;
+        }
+
+        .proj-nav-title {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--cream);
+            transition: color 0.2s;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1023px) {
+            .algorithm-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 767px) {
+            .proj-section { padding: 3.5rem 1.5rem; }
+            .proj-meta-row { flex-wrap: wrap; }
+            .proj-meta-item { padding: 0.7rem 1.5rem 0.7rem 0; margin-right: 1.5rem; }
+            .overview-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+            .single-viewer { height: 320px; }
+            .phase-timeline { padding-left: 2rem; }
+            .phase-node { left: -2rem; }
+            .algorithm-grid { grid-template-columns: 1fr; }
+            .hw-row { flex-direction: column; gap: 0.3rem; }
+            .hw-key { min-width: auto; }
+            .skills-cards { grid-template-columns: 1fr; }
+            .proj-nav { flex-direction: column; align-items: stretch; padding: 2.5rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAV ===== -->
+    <nav id="main-nav">
+        <a href="index.html" class="nav-logo">Aidan Green</a>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="portfolio.html" class="nav-active">Portfolio</a></li>
+            <li><a href="resume.html">Resume</a></li>
+            <li><a href="skills.html">Skills</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- ===== PAGE HEADER ===== -->
+    <header class="page-hero">
+        <span class="page-label">// Aerospace &nbsp;&middot;&nbsp; 03</span>
+        <h1 class="page-title">Avalanche Search &amp; Rescue Drone</h1>
+        <p class="page-subtitle">Autonomous Aerial System &mdash; 457kHz Beacon Detection</p>
+        <div class="proj-meta-row">
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Year</span>
+                <span class="proj-meta-val">2024 &mdash; Present</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Category</span>
+                <span class="proj-meta-val">Aerospace &nbsp;&middot;&nbsp; Autonomous Systems</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Platform</span>
+                <span class="proj-meta-val">PX4 X500 v2</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Flight Controller</span>
+                <span class="proj-meta-val">Pixhawk 6C</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Companion Computer</span>
+                <span class="proj-meta-val">Raspberry Pi 4</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Software</span>
+                <span class="proj-meta-val">PX4 Autopilot &nbsp;&middot;&nbsp; QGroundControl &nbsp;&middot;&nbsp; MAVSDK-Python</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Status</span>
+                <span class="proj-meta-val">In Development</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== SECTION 1 — OVERVIEW ===== -->
+    <section class="proj-section">
+        <div class="proj-section-header">
+            <span class="section-label">// Overview</span>
+        </div>
+        <div class="overview-grid">
+            <!-- Left: Description -->
+            <div class="overview-desc">
+                <p>An autonomous aerial search and rescue system designed
+                to locate avalanche burial victims using a 457kHz
+                transceiver beacon. The drone implements a multi-phase
+                search strategy — beginning with a lawnmower grid search
+                pattern to cover the search area, transitioning to
+                gradient ascent signal following as the beacon signal
+                strengthens, and finalizing with a 4-point bracketing
+                fine search modeled on real SAR beacon protocol.</p>
+
+                <p>The hardware stack is built on a PX4 X500 v2 airframe
+                with a Pixhawk 6C flight controller and Raspberry Pi 4
+                companion computer. Flight algorithms are developed in
+                MAVSDK-Python and tested in PX4 SITL simulation via
+                QGroundControl before deployment on the physical vehicle.</p>
+            </div>
+
+            <!-- Right: Key Specs -->
+            <div class="specs-card">
+                <p class="specs-card-title">// Key Specifications</p>
+                <div class="specs-row">
+                    <span class="specs-key">Airframe</span>
+                    <span class="specs-val">PX4 X500 v2</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">Flight Controller</span>
+                    <span class="specs-val">Pixhawk 6C</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">Companion Computer</span>
+                    <span class="specs-val">Raspberry Pi 4</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">Beacon Frequency</span>
+                    <span class="specs-val">457kHz</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">Search Pattern</span>
+                    <span class="specs-val">Lawnmower Grid &rarr; Gradient Ascent &rarr; 4-Point Bracketing</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">Algorithm</span>
+                    <span class="specs-val">MAVSDK-Python</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">Simulation</span>
+                    <span class="specs-val">PX4 SITL &nbsp;&middot;&nbsp; QGroundControl</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-key">Status</span>
+                    <span class="specs-val">Hardware Complete &nbsp;&middot;&nbsp; Algorithm In Development</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 2 — 3D MODEL ===== -->
+    <section class="proj-section dark">
+        <div class="proj-section-header">
+            <span class="section-label" style="color: rgba(255,255,227,0.4);">// 3D Asset</span>
+            <h2 class="section-title" style="color: var(--cream); margin-top: 0.5rem;">Drone Assembly</h2>
+        </div>
+        <div class="single-viewer" id="drone-container">
+            <div class="model-loading" id="drone-loading">LOADING MODEL...</div>
+        </div>
+        <p class="viewer-label">ASR Drone &mdash; PX4 X500 v2 Assembly</p>
+    </section>
+
+    <!-- ===== SECTION 3 — BUILD LOG ===== -->
+    <section class="proj-section dark" style="padding-top: 2rem;">
+        <div style="border-top: 1px solid rgba(255,255,227,0.06); padding-top: 5rem;">
+            <div class="proj-section-header">
+                <span class="section-label" style="color: rgba(255,255,227,0.4);">// Build Log</span>
+                <h2 class="section-title" style="color: var(--cream); margin-top: 0.5rem;">Build Log</h2>
+            </div>
+            <div class="phase-timeline">
+
+                <!-- PHASE 01 — SYSTEM ARCHITECTURE -->
+                <div class="phase-entry">
+                    <div class="phase-node"></div>
+                    <span class="phase-label">Phase 01</span>
+                    <h3 class="phase-title">System Architecture</h3>
+                    <p class="phase-desc">Defined the full system architecture for the
+                    autonomous search and rescue platform. Selected
+                    hardware stack, established communication protocols
+                    between flight controller and companion computer,
+                    and defined the multi-phase search algorithm strategy.</p>
+                    <div class="phase-actions">
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span>Selected PX4 X500 v2 airframe for stability and payload</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span>Specified Pixhawk 6C as flight controller</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span>Selected Raspberry Pi 4 as companion computer</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span>Defined 457kHz beacon detection as mission sensor</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span>Established MAVSDK-Python as algorithm framework</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span>Designed three-phase search strategy</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PHASE 02 — HARDWARE ASSEMBLY -->
+                <div class="phase-entry">
+                    <div class="phase-node"></div>
+                    <span class="phase-label">Phase 02</span>
+                    <h3 class="phase-title">Hardware Assembly</h3>
+                    <p class="phase-desc">Assembled the full drone platform — airframe,
+                    motors, ESCs, flight controller, and companion
+                    computer. All components integrated and wired
+                    on the PX4 X500 v2 airframe.</p>
+                    <div class="phase-actions">
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span>Assembled PX4 X500 v2 airframe</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span>Mounted and wired motors and ESCs</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span>Installed Pixhawk 6C flight controller</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span>Integrated Raspberry Pi 4 companion computer</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span>Completed all wiring and power distribution</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span>Verified all connections pre-power-on</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PHASE 03 — FLIGHT CONTROLLER CONFIGURATION -->
+                <div class="phase-entry">
+                    <div class="phase-node"></div>
+                    <span class="phase-label">Phase 03</span>
+                    <h3 class="phase-title">Flight Controller Configuration</h3>
+                    <p class="phase-desc">Configured the Pixhawk 6C flight controller
+                    using QGroundControl. Calibrated all sensors,
+                    set flight modes, and established MAVLink
+                    communication between the Pixhawk and the
+                    Raspberry Pi 4 companion computer.</p>
+                    <div class="phase-actions">
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span>Configured Pixhawk 6C in QGroundControl</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span>Calibrated accelerometer, gyroscope, and compass</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span>Set flight modes and failsafe parameters</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span>Established MAVLink serial link to Raspberry Pi 4</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span>Verified telemetry and control response</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span>Completed pre-flight checklist validation</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PHASE 04 — ALGORITHM DEVELOPMENT (IN PROGRESS) -->
+                <div class="phase-entry phase-in-progress">
+                    <div class="phase-node"></div>
+                    <span class="phase-label">Phase 04<span class="phase-badge-active"><span class="badge-dot"></span>In Progress</span></span>
+                    <h3 class="phase-title">Algorithm Development</h3>
+                    <p class="phase-desc">Developing the autonomous search algorithm in
+                    MAVSDK-Python, tested in PX4 SITL simulation
+                    via QGroundControl. Implementing the three-phase
+                    search strategy: lawnmower grid coverage,
+                    gradient ascent signal following, and 4-point
+                    bracketing fine search.</p>
+                    <div class="phase-actions">
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span>Set up PX4 SITL simulation environment</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span>Developed lawnmower grid search pattern</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span>Implemented gradient ascent signal following</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span>Coded 4-point bracketing fine search</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span>Testing and iterating in SITL simulation</span>
+                        </div>
+                        <div class="phase-action pending">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span>[Field deployment pending]</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PHASE 05 — BEACON INTEGRATION (REDACTED) -->
+                <div class="phase-entry phase-redacted">
+                    <span class="timeline-badge">Est. Summer 2026</span>
+                    <div class="phase-node"></div>
+                    <span class="phase-label">Phase 05</span>
+                    <h3 class="phase-title"><span class="glitch-text" style="animation-delay:0s,0s">Beacon Integration</span></h3>
+                    <p class="phase-desc">
+                        <span class="redact">████████████</span> <span class="redact">███████████</span> <span class="redact">████████</span>
+                        <span class="redact">████████████████</span> <span class="glitch-text" style="animation-delay:0.5s,2.1s">457kHz</span> <span class="redact">██████████</span> <span class="redact">████████</span>
+                        <span class="redact">███████████████</span> <span class="redact">████████</span> <span class="glitch-text" style="animation-delay:1.1s,5.3s">signal</span>
+                        <span class="redact">█████████</span> <span class="redact">██████████████</span> <span class="redact">██████</span>
+                    </p>
+                    <div class="phase-actions">
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span class="redact">████████████████████</span> <span class="redact">███████████</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span class="redact">████████████</span> <span class="redact">████████</span> <span class="redact">███████████</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span class="redact">█████████████</span> <span class="redact">████████████████</span> <span class="redact">████████</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span class="redact">████████████████</span> <span class="redact">████████</span> <span class="redact">██████████</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PHASE 06 — FIELD TESTING (REDACTED) -->
+                <div class="phase-entry phase-redacted">
+                    <span class="timeline-badge">Est. Summer 2026</span>
+                    <div class="phase-node"></div>
+                    <span class="phase-label">Phase 06</span>
+                    <h3 class="phase-title"><span class="glitch-text" style="animation-delay:0.4s,1.8s">Field Testing</span></h3>
+                    <p class="phase-desc">
+                        <span class="redact">████████████</span> <span class="redact">████████████</span> <span class="glitch-text" style="animation-delay:0.9s,4.6s">avalanche</span> <span class="redact">█████████</span>
+                        <span class="redact">████████████████</span> <span class="redact">████████</span> <span class="redact">███████</span>
+                        <span class="redact">████████████</span> <span class="glitch-text" style="animation-delay:1.7s,0.4s">terrain</span> <span class="redact">████████████████</span>
+                        <span class="redact">█████████████</span> <span class="redact">████████</span> <span class="redact">█████████████</span>
+                    </p>
+                    <div class="phase-actions">
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span class="redact">████████████████████</span> <span class="redact">███████████</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span class="redact">████████████</span> <span class="redact">████████</span> <span class="redact">███████████</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span class="redact">█████████████</span> <span class="redact">████████████████</span> <span class="redact">████████</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span class="redact">████████████████</span> <span class="redact">████████</span> <span class="redact">██████████</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PHASE 07 — AUTONOMOUS FLIGHT VALIDATION (REDACTED) -->
+                <div class="phase-entry phase-redacted">
+                    <span class="timeline-badge">Est. Summer 2026</span>
+                    <div class="phase-node"></div>
+                    <span class="phase-label">Phase 07</span>
+                    <h3 class="phase-title"><span class="glitch-text" style="animation-delay:0.7s,3.2s">Autonomous Flight Validation</span></h3>
+                    <p class="phase-desc">
+                        <span class="redact">████████████</span> <span class="glitch-text" style="animation-delay:0.3s,1.5s">full autonomous</span> <span class="redact">████████████████</span>
+                        <span class="redact">████████████████</span> <span class="redact">████████</span> <span class="redact">███████</span>
+                        <span class="redact">████████████</span> <span class="redact">███████████████</span> <span class="glitch-text" style="animation-delay:1.9s,6.7s">validated</span>
+                        <span class="redact">█████████████</span> <span class="redact">████████</span> <span class="redact">█████████████</span>
+                    </p>
+                    <div class="phase-actions">
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span class="redact">████████████████████</span> <span class="redact">███████████</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span class="redact">████████████</span> <span class="redact">████████</span> <span class="redact">███████████</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span class="redact">█████████████</span> <span class="redact">████████████████</span> <span class="redact">████████</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span class="redact">████████████████</span> <span class="redact">████████</span> <span class="redact">██████████</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PHASE 08 — CUSTOM FLIGHT VEHICLE (REDACTED) -->
+                <div class="phase-entry phase-redacted">
+                    <span class="timeline-badge">Est. Future</span>
+                    <div class="phase-node"></div>
+                    <span class="phase-label">Phase 08</span>
+                    <h3 class="phase-title"><span class="glitch-text" style="animation-delay:1.1s,2.9s">Custom Flight Vehicle</span></h3>
+                    <p class="phase-desc">
+                        <span class="redact">████████████</span> <span class="glitch-text" style="animation-delay:0.6s,3.8s">custom</span> <span class="redact">████████████████████████</span>
+                        <span class="redact">████████████████</span> <span class="glitch-text" style="animation-delay:2.2s,0.9s">platform</span> <span class="redact">███████████████</span>
+                        <span class="redact">████████████</span> <span class="redact">███████████████</span> <span class="redact">████████</span>
+                        <span class="redact">█████████████</span> <span class="redact">████████</span> <span class="redact">█████████████</span>
+                    </p>
+                    <div class="phase-actions">
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span class="redact">████████████████████</span> <span class="redact">███████████</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span class="redact">████████████</span> <span class="redact">████████</span> <span class="redact">███████████</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span class="redact">█████████████</span> <span class="redact">████████████████</span> <span class="redact">████████</span>
+                        </div>
+                        <div class="phase-action">
+                            <span class="phase-action-arrow">&rarr;</span>
+                            <span class="redact">████████████████</span> <span class="redact">████████</span> <span class="redact">██████████</span>
+                        </div>
+                    </div>
+                    <p style="margin-top: 1.25rem; font-family: 'Courier New', Courier, monospace; font-size: 0.72rem; color: var(--accent); line-height: 1.7;">
+                        // Prospect &mdash; fully customized flight vehicle<br>
+                        development following mission validation.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 4 — SEARCH ALGORITHM ===== -->
+    <section class="proj-section dark" style="padding-top: 2rem;">
+        <div style="border-top: 1px solid rgba(255,255,227,0.06); padding-top: 5rem;">
+            <div class="proj-section-header">
+                <span class="section-label" style="color: rgba(255,255,227,0.4);">// Algorithm</span>
+                <h2 class="section-title" style="color: var(--cream); margin-top: 0.5rem;">Search Strategy</h2>
+            </div>
+            <div class="algorithm-grid">
+                <div class="algo-card">
+                    <p class="algo-card-label">Phase 1</p>
+                    <h3 class="algo-card-title">Grid Search</h3>
+                    <p class="algo-card-body">Lawnmower pattern covers the full search area
+                    systematically. The drone flies parallel passes
+                    at defined spacing to ensure complete coverage
+                    of the avalanche zone before transitioning to
+                    signal following.</p>
+                </div>
+                <div class="algo-card">
+                    <p class="algo-card-label">Phase 2</p>
+                    <h3 class="algo-card-title">Gradient Ascent</h3>
+                    <p class="algo-card-body">Once a beacon signal is detected, the drone
+                    transitions to gradient ascent — moving in the
+                    direction of increasing signal strength to
+                    close in on the burial location.</p>
+                </div>
+                <div class="algo-card">
+                    <p class="algo-card-label">Phase 3</p>
+                    <h3 class="algo-card-title">Bracketing</h3>
+                    <p class="algo-card-body">4-point bracketing fine search modeled on real
+                    SAR beacon protocol. Systematically narrows the
+                    search area to pinpoint the exact burial location
+                    with high precision.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 5 — HARDWARE STACK ===== -->
+    <section class="proj-section dark" style="padding-top: 2rem;">
+        <div style="border-top: 1px solid rgba(255,255,227,0.06); padding-top: 5rem;">
+            <div class="proj-section-header">
+                <span class="section-label" style="color: rgba(255,255,227,0.4);">// Hardware</span>
+                <h2 class="section-title" style="color: var(--cream); margin-top: 0.5rem;">System Components</h2>
+            </div>
+            <div class="hw-table">
+                <div class="hw-row">
+                    <span class="hw-key">Airframe</span>
+                    <span class="hw-val">PX4 X500 v2</span>
+                </div>
+                <div class="hw-row">
+                    <span class="hw-key">Flight Controller</span>
+                    <span class="hw-val">Pixhawk 6C</span>
+                </div>
+                <div class="hw-row">
+                    <span class="hw-key">Companion Computer</span>
+                    <span class="hw-val">Raspberry Pi 4</span>
+                </div>
+                <div class="hw-row">
+                    <span class="hw-key">Beacon Sensor</span>
+                    <span class="hw-val">457kHz Transceiver</span>
+                </div>
+                <div class="hw-row">
+                    <span class="hw-key">Algorithm</span>
+                    <span class="hw-val">MAVSDK-Python</span>
+                </div>
+                <div class="hw-row">
+                    <span class="hw-key">Simulation</span>
+                    <span class="hw-val">PX4 SITL &nbsp;&middot;&nbsp; QGroundControl</span>
+                </div>
+                <div class="hw-row">
+                    <span class="hw-key">Communication</span>
+                    <span class="hw-val">MAVLink</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 6 — SKILLS ===== -->
+    <section class="proj-section">
+        <div class="proj-section-header">
+            <span class="section-label">// Skills</span>
+            <h2 class="section-title" style="margin-top: 0.5rem;">Skills Demonstrated</h2>
+        </div>
+        <div class="skills-cards">
+            <div class="skill-card">
+                <p class="skill-card-title">Systems Engineering</p>
+                <div class="skill-list">
+                    <span class="skill-item">Autonomous Systems Design</span>
+                    <span class="skill-item">System Architecture</span>
+                    <span class="skill-item">Hardware Integration</span>
+                    <span class="skill-item">MAVLink Communication</span>
+                    <span class="skill-item">Sensor Fusion Concepts</span>
+                </div>
+            </div>
+            <div class="skill-card">
+                <p class="skill-card-title">Software &amp; Algorithm</p>
+                <div class="skill-list">
+                    <span class="skill-item">MAVSDK-Python</span>
+                    <span class="skill-item">PX4 Autopilot</span>
+                    <span class="skill-item">SITL Simulation</span>
+                    <span class="skill-item">Search Algorithm Design</span>
+                    <span class="skill-item">Gradient Ascent Implementation</span>
+                </div>
+            </div>
+            <div class="skill-card">
+                <p class="skill-card-title">Fabrication &amp; Integration</p>
+                <div class="skill-list">
+                    <span class="skill-item">Drone Assembly</span>
+                    <span class="skill-item">Flight Controller Configuration</span>
+                    <span class="skill-item">QGroundControl</span>
+                    <span class="skill-item">Pixhawk 6C Setup</span>
+                    <span class="skill-item">Companion Computer Integration</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== BOTTOM NAV ===== -->
+    <nav class="proj-nav">
+        <a href="portfolio.html" class="proj-nav-btn">
+            <span style="font-size:1.1rem; color: rgba(255,255,227,0.4);">&#8592;</span>
+            <span>
+                <span class="proj-nav-label">Back to</span>
+                <span class="proj-nav-title">Portfolio</span>
+            </span>
+        </a>
+    </nav>
+
+    <!-- ===== FOOTER ===== -->
+    <footer id="main-footer">
+        <div class="footer-inner">
+            <p class="footer-name">Aidan Green</p>
+            <p class="footer-tagline">Mechanical Engineering — University of Nevada, Reno</p>
+            <div class="footer-links">
+                <a href="mailto:aidangreen@nevada.unr.edu">Email</a>
+                <a href="https://linkedin.com/in/aidan-green-engineer" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="resume.html">Resume</a>
+            </div>
+            <p class="footer-copy">&copy; 2025 Aidan Green. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- ===== NAV SCRIPT ===== -->
+    <script>
+        (function () {
+            var btn = document.getElementById('hamburger');
+            var links = document.getElementById('nav-links');
+            if (btn && links) {
+                btn.addEventListener('click', function () {
+                    links.classList.toggle('open');
+                    btn.classList.toggle('open');
+                });
+            }
+        })();
+    </script>
+
+    <!-- ===== THREE.JS DRONE MODEL ===== -->
+    <script>
+        /*
+        ================================================
+        THREE.JS DRONE MODEL
+        Model file: Models/ASR_Drone.glb
+        ================================================
+        */
+        (function () {
+            var container = document.getElementById('drone-container');
+            if (!container) return;
+
+            var loadingEl = document.getElementById('drone-loading');
+
+            /* ---- Renderer ---- */
+            var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.toneMapping = THREE.NoToneMapping;
+            renderer.toneMappingExposure = 1.0;
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            renderer.setClearColor(0x000000, 0);
+            container.appendChild(renderer.domElement);
+
+            /* ---- Scene ---- */
+            var scene = new THREE.Scene();
+            scene.background = null;
+            scene.environment = null;
+
+            /* ---- Camera ---- */
+            var camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+            camera.position.set(0, 0.5, 3.5);
+
+            /* ---- Controls ---- */
+            var controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.autoRotate      = true;
+            controls.autoRotateSpeed = 1.2;
+            controls.enableDamping   = true;
+            controls.dampingFactor   = 0.05;
+            controls.enableZoom      = false;
+            controls.enablePan       = false;
+            controls.target.set(0, 0, 0);
+            controls.update();
+
+            var rotateTimer;
+            controls.addEventListener('start', function () {
+                controls.autoRotate = false;
+                clearTimeout(rotateTimer);
+            });
+            controls.addEventListener('end', function () {
+                rotateTimer = setTimeout(function () {
+                    controls.autoRotate = true;
+                }, 3000);
+            });
+
+            /* ---- Lighting ---- */
+            scene.add(new THREE.AmbientLight(0xFFFFE3, 0.4));
+
+            var keyLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            keyLight.position.set(5, 8, 5);
+            scene.add(keyLight);
+
+            var fillLight = new THREE.DirectionalLight(0xCE8946, 0.3);
+            fillLight.position.set(-4, 2, -4);
+            scene.add(fillLight);
+
+            var rimLight = new THREE.DirectionalLight(0x333333, 0.4);
+            rimLight.position.set(-2, -4, -2);
+            scene.add(rimLight);
+
+            /* ---- Load GLB model ---- */
+            var loader = new THREE.GLTFLoader();
+            loader.load(
+                './Models/ASR_Drone.glb',
+                function (gltf) {
+                    var box    = new THREE.Box3().setFromObject(gltf.scene);
+                    var center = box.getCenter(new THREE.Vector3());
+                    var size   = box.getSize(new THREE.Vector3());
+                    var maxDim = Math.max(size.x, size.y, size.z);
+                    var scale  = 3.0 / maxDim;
+                    gltf.scene.scale.setScalar(scale);
+                    gltf.scene.position.sub(center.multiplyScalar(scale));
+
+                    gltf.scene.traverse(function (child) {
+                        if (child.isMesh) {
+                            var mats = Array.isArray(child.material)
+                                ? child.material
+                                : [child.material];
+                            mats.forEach(function (mat) {
+                                mat.metalness       = 0.7;
+                                mat.roughness       = 0.35;
+                                mat.envMapIntensity = 0.0;
+                                mat.needsUpdate     = true;
+                            });
+                        }
+                    });
+
+                    /* Create pivot group to handle orientation */
+                    var pivot = new THREE.Group();
+                    pivot.add(gltf.scene);
+                    pivot.rotation.x = -0.2;
+                    pivot.rotation.y = 0.4;
+                    pivot.rotation.z = 0.0;
+                    scene.add(pivot);
+
+                    camera.position.set(0, 0, 5);
+                    camera.lookAt(0, 0, 0);
+                    controls.target.set(0, 0, 0);
+                    controls.update();
+
+                    if (loadingEl) loadingEl.remove();
+                },
+                undefined,
+                function (error) {
+                    console.error('GLB load error:', error);
+                    if (loadingEl) loadingEl.textContent = 'MODEL UNAVAILABLE';
+                }
+            );
+
+            /* ---- Resize handler ---- */
+            function resize() {
+                var w = container.clientWidth;
+                var h = container.clientHeight;
+                if (!w || !h) return;
+                camera.aspect = w / h;
+                camera.updateProjectionMatrix();
+                renderer.setSize(w, h);
+            }
+
+            window.addEventListener('resize', resize, { passive: true });
+            resize();
+
+            /* ---- Animation loop ---- */
+            function animate() {
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene, camera);
+            }
+            animate();
+        }());
+    </script>
+
+</body>
+</html>

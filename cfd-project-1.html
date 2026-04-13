@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2D PDE Solver — Aidan Green</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!--
+    ================================================
+    CFD PROJECT 1 — 2D PDE SOLVER
+    Report: Assets/CFD-Project-1.pdf
+    Course: ME 793 — CFD · UNR · 2024
+    ================================================
+    -->
+    <style>
+        /* ── PROJECT PAGE — CFD PROJECT 1 ──────────────────────── */
+
+        /* ── METADATA ROW ── */
+        .proj-meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            border-top: 1px solid rgba(255,255,227,0.1);
+            margin-top: 2.5rem;
+        }
+
+        .proj-meta-item {
+            display: flex;
+            flex-direction: column;
+            padding: 0.9rem 2.5rem 0.9rem 0;
+            margin-right: 2.5rem;
+            border-right: 1px solid rgba(255,255,227,0.08);
+        }
+
+        .proj-meta-item:last-child {
+            border-right: none;
+            margin-right: 0;
+        }
+
+        .proj-meta-key {
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .proj-meta-val {
+            font-size: 0.82rem;
+            color: rgba(255,255,227,0.8);
+        }
+
+        /* ── PDF VIEWER CARD ── */
+        .pdf-card {
+            background-color: var(--dark);
+            padding: 3rem 4rem;
+        }
+
+        .pdf-viewer {
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+
+        .pdf-viewer iframe {
+            display: block;
+            width: 100%;
+            height: 600px;
+            border: 1px solid #CE8946;
+        }
+
+        .pdf-fallback {
+            display: none;
+            background: rgba(255,255,227,0.04);
+            border: 1px solid rgba(206,137,70,0.3);
+            padding: 2rem;
+            text-align: center;
+            color: rgba(255,255,227,0.6);
+            font-size: 0.85rem;
+        }
+
+        .pdf-caption {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.25rem;
+        }
+
+        .pdf-caption-text {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .pdf-caption-label {
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .pdf-caption-desc {
+            font-size: 0.82rem;
+            color: rgba(255,255,227,0.65);
+            line-height: 1.5;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 0.7rem 1.6rem;
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-decoration: none;
+            background: var(--accent);
+            color: var(--dark);
+            border: 1px solid var(--accent);
+            transition: background 0.2s, color 0.2s;
+            flex-shrink: 0;
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: var(--accent);
+        }
+
+        /* ── CONTENT SECTIONS ── */
+        .cfd-section {
+            padding: 5rem 4rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .cfd-section + .cfd-section {
+            border-top: 1px solid rgba(26,26,15,0.08);
+        }
+
+        .section-eyebrow {
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            font-weight: 600;
+            display: block;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        /* ── OVERVIEW GRID ── */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .overview-desc {
+            font-size: 0.95rem;
+            line-height: 1.85;
+            color: rgba(26,26,15,0.8);
+        }
+
+        .overview-desc p + p {
+            margin-top: 1.25rem;
+        }
+
+        .specs-card {
+            background-color: var(--dark);
+            color: var(--cream);
+            padding: 2rem;
+        }
+
+        .specs-card-title {
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+        }
+
+        .specs-table {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .specs-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            padding: 0.65rem 0;
+            border-bottom: 1px solid rgba(255,255,227,0.06);
+            font-size: 0.78rem;
+        }
+
+        .specs-row:last-child { border-bottom: none; }
+
+        .specs-key {
+            color: rgba(255,255,227,0.45);
+            text-transform: uppercase;
+            font-size: 0.62rem;
+            letter-spacing: 0.08em;
+            font-weight: 600;
+        }
+
+        .specs-val {
+            color: rgba(255,255,227,0.85);
+        }
+
+        /* ── TIMELINE (reused from sandrail-arm.html) ── */
+        .timeline-steps {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            position: relative;
+            margin-top: 3rem;
+        }
+
+        .timeline-steps::before {
+            content: '';
+            position: absolute;
+            top: 19px;
+            left: calc(100% / 12);
+            right: calc(100% / 12);
+            height: 1px;
+            background: rgba(206,137,70,0.25);
+            z-index: 0;
+        }
+
+        .timeline-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 0 0.75rem;
+        }
+
+        .step-node {
+            width: 38px;
+            height: 38px;
+            background: var(--accent);
+            color: var(--dark);
+            font-family: var(--font-display);
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 1.1rem;
+        }
+
+        .step-title {
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .step-desc {
+            font-size: 0.74rem;
+            color: rgba(26,26,15,0.52);
+            line-height: 1.65;
+        }
+
+        /* ── RESULTS CARDS ── */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .result-card {
+            border: 1px solid rgba(26,26,15,0.1);
+            padding: 1.75rem;
+        }
+
+        .result-card-title {
+            font-family: var(--font-display);
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--dark);
+            margin-bottom: 0.75rem;
+        }
+
+        .result-card-title::before {
+            content: attr(data-num);
+            display: inline-block;
+            width: 22px;
+            height: 22px;
+            background: var(--accent);
+            color: var(--dark);
+            font-size: 0.55rem;
+            font-weight: 700;
+            text-align: center;
+            line-height: 22px;
+            margin-right: 0.6rem;
+            vertical-align: middle;
+        }
+
+        .result-card-desc {
+            font-size: 0.82rem;
+            line-height: 1.7;
+            color: rgba(26,26,15,0.7);
+        }
+
+        .result-card.full-width {
+            grid-column: 1 / -1;
+        }
+
+        /* ── SKILLS CARDS ── */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .skill-card {
+            background-color: var(--dark);
+            padding: 1.75rem;
+        }
+
+        .skill-card-title {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(255,255,227,0.08);
+        }
+
+        .skill-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+        }
+
+        .skill-list li {
+            font-size: 0.78rem;
+            color: rgba(255,255,227,0.75);
+            padding-left: 0.9rem;
+            position: relative;
+        }
+
+        .skill-list li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-size: 0.6rem;
+        }
+
+        /* ── BOTTOM NAV ── */
+        .proj-bottom-nav {
+            background-color: var(--dark);
+            padding: 3rem 4rem;
+            border-top: 1px solid rgba(255,255,227,0.06);
+        }
+
+        .proj-nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.9rem 1.6rem;
+            border: 1px solid rgba(255,255,227,0.15);
+            text-decoration: none;
+            color: var(--cream);
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .proj-nav-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .proj-nav-label {
+            display: block;
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: rgba(255,255,227,0.4);
+            font-weight: 600;
+        }
+
+        .proj-nav-title {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            .pdf-card { padding: 2.5rem 2rem; }
+            .cfd-section { padding: 3.5rem 2rem; }
+            .overview-grid { grid-template-columns: 1fr; }
+            .results-grid { grid-template-columns: 1fr; }
+            .skills-grid { grid-template-columns: repeat(2, 1fr); }
+            .timeline-steps {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .timeline-steps::before { display: none; }
+            .timeline-step {
+                flex-direction: row;
+                align-items: flex-start;
+                text-align: left;
+                gap: 1.25rem;
+            }
+            .step-node { margin-bottom: 0; }
+            .proj-bottom-nav { padding: 2.5rem 2rem; }
+        }
+
+        @media (max-width: 600px) {
+            .pdf-card { padding: 2rem 1.25rem; }
+            .pdf-viewer iframe { height: 320px; }
+            .cfd-section { padding: 2.5rem 1.25rem; }
+            .skills-grid { grid-template-columns: 1fr; }
+            .result-card.full-width { grid-column: 1; }
+            .proj-meta-row { flex-direction: column; }
+            .proj-meta-item { border-right: none; margin-right: 0; padding: 0.6rem 0; }
+            .proj-bottom-nav { padding: 2rem 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAV ===== -->
+    <nav id="main-nav">
+        <a href="index.html" class="nav-logo">Aidan Green</a>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="portfolio.html" class="nav-active">Portfolio</a></li>
+            <li><a href="resume.html">Resume</a></li>
+            <li><a href="skills.html">Skills</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- ===== PAGE HEADER ===== -->
+    <header class="page-hero">
+        <span class="page-label">// Other &nbsp;&middot;&nbsp; Computational</span>
+        <h1 class="page-title">2D PDE Solver</h1>
+        <p class="page-subtitle">Poisson Equation &amp; Transient Heat Equation &mdash; MATLAB</p>
+        <div class="proj-meta-row">
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Year</span>
+                <span class="proj-meta-val">2024</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Category</span>
+                <span class="proj-meta-val">Computational Fluid Dynamics</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Software</span>
+                <span class="proj-meta-val">MATLAB</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Course</span>
+                <span class="proj-meta-val">ME 793 &mdash; Computational Fluid Dynamics</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Institution</span>
+                <span class="proj-meta-val">University of Nevada, Reno</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Status</span>
+                <span class="proj-meta-val">Complete</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== PDF VIEWER CARD ===== -->
+    <div class="pdf-card">
+        <div class="pdf-viewer">
+            <iframe src="Assets/CFD-Project-1.pdf"
+                    width="100%"
+                    height="600px"
+                    style="border: 1px solid #CE8946;"
+                    title="CFD Project 1 Report">
+            </iframe>
+            <div class="pdf-fallback">
+                Your browser does not support embedded PDFs.
+                Use the download button below to view the report.
+            </div>
+        </div>
+        <div class="pdf-caption">
+            <div class="pdf-caption-text">
+                <span class="pdf-caption-label">// Full Report</span>
+                <span class="pdf-caption-desc">
+                    Complete project report including derivations,
+                    implementation details, and results &mdash; compiled in LaTeX
+                </span>
+            </div>
+            <a href="Assets/CFD-Project-1.pdf" download class="btn-primary">Download PDF &rarr;</a>
+        </div>
+    </div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main>
+
+        <!-- ── SECTION 1: OVERVIEW ── -->
+        <div class="cfd-section">
+            <span class="section-eyebrow">// Overview</span>
+            <div class="overview-grid">
+
+                <div class="overview-desc">
+                    <p>
+                        A numerical methods project implementing two PDE solvers in MATLAB
+                        for a 2D domain. The first solver targets the steady-state Poisson
+                        equation using a sparse Laplacian matrix and MATLAB's backslash
+                        operator. The second extends this to the transient heat equation
+                        using Crank-Nicolson time integration. Both solvers share the same
+                        Laplacian matrix and boundary vector, ensuring consistency between
+                        formulations.
+                    </p>
+                    <p>
+                        The domain features mixed boundary conditions: a sinusoidal
+                        Dirichlet temperature profile on the left and top boundaries,
+                        a Neumann flux condition on the bottom, and a zero-flux condition
+                        on the right. A Gaussian heat source is centered near (0.7, 0.6)
+                        in the domain.
+                    </p>
+                </div>
+
+                <div class="specs-card">
+                    <div class="specs-card-title">Key Specs</div>
+                    <div class="specs-table">
+                        <div class="specs-row">
+                            <span class="specs-key">Grid Size</span>
+                            <span class="specs-val">25 &times; 25 interior nodes (625 total)</span>
+                        </div>
+                        <div class="specs-row">
+                            <span class="specs-key">Solver</span>
+                            <span class="specs-val">MATLAB backslash (UMFPACK sparse direct)</span>
+                        </div>
+                        <div class="specs-row">
+                            <span class="specs-key">Time Step</span>
+                            <span class="specs-val">&Delta;t = 5.0</span>
+                        </div>
+                        <div class="specs-row">
+                            <span class="specs-key">Settling Time</span>
+                            <span class="specs-val">t* = 420.0 (~84 time steps)</span>
+                        </div>
+                        <div class="specs-row">
+                            <span class="specs-key">Convergence</span>
+                            <span class="specs-val">L&sup2; error &lt; 10&sup4;</span>
+                        </div>
+                        <div class="specs-row">
+                            <span class="specs-key">Grids Tested</span>
+                            <span class="specs-val">21&times;21 &nbsp;&middot;&nbsp; 25&times;25 &nbsp;&middot;&nbsp; 31&times;31</span>
+                        </div>
+                        <div class="specs-row">
+                            <span class="specs-key">Report</span>
+                            <span class="specs-val">LaTeX &nbsp;&middot;&nbsp; Overleaf</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ── SECTION 2: METHODOLOGY ── -->
+        <div class="cfd-section">
+            <span class="section-eyebrow">// Methodology</span>
+            <h2 class="section-title">Approach</h2>
+            <div class="timeline-steps">
+
+                <div class="timeline-step">
+                    <div class="step-node">01</div>
+                    <div>
+                        <div class="step-title">Problem Formulation</div>
+                        <p class="step-desc">
+                            Defined the 2D Poisson and heat equations on a unit domain
+                            with mixed Dirichlet and Neumann boundary conditions.
+                            Gaussian heat source centered at (0.7, 0.6).
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-step">
+                    <div class="step-node">02</div>
+                    <div>
+                        <div class="step-title">Spatial Discretization</div>
+                        <p class="step-desc">
+                            Applied second-order central finite differences on an
+                            Nx &times; Ny interior grid. Assembled a sparse Laplacian matrix L
+                            with at most five nonzeros per row &mdash; symmetric negative
+                            semi-definite.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-step">
+                    <div class="step-node">03</div>
+                    <div>
+                        <div class="step-title">Boundary Conditions</div>
+                        <p class="step-desc">
+                            Dirichlet conditions enforced directly. Neumann and flux
+                            conditions handled via ghost cells &mdash; bottom boundary ghost
+                            cell adds flux contribution 2(0.3)/hy to the right-hand side.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-step">
+                    <div class="step-node">04</div>
+                    <div>
+                        <div class="step-title">Poisson Solver</div>
+                        <p class="step-desc">
+                            Formed the linear system &alpha;Lu = -&kappa; - &alpha;b_bc and solved
+                            directly using MATLAB's backslash operator, which employs
+                            UMFPACK sparse direct factorization.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-step">
+                    <div class="step-node">05</div>
+                    <div>
+                        <div class="step-title">Crank-Nicolson</div>
+                        <p class="step-desc">
+                            Advanced the heat equation using the unconditionally stable
+                            Crank-Nicolson scheme with &Delta;t = 5.0. Reused the same L matrix
+                            and boundary vector from the Poisson solver for consistency.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-step">
+                    <div class="step-node">06</div>
+                    <div>
+                        <div class="step-title">Grid Sensitivity</div>
+                        <p class="step-desc">
+                            Verified mesh independence on 21&times;21, 25&times;25, and 31&times;31 grids.
+                            Confirmed transient solution converges to Poisson steady state
+                            at t* = 420.0, validating both implementations.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ── SECTION 3: RESULTS ── -->
+        <div class="cfd-section">
+            <span class="section-eyebrow">// Results</span>
+            <h2 class="section-title">Key Findings</h2>
+            <div class="results-grid">
+
+                <div class="result-card">
+                    <div class="result-card-title" data-num="01">Poisson Steady-State Solution</div>
+                    <p class="result-card-desc">
+                        Solution ranges from 0.14 to 1.24, with peak values
+                        concentrated in the lower-right region. High values result
+                        from the combined influence of the Gaussian heat source,
+                        the upward flux at the bottom boundary, and zero-flux
+                        accumulation at the right boundary. The left and top
+                        boundaries impose sinusoidal profiles creating a
+                        characteristic saddle-like structure near y&nbsp;=&nbsp;1.
+                    </p>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-card-title" data-num="02">Transient Heat Equation Convergence</div>
+                    <p class="result-card-desc">
+                        Starting from a uniform zero initial condition, the
+                        Crank-Nicolson scheme converges at t* = 420.0 after
+                        approximately 84 time steps. The relative L&sup2; deviation
+                        from the Poisson steady state drops below 10&sup4;, and
+                        the transient solution is visually indistinguishable
+                        from the steady state &mdash; confirming both solvers are
+                        consistent and correctly implemented.
+                    </p>
+                </div>
+
+                <div class="result-card full-width">
+                    <div class="result-card-title" data-num="03">Mesh Independence</div>
+                    <p class="result-card-desc">
+                        Solution structure and maximum values remained consistent
+                        across all three grid resolutions (21&times;21, 25&times;25, 31&times;31),
+                        confirming the results are mesh-independent and the
+                        discretization is correctly converged.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ── SECTION 4: SKILLS ── -->
+        <div class="cfd-section">
+            <span class="section-eyebrow">// Skills</span>
+            <h2 class="section-title">Skills Demonstrated</h2>
+            <div class="skills-grid">
+
+                <div class="skill-card">
+                    <div class="skill-card-title">Numerical Methods</div>
+                    <ul class="skill-list">
+                        <li>Finite Difference Discretization</li>
+                        <li>Sparse Matrix Assembly</li>
+                        <li>Crank-Nicolson Time Stepping</li>
+                        <li>L&sup2; Error Convergence Criteria</li>
+                        <li>Ghost Cell Boundary Treatment</li>
+                    </ul>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-card-title">Software &amp; Implementation</div>
+                    <ul class="skill-list">
+                        <li>MATLAB</li>
+                        <li>Sparse Linear Systems</li>
+                        <li>UMFPACK Direct Factorization</li>
+                        <li>Backslash Operator</li>
+                        <li>LaTeX Report Writing</li>
+                    </ul>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-card-title">Engineering Analysis</div>
+                    <ul class="skill-list">
+                        <li>2D Heat Transfer Modeling</li>
+                        <li>Mixed Boundary Conditions</li>
+                        <li>Mesh Independence Study</li>
+                        <li>Steady-State vs. Transient Analysis</li>
+                        <li>PDE Formulation</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ===== BOTTOM NAVIGATION ===== -->
+    <div class="proj-bottom-nav">
+        <a href="portfolio.html" class="proj-nav-btn">
+            <span>
+                <span class="proj-nav-label">Back</span>
+                <span class="proj-nav-title">&larr; Portfolio</span>
+            </span>
+        </a>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="footer-inner">
+            <div>
+                <p class="footer-name">Aidan Green</p>
+                <p class="footer-degree">M.S. Aerospace Engineering &nbsp;&middot;&nbsp; University of Nevada, Reno</p>
+            </div>
+            <div class="footer-right">
+                <div class="footer-links">
+                    <a href="mailto:aidangreeeen@gmail.com">Email</a>
+                    <a href="https://www.linkedin.com/in/aidangreeeen/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a href="portfolio.html">Portfolio</a>
+                    <a href="#">Resume</a>
+                </div>
+                <p class="footer-copy">&copy; 2025 Aidan Green. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== JS ===== -->
+    <script>
+        /* ---- mobile nav toggle ---- */
+        const hamburger = document.getElementById('hamburger');
+        const navLinks  = document.getElementById('nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+        });
+
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => navLinks.classList.remove('open'));
+        });
+
+        /* ---- nav shadow on scroll ---- */
+        const mainNav = document.getElementById('main-nav');
+        window.addEventListener('scroll', () => {
+            mainNav.style.boxShadow = window.scrollY > 20
+                ? '0 2px 24px rgba(26,26,15,0.09)'
+                : 'none';
+        }, { passive: true });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CFRP Publication — Aidan Green</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!--
+    ================================================
+    FIBERS JOURNAL PUBLICATION PAGE
+    DOI: https://doi.org/10.3390/fib14030029
+    To update: edit content sections directly
+    ================================================
+    -->
+    <style>
+        /* ── PUBLICATION PAGE ───────────────────────────────────── */
+
+        /* ── METADATA CARD ── */
+        .publication-hero {
+            width: 100%;
+            max-height: 400px;
+            overflow: hidden;
+            border-bottom: 3px solid #CE8946;
+        }
+
+        .publication-hero img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+
+        .pub-meta-card {
+            background-color: var(--dark);
+            color: var(--cream);
+            padding: 3rem 4rem;
+            margin: 0 0 0 0;
+        }
+
+        .pub-meta-inner {
+            max-width: 960px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem 4rem;
+        }
+
+        .pub-meta-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
+
+        .pub-meta-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .pub-meta-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .pub-meta-key {
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .pub-meta-val {
+            font-size: 0.88rem;
+            color: rgba(255,255,227,0.85);
+            line-height: 1.5;
+        }
+
+        .pub-meta-val a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .pub-meta-val a:hover {
+            text-decoration: underline;
+        }
+
+        .pub-authors {
+            font-size: 0.88rem;
+            color: rgba(255,255,227,0.85);
+            line-height: 1.8;
+        }
+
+        .pub-authors .corresponding {
+            color: var(--accent);
+        }
+
+        .pub-cta-row {
+            grid-column: 1 / -1;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,227,0.08);
+        }
+
+        .pub-cta-btn {
+            display: inline-block;
+            padding: 0.7rem 1.6rem;
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-decoration: none;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .pub-cta-btn:hover {
+            background: var(--accent);
+            color: var(--dark);
+        }
+
+        .pub-cta-btn.filled {
+            background: var(--accent);
+            color: var(--dark);
+        }
+
+        .pub-cta-btn.filled:hover {
+            background: transparent;
+            color: var(--accent);
+        }
+
+        /* ── CONTENT SECTIONS ── */
+        .pub-section {
+            padding: 5rem 4rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .pub-section + .pub-section {
+            border-top: 1px solid rgba(26,26,15,0.08);
+        }
+
+        .pub-section-label {
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .pub-section-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        /* ── ABSTRACT ── */
+        .pub-abstract {
+            max-width: 70ch;
+            font-size: 1rem;
+            line-height: 1.85;
+            color: rgba(26,26,15,0.8);
+        }
+
+        /* ── KEYWORDS ── */
+        .pub-keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        /* ── TOPIC CARDS ── */
+        .topic-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .topic-card {
+            border: 1px solid rgba(26,26,15,0.1);
+            padding: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .topic-icon {
+            width: 32px;
+            height: 32px;
+            border: 2px solid var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--accent);
+            font-family: var(--font-display);
+            flex-shrink: 0;
+        }
+
+        .topic-title {
+            font-family: var(--font-display);
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--dark);
+        }
+
+        .topic-desc {
+            font-size: 0.82rem;
+            line-height: 1.6;
+            color: rgba(26,26,15,0.7);
+        }
+
+        /* ── CONTRIBUTION ── */
+        .contribution-wrap {
+            max-width: 60ch;
+        }
+
+        .contribution-text {
+            font-size: 1rem;
+            line-height: 1.85;
+            color: rgba(26,26,15,0.8);
+            margin-bottom: 2.5rem;
+        }
+
+        .contribution-meta {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 0.5rem 2rem;
+            border-top: 1px solid rgba(26,26,15,0.1);
+            padding-top: 1.5rem;
+        }
+
+        .contrib-key {
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            font-weight: 600;
+            white-space: nowrap;
+            padding: 0.3rem 0;
+        }
+
+        .contrib-val {
+            font-size: 0.82rem;
+            color: rgba(26,26,15,0.8);
+            padding: 0.3rem 0;
+        }
+
+        /* ── CITATION ── */
+        .citation-block {
+            background-color: var(--dark);
+            padding: 2rem 2.5rem;
+            max-width: 72ch;
+            position: relative;
+        }
+
+        .citation-text {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.82rem;
+            line-height: 1.9;
+            color: var(--accent);
+            white-space: pre-wrap;
+            word-break: break-word;
+            margin: 0;
+        }
+
+        .citation-copy-btn {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.55rem 1.4rem;
+            font-size: 0.68rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .citation-copy-btn:hover {
+            background: var(--accent);
+            color: var(--dark);
+        }
+
+        /* ── BOTTOM NAV ── */
+        .pub-bottom-nav {
+            background-color: var(--dark);
+            padding: 3rem 4rem;
+            border-top: 1px solid rgba(255,255,227,0.06);
+        }
+
+        .pub-back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.9rem 1.6rem;
+            border: 1px solid rgba(255,255,227,0.15);
+            text-decoration: none;
+            color: var(--cream);
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .pub-back-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .pub-back-label {
+            display: block;
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: rgba(255,255,227,0.4);
+            font-weight: 600;
+        }
+
+        .pub-back-title {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            .pub-meta-card { padding: 2.5rem 2rem; }
+            .pub-meta-inner { grid-template-columns: 1fr; gap: 1.5rem; }
+            .pub-section { padding: 3.5rem 2rem; }
+            .topic-grid { grid-template-columns: repeat(2, 1fr); }
+            .pub-bottom-nav { padding: 2.5rem 2rem; }
+        }
+
+        @media (max-width: 560px) {
+            .pub-meta-card { padding: 2rem 1.25rem; }
+            .pub-section { padding: 2.5rem 1.25rem; }
+            .topic-grid { grid-template-columns: 1fr; }
+            .pub-cta-row { flex-direction: column; }
+            .citation-block { padding: 1.5rem 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAV ===== -->
+    <nav id="main-nav">
+        <a href="index.html" class="nav-logo">Aidan Green</a>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="portfolio.html" class="nav-active">Portfolio</a></li>
+            <li><a href="resume.html">Resume</a></li>
+            <li><a href="skills.html">Skills</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- ===== PAGE HEADER ===== -->
+    <header class="page-hero">
+        <span class="page-label">// Other &nbsp;&middot;&nbsp; Research</span>
+        <h1 class="page-title">Carbon Fiber-Reinforced<br>Polymer Matrix Composites</h1>
+        <p class="page-subtitle">Processing, Properties, and Applications</p>
+    </header>
+
+    <!-- ===== PUBLICATION METADATA CARD ===== -->
+    <div class="pub-meta-card">
+        <div class="publication-hero">
+            <img src="Assets/fibers.jpg"
+                 alt="Fibers Journal — CFRP Publication"
+                 loading="lazy">
+        </div>
+        <div class="pub-meta-inner">
+
+            <div class="pub-meta-group">
+                <div class="pub-meta-row">
+                    <span class="pub-meta-key">Journal</span>
+                    <span class="pub-meta-val">Fibers (MDPI)</span>
+                </div>
+                <div class="pub-meta-row">
+                    <span class="pub-meta-key">Volume &amp; Issue</span>
+                    <span class="pub-meta-val">14 &nbsp;&middot;&nbsp; Issue 3 &nbsp;&middot;&nbsp; Article 29</span>
+                </div>
+                <div class="pub-meta-row">
+                    <span class="pub-meta-key">DOI</span>
+                    <span class="pub-meta-val">
+                        <a href="https://doi.org/10.3390/fib14030029" target="_blank" rel="noopener noreferrer">
+                            10.3390/fib14030029
+                        </a>
+                    </span>
+                </div>
+                <div class="pub-meta-row">
+                    <span class="pub-meta-key">Type</span>
+                    <span class="pub-meta-val">Open Access Review Article</span>
+                </div>
+            </div>
+
+            <div class="pub-meta-group">
+                <div class="pub-meta-row">
+                    <span class="pub-meta-key">Published</span>
+                    <span class="pub-meta-val">February 25, 2026</span>
+                </div>
+                <div class="pub-meta-row">
+                    <span class="pub-meta-key">Submitted</span>
+                    <span class="pub-meta-val">January 9, 2026</span>
+                </div>
+                <div class="pub-meta-row">
+                    <span class="pub-meta-key">Affiliation</span>
+                    <span class="pub-meta-val">
+                        Department of Mechanical Engineering,<br>
+                        University of Nevada, Reno, NV 89557, USA
+                    </span>
+                </div>
+            </div>
+
+            <div class="pub-meta-group full-width">
+                <div class="pub-meta-row">
+                    <span class="pub-meta-key">Authors</span>
+                    <p class="pub-authors">
+                        Matthew Davidson &nbsp;&middot;&nbsp;
+                        Ryan Graunke &nbsp;&middot;&nbsp;
+                        Aidan Green &nbsp;&middot;&nbsp;
+                        Hayden Haelsig &nbsp;&middot;&nbsp;
+                        Laura Heinemann &nbsp;&middot;&nbsp;
+                        Subin Antony Jose &nbsp;&middot;&nbsp;
+                        <span class="corresponding">Pradeep L. Menezes*</span>
+                    </p>
+                    <span class="pub-meta-val" style="margin-top:0.3rem; font-size:0.75rem; opacity:0.6;">
+                        * Corresponding Author
+                    </span>
+                </div>
+            </div>
+
+            <div class="pub-cta-row">
+                <a href="https://www.mdpi.com/2079-6439/14/3/29"
+                   class="pub-cta-btn filled"
+                   target="_blank" rel="noopener noreferrer">
+                    Read Full Paper &rarr;
+                </a>
+                <a href="https://www.mdpi.com/2079-6439/14/3/29/pdf?version=1772439146"
+                   class="pub-cta-btn"
+                   target="_blank" rel="noopener noreferrer">
+                    Download PDF &rarr;
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main>
+
+        <!-- ── SECTION 1: ABSTRACT ── -->
+        <div class="pub-section">
+            <span class="pub-section-label">// Abstract</span>
+            <p class="pub-abstract">
+                Carbon Fiber-Reinforced Polymer (CFRP) composites represent a
+                transformative class of structural materials, combining low density,
+                high specific strength, and excellent fatigue resistance. This review
+                provides a comprehensive overview of CFRPs, addressing their structure,
+                manufacturing routes, mechanical performance, and functional behavior,
+                with particular emphasis on damage tolerance, tribological properties,
+                and environmental durability. The discussion covers the classification
+                and morphology of carbon fibers, effects of impact loading and
+                environmental conditioning on residual strength and fatigue life,
+                and tribological improvements through nanoscale additives such as
+                graphite nanoplatelets and TiO2 nanoparticles. Advances in processing
+                techniques including low-pressure curing and improved resin systems
+                are also discussed. Overall, the review underscores that optimal CFRP
+                performance is achieved through the synergistic integration of fiber
+                architecture, matrix design, and precise processing control.
+            </p>
+        </div>
+
+        <!-- ── SECTION 2: KEYWORDS ── -->
+        <div class="pub-section">
+            <span class="pub-section-label">// Keywords</span>
+            <div class="pub-keywords">
+                <span class="tag">Carbon Fiber-Reinforced Polymers (CFRPs)</span>
+                <span class="tag">Multiscale Composite Design</span>
+                <span class="tag">Lightweight Structural Components</span>
+                <span class="tag">Damage Tolerance and Durability</span>
+                <span class="tag">Smart and Multifunctional Composites</span>
+                <span class="tag">Tribology</span>
+                <span class="tag">Manufacturing</span>
+            </div>
+        </div>
+
+        <!-- ── SECTION 3: KEY TOPICS ── -->
+        <div class="pub-section">
+            <span class="pub-section-label">// Coverage</span>
+            <h2 class="pub-section-title">Topics Covered</h2>
+            <div class="topic-grid">
+
+                <div class="topic-card">
+                    <div class="topic-icon">01</div>
+                    <span class="topic-title">Structure &amp; Constituents</span>
+                    <p class="topic-desc">
+                        Carbon fiber morphology, polymer matrices (thermoset vs.
+                        thermoplastic), and fiber-matrix interface mechanics.
+                    </p>
+                </div>
+
+                <div class="topic-card">
+                    <div class="topic-icon">02</div>
+                    <span class="topic-title">Manufacturing Processes</span>
+                    <p class="topic-desc">
+                        Hand lay-up, filament winding, RTM, autoclave vs.
+                        out-of-autoclave methods, AFP/ATL, and additive manufacturing.
+                    </p>
+                </div>
+
+                <div class="topic-card">
+                    <div class="topic-icon">03</div>
+                    <span class="topic-title">Mechanical Properties</span>
+                    <p class="topic-desc">
+                        Strength, stiffness, toughness, fatigue resistance,
+                        anisotropy, fiber volume fraction, and defect effects.
+                    </p>
+                </div>
+
+                <div class="topic-card">
+                    <div class="topic-icon">04</div>
+                    <span class="topic-title">Tribological Behavior</span>
+                    <p class="topic-desc">
+                        Friction, wear mechanisms, tribofilm formation, and
+                        nanoparticle additives for enhanced wear resistance.
+                    </p>
+                </div>
+
+                <div class="topic-card">
+                    <div class="topic-icon">05</div>
+                    <span class="topic-title">Damage Tolerance</span>
+                    <p class="topic-desc">
+                        Impact resistance, BVID, compression-after-impact testing,
+                        interlaminar toughening, and NDE methods.
+                    </p>
+                </div>
+
+                <div class="topic-card">
+                    <div class="topic-icon">06</div>
+                    <span class="topic-title">Applications</span>
+                    <p class="topic-desc">
+                        Aerospace structures, automotive monocoques, wind turbine
+                        blades, pressure vessels, and biomedical prosthetics.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ── SECTION 4: MY CONTRIBUTION ── -->
+        <div class="pub-section">
+            <span class="pub-section-label">// Contribution</span>
+            <h2 class="pub-section-title">My Role</h2>
+            <div class="contribution-wrap">
+                <p class="contribution-text">
+                    Co-authored as part of undergraduate research at the University
+                    of Nevada, Reno under the supervision of Dr. Pradeep L. Menezes
+                    (ME 656 &mdash; Introduction to Tribology). Contributed to sections
+                    covering tribological behavior of CFRPs, wear mechanisms, and
+                    the role of nanoscale additives in improving composite performance.
+                </p>
+                <div class="contribution-meta">
+                    <span class="contrib-key">Supervisor</span>
+                    <span class="contrib-val">Dr. Pradeep L. Menezes</span>
+                    <span class="contrib-key">Course</span>
+                    <span class="contrib-val">ME 656 &mdash; Introduction to Tribology</span>
+                    <span class="contrib-key">Institution</span>
+                    <span class="contrib-val">University of Nevada, Reno</span>
+                    <span class="contrib-key">Year</span>
+                    <span class="contrib-val">2026</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── SECTION 5: CITATION ── -->
+        <div class="pub-section">
+            <span class="pub-section-label">// Cite This Work</span>
+            <div class="citation-block">
+                <pre class="citation-text" id="citation-text">Davidson, M.; Graunke, R.; Green, A.; Haelsig, H.;
+Heinemann, L.; Antony Jose, S.; Menezes, P.L.
+Carbon Fiber-Reinforced Polymer Matrix Composites:
+Processing, Properties, and Applications.
+Fibers 2026, 14, 29.
+https://doi.org/10.3390/fib14030029</pre>
+            </div>
+            <button class="citation-copy-btn" id="copy-citation-btn">Copy Citation</button>
+        </div>
+
+    </main>
+
+    <!-- ===== BOTTOM NAVIGATION ===== -->
+    <div class="pub-bottom-nav">
+        <a href="portfolio.html" class="pub-back-btn">
+            <span>
+                <span class="pub-back-label">Back</span>
+                <span class="pub-back-title">&larr; Portfolio</span>
+            </span>
+        </a>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="footer-inner">
+            <div>
+                <p class="footer-name">Aidan Green</p>
+                <p class="footer-degree">M.S. Aerospace Engineering &nbsp;&middot;&nbsp; University of Nevada, Reno</p>
+            </div>
+            <div class="footer-right">
+                <div class="footer-links">
+                    <a href="mailto:aidangreeeen@gmail.com">Email</a>
+                    <a href="https://www.linkedin.com/in/aidangreeeen/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a href="portfolio.html">Portfolio</a>
+                    <a href="#">Resume</a>
+                </div>
+                <p class="footer-copy">&copy; 2025 Aidan Green. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== JS ===== -->
+    <script>
+        /* ---- mobile nav toggle ---- */
+        const hamburger = document.getElementById('hamburger');
+        const navLinks  = document.getElementById('nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+        });
+
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => navLinks.classList.remove('open'));
+        });
+
+        /* ---- nav shadow on scroll ---- */
+        const mainNav = document.getElementById('main-nav');
+        window.addEventListener('scroll', () => {
+            mainNav.style.boxShadow = window.scrollY > 20
+                ? '0 2px 24px rgba(26,26,15,0.09)'
+                : 'none';
+        }, { passive: true });
+
+        /* ---- copy citation ---- */
+        document.getElementById('copy-citation-btn').addEventListener('click', function () {
+            var text = document.getElementById('citation-text').textContent;
+            navigator.clipboard.writeText(text).then(function () {
+                var btn = document.getElementById('copy-citation-btn');
+                var original = btn.textContent;
+                btn.textContent = 'Copied!';
+                setTimeout(function () { btn.textContent = original; }, 2000);
+            });
+        });
+    </script>
+
+</body>
+</html>

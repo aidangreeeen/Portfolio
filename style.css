@@ -1188,6 +1188,43 @@ footer {
     box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45);
 }
 
+/* Background image treatment */
+.education-card {
+    position: relative;
+    background-image:
+        radial-gradient(
+            ellipse 40% 60% at 85% 50%,
+            rgba(10, 10, 5, 0.3) 0%,
+            rgba(10, 10, 5, 0.75) 50%,
+            rgba(10, 10, 5, 0.92) 100%
+        ),
+        url('Assets/ascii-art.jpg');
+    background-size: cover;
+    background-position: center right;
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+
+.education-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to right,
+        rgba(10, 10, 5, 0.95) 0%,
+        rgba(10, 10, 5, 0.7) 45%,
+        rgba(206, 137, 70, 0.05) 70%,
+        transparent 100%
+    );
+    pointer-events: none;
+    z-index: 0;
+}
+
+.education-card > * {
+    position: relative;
+    z-index: 1;
+}
+
 .edu-card-eyebrow {
     display: block;
     font-size: 0.68rem;
@@ -1207,12 +1244,62 @@ footer {
     margin-bottom: 0.75rem;
 }
 
-.edu-card-sub {
+.degree-lines {
+    margin-bottom: 1.25rem;
+}
+
+.degree-line {
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    color: rgba(255,255,227,0.38);
-    margin-bottom: 1.25rem;
+    color: rgba(255,255,227,0.55);
+    line-height: 1.7;
+    margin: 0;
+}
+
+.ms-line {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.degree-uni {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: rgba(255,255,227,0.28);
+    margin: 0;
+    margin-top: 0.15rem;
+}
+
+.degree-active-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-shrink: 0;
+}
+
+.active-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #4CAF50;
+    box-shadow: 0 0 6px #4CAF50;
+    animation: pulse-green 2s infinite;
+    flex-shrink: 0;
+}
+
+.active-label {
+    font-family: var(--font-display);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #4CAF50;
+}
+
+@keyframes pulse-green {
+    0%, 100% { box-shadow: 0 0 4px #4CAF50;                        opacity: 1;   }
+    50%       { box-shadow: 0 0 10px #4CAF50, 0 0 20px #4CAF50;    opacity: 0.8; }
 }
 
 .edu-card-desc {

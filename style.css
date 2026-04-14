@@ -1302,6 +1302,29 @@ footer {
     50%       { box-shadow: 0 0 10px #4CAF50, 0 0 20px #4CAF50;    opacity: 0.8; }
 }
 
+.pending-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #CE8946;
+    box-shadow: 0 0 6px #CE8946;
+    animation: pulse-orange 2s infinite;
+    flex-shrink: 0;
+}
+
+.pending-label {
+    font-family: var(--font-display);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #CE8946;
+}
+
+@keyframes pulse-orange {
+    0%, 100% { box-shadow: 0 0 4px #CE8946;                        opacity: 1;   }
+    50%       { box-shadow: 0 0 10px #CE8946, 0 0 20px #CE8946;    opacity: 0.8; }
+}
+
 .edu-card-desc {
     font-size: 0.87rem;
     line-height: 1.72;

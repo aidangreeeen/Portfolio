@@ -11,6 +11,7 @@
     <!-- Three.js -->
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <!--
     ================================================
@@ -18,7 +19,7 @@
     Platform: PX4 X500 v2
     Status: Hardware complete · Algorithm in development
     Field testing: Summer 2026
-    Model: Models/ASR_Drone.glb
+    Model: Models/ASR_Drone-v1.glb
     ================================================
     -->
     <style>
@@ -647,6 +648,109 @@
             transition: color 0.2s;
         }
 
+        /* ── AMBIENT VHS EFFECT — TIER 1 ── */
+        @keyframes vhs-ambient {
+            0%, 60%, 100% {
+                text-shadow: none;
+                transform: translateX(0);
+                opacity: 1;
+            }
+            61% {
+                text-shadow:
+                    -1px 0 rgba(206, 137, 70, 0.4),
+                     1px 0 rgba(0, 255, 255, 0.3);
+                transform: translateX(-1px);
+                opacity: 0.95;
+            }
+            62% {
+                text-shadow: none;
+                transform: translateX(0.5px);
+                opacity: 1;
+            }
+            63% {
+                text-shadow:
+                    -2px 0 rgba(206, 137, 70, 0.5),
+                     2px 0 rgba(0, 255, 255, 0.4);
+                transform: translateX(0);
+            }
+            64% {
+                text-shadow: none;
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Apply ambient animation — staggered per element type */
+        .page-label       { animation: vhs-ambient 10s infinite 0s; }
+        .page-title       { animation: vhs-ambient 11s infinite 1.3s; }
+        .page-subtitle    { animation: vhs-ambient 9s  infinite 2.7s; }
+        .proj-meta-val    { animation: vhs-ambient 12s infinite 0.8s; }
+        .section-label    { animation: vhs-ambient 8s  infinite 3.4s; }
+        .section-title    { animation: vhs-ambient 11s infinite 5.1s; }
+        .phase-label      { animation: vhs-ambient 10s infinite 4.7s; }
+        .phase-title      { animation: vhs-ambient 11s infinite 6.8s; }
+        .algo-card-label  { animation: vhs-ambient 9s  infinite 1.9s; }
+        .algo-card-title  { animation: vhs-ambient 10s infinite 4.2s; }
+        .hw-key           { animation: vhs-ambient 8s  infinite 6.3s; }
+        .hw-val           { animation: vhs-ambient 12s infinite 2.1s; }
+        .skill-card-title { animation: vhs-ambient 9s  infinite 7.1s; }
+        .skill-item       { animation: vhs-ambient 11s infinite 0.4s; }
+        .viewer-label     { animation: vhs-ambient 10s infinite 5.8s; }
+        .proj-nav-title   { animation: vhs-ambient 8s  infinite 3.2s; }
+
+        /* Stagger metadata values by parent position */
+        .proj-meta-item:nth-child(1) .proj-meta-val { animation-delay: 0.8s; }
+        .proj-meta-item:nth-child(2) .proj-meta-val { animation-delay: 3.1s; }
+        .proj-meta-item:nth-child(3) .proj-meta-val { animation-delay: 5.6s; }
+        .proj-meta-item:nth-child(4) .proj-meta-val { animation-delay: 1.2s; }
+        .proj-meta-item:nth-child(5) .proj-meta-val { animation-delay: 7.4s; }
+        .proj-meta-item:nth-child(6) .proj-meta-val { animation-delay: 2.9s; }
+        .proj-meta-item:nth-child(7) .proj-meta-val { animation-delay: 4.6s; }
+
+        /* Stagger hardware table rows */
+        .hw-row:nth-child(1) .hw-key  { animation-delay: 6.3s; }
+        .hw-row:nth-child(2) .hw-key  { animation-delay: 1.4s; }
+        .hw-row:nth-child(3) .hw-key  { animation-delay: 4.9s; }
+        .hw-row:nth-child(4) .hw-key  { animation-delay: 0.6s; }
+        .hw-row:nth-child(5) .hw-key  { animation-delay: 7.8s; }
+        .hw-row:nth-child(6) .hw-key  { animation-delay: 3.2s; }
+        .hw-row:nth-child(7) .hw-key  { animation-delay: 5.5s; }
+        .hw-row:nth-child(1) .hw-val  { animation-delay: 2.1s; }
+        .hw-row:nth-child(2) .hw-val  { animation-delay: 5.3s; }
+        .hw-row:nth-child(3) .hw-val  { animation-delay: 0.9s; }
+        .hw-row:nth-child(4) .hw-val  { animation-delay: 7.1s; }
+        .hw-row:nth-child(5) .hw-val  { animation-delay: 3.6s; }
+        .hw-row:nth-child(6) .hw-val  { animation-delay: 1.7s; }
+        .hw-row:nth-child(7) .hw-val  { animation-delay: 6.0s; }
+
+        /* Stagger skill items within each card */
+        .skill-item:nth-child(2) { animation-delay: 1.8s; }
+        .skill-item:nth-child(3) { animation-delay: 4.5s; }
+        .skill-item:nth-child(4) { animation-delay: 7.2s; }
+        .skill-item:nth-child(5) { animation-delay: 2.6s; }
+
+        /* Stagger algorithm card labels/titles */
+        .algo-card:nth-child(2) .algo-card-label { animation-delay: 3.7s; }
+        .algo-card:nth-child(3) .algo-card-label { animation-delay: 6.2s; }
+        .algo-card:nth-child(2) .algo-card-title { animation-delay: 2.3s; }
+        .algo-card:nth-child(3) .algo-card-title { animation-delay: 5.9s; }
+
+        /* ── FULL-PAGE SCANLINE OVERLAY ── */
+        #scanline-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.015) 2px,
+                rgba(0, 0, 0, 0.015) 4px
+            );
+            animation: scanline-drift 6s linear infinite;
+        }
+
         /* ── RESPONSIVE ── */
         @media (max-width: 1023px) {
             .algorithm-grid { grid-template-columns: 1fr; }
@@ -669,6 +773,9 @@
     </style>
 </head>
 <body>
+
+    <!-- Full-page scanline overlay -->
+    <div id="scanline-overlay"></div>
 
     <!-- ===== NAV ===== -->
     <nav id="main-nav">
@@ -1252,12 +1359,38 @@
         })();
     </script>
 
+    <!-- ===== PAGE TEAR EFFECT ===== -->
+    <script>
+        function pageTear() {
+            var body = document.body;
+            body.style.transform = 'skewX(-0.3deg) translateX(-2px)';
+            body.style.filter = 'brightness(1.05)';
+            setTimeout(function () {
+                body.style.transform = 'skewX(0.2deg) translateX(3px)';
+                body.style.filter = 'brightness(0.97)';
+                setTimeout(function () {
+                    body.style.transform = '';
+                    body.style.filter = '';
+                }, 80);
+            }, 60);
+        }
+
+        function schedulePageTear() {
+            var delay = 15000 + Math.random() * 10000;
+            setTimeout(function () {
+                pageTear();
+                schedulePageTear();
+            }, delay);
+        }
+        schedulePageTear();
+    </script>
+
     <!-- ===== THREE.JS DRONE MODEL ===== -->
     <script>
         /*
         ================================================
         THREE.JS DRONE MODEL
-        Model file: Models/ASR_Drone.glb
+        Model file: Models/ASR_Drone-v1.glb
         ================================================
         */
         (function () {
@@ -1323,8 +1456,11 @@
 
             /* ---- Load GLB model ---- */
             var loader = new THREE.GLTFLoader();
+            var dracoLoader = new THREE.DRACOLoader();
+            dracoLoader.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/draco/');
+            loader.setDRACOLoader(dracoLoader);
             loader.load(
-                './Models/ASR_Drone.glb',
+                './Models/ASR_Drone-v1.glb',
                 function (gltf) {
                     var box    = new THREE.Box3().setFromObject(gltf.scene);
                     var center = box.getCenter(new THREE.Vector3());

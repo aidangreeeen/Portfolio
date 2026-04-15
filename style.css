@@ -849,6 +849,19 @@ input[type="range"]#dimmer::-moz-range-thumb {
 
 .contact-link:hover .cl-arrow { opacity: 1; }
 
+.contact-item,
+.contact-item:link,
+.contact-item:visited,
+.contact-item:hover,
+.contact-item:active {
+    color: var(--bg);
+    text-decoration: none;
+}
+
+.contact-item:hover {
+    color: var(--accent);
+}
+
 /* status box */
 .status-box {
     background-color: var(--dark);

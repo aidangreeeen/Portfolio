@@ -196,6 +196,14 @@
             margin-top: 2rem;
         }
 
+        .video-embed-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            border: 1px solid var(--border);
+            background: var(--text);
+        }
+
         .placeholder-label {
             font-family: var(--font-display);
             font-size: 0.7rem;
@@ -596,11 +604,17 @@
             <span class="section-label" style="color: rgba(255,255,227,0.4);">// Contest Footage</span>
             <h2 class="section-title" style="color: var(--cream); margin-top: 0.5rem;">Scroodfest</h2>
         </div>
-        <div class="video-placeholder">
-            <span class="placeholder-label">Contest Footage</span>
-            <span class="placeholder-sub">Video &middot; Coming Soon</span>
+        <div class="video-embed-container">
+            <iframe
+                width="100%"
+                height="500"
+                src="https://www.youtube.com/embed/D3V5NSJvkSc"
+                title="Scroodfest Contest Footage"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
         </div>
-        <p class="placeholder-note">Full contest footage coming soon.</p>
     </div>
 
     <!-- ===== SECTION 2 — OVERVIEW ===== -->

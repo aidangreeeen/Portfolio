@@ -346,6 +346,7 @@ nav {
     font-size: 0.7rem;
     padding: 0.5rem 1.25rem;
     white-space: nowrap;
+    text-decoration: none;
 }
 
 .dimmer-label { white-space: nowrap; }

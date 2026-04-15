@@ -1593,16 +1593,32 @@ footer {
     position: relative;
     overflow: hidden;
     cursor: default;
-    background: #141409;
-    border-color: #3A3A2A;
-    opacity: 0.85;
-    filter: saturate(0.6);
+    background: var(--bg-offset);
+    border-color: var(--border);
+    opacity: 1;
+    filter: saturate(0.85) brightness(0.96);
     animation: card-glitch 6s infinite;
 }
 
 .project-card-locked:hover {
     transform: none;
     box-shadow: none;
+}
+
+/* Dark overlay for inactive feel */
+.project-card-locked::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 10, 8, 0.25);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Ensure all content sits above overlays */
+.project-card-locked > * {
+    position: relative;
+    z-index: 2;
 }
 
 /* Scanline overlay */

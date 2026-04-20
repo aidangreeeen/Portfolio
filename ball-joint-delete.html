@@ -1166,27 +1166,6 @@
                     <img src="Assets/Angle-2.jpeg" alt="Test Fit — Angle 2" class="gallery-img" loading="lazy">
                 </div>
             </div>
-
-            <div class="video-grid">
-                <div class="video-item">
-                    <video controls>
-                        <source src="Assets/C1.mp4" type="video/mp4">
-                    </video>
-                    <p class="video-caption">3D Printing &mdash; Part 1</p>
-                </div>
-                <div class="video-item">
-                    <video controls>
-                        <source src="Assets/C2.mp4" type="video/mp4">
-                    </video>
-                    <p class="video-caption">3D Printing &mdash; Part 2</p>
-                </div>
-                <div class="video-item">
-                    <video controls>
-                        <source src="Assets/C3.mp4" type="video/mp4">
-                    </video>
-                    <p class="video-caption">3D Scanning Process</p>
-                </div>
-            </div>
         </section>
 
         <!-- ── SECTION 5: SKILLS ── -->
@@ -1381,7 +1360,14 @@
                         }
                     });
 
-                    scene.add(gltf.scene);
+                    var pivot = new THREE.Group();
+                    pivot.add(gltf.scene);
+
+                    pivot.rotation.x = -0.3;
+                    pivot.rotation.y = 0.8;
+                    pivot.rotation.z = -1.1;
+
+                    scene.add(pivot);
 
                     camera.position.set(0, 0, 5);
                     camera.lookAt(0, 0, 0);

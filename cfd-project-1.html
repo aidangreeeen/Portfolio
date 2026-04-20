@@ -450,9 +450,28 @@
             .proj-meta-item { border-right: none; margin-right: 0; padding: 0.6rem 0; }
             .proj-bottom-nav { padding: 2rem 1.25rem; }
         }
+
+        #mesh-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 1;
+        }
+
+        header, main, footer, section {
+            position: relative;
+            z-index: 1;
+        }
+
     </style>
 </head>
 <body>
+
+<canvas id="mesh-bg"></canvas>
 
     <!-- ===== NAV ===== -->
     <nav id="main-nav">
@@ -814,6 +833,98 @@
                 ? '0 2px 24px rgba(26,26,15,0.09)'
                 : 'none';
         }, { passive: true });
+    </script>
+
+    <script>
+        const canvas = document.getElementById('mesh-bg');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let mouseX = -9999;
+        let mouseY = -9999;
+
+        const SPACING = 28;
+        const BASE_RADIUS = 1.5;
+        const MAX_RADIUS = 5;
+        const INFLUENCE_RADIUS = 120;
+
+        function getDotColor(distance, maxInfluence) {
+            if (distance >= maxInfluence) {
+                return 'rgba(180, 170, 140, 0.25)';
+            }
+            const t = 1 - (distance / maxInfluence);
+
+            if (t < 0.33) {
+                const s = t / 0.33;
+                const r = Math.round(60 + s * (30 - 60));
+                const g = Math.round(80 + s * (160 - 80));
+                const b = Math.round(180 + s * (160 - 180));
+                return `rgba(${r},${g},${b},${0.3 + s * 0.4})`;
+            } else if (t < 0.66) {
+                const s = (t - 0.33) / 0.33;
+                const r = Math.round(30 + s * (206 - 30));
+                const g = Math.round(160 + s * (137 - 160));
+                const b = Math.round(160 + s * (70 - 160));
+                return `rgba(${r},${g},${b},${0.5 + s * 0.3})`;
+            } else {
+                const s = (t - 0.66) / 0.34;
+                const r = Math.round(206 + s * (220 - 206));
+                const g = Math.round(137 + s * (60 - 137));
+                const b = Math.round(70 + s * (40 - 70));
+                return `rgba(${r},${g},${b},${0.7 + s * 0.3})`;
+            }
+        }
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        document.addEventListener('mouseleave', () => {
+            mouseX = -9999;
+            mouseY = -9999;
+        });
+
+        function draw() {
+            ctx.clearRect(0, 0, width, height);
+
+            const cols = Math.ceil(width / SPACING) + 1;
+            const rows = Math.ceil(height / SPACING) + 1;
+
+            for (let i = 0; i < cols; i++) {
+                for (let j = 0; j < rows; j++) {
+                    const x = i * SPACING;
+                    const y = j * SPACING;
+
+                    const dx = mouseX - x;
+                    const dy = mouseY - y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    let radius = BASE_RADIUS;
+                    if (distance < INFLUENCE_RADIUS) {
+                        const t = 1 - distance / INFLUENCE_RADIUS;
+                        radius = BASE_RADIUS + (MAX_RADIUS - BASE_RADIUS) * t * t;
+                    }
+
+                    ctx.beginPath();
+                    ctx.arc(x, y, radius, 0, Math.PI * 2);
+                    ctx.fillStyle = getDotColor(distance, INFLUENCE_RADIUS);
+                    ctx.fill();
+                }
+            }
+
+            requestAnimationFrame(draw);
+        }
+
+        draw();
     </script>
 
 </body>

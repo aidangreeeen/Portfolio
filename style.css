@@ -492,13 +492,16 @@ input[type="range"]#dimmer::-moz-range-thumb {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18),
+                0 1px 3px rgba(0, 0, 0, 0.14);
+    transition: box-shadow 0.2s, transform 0.2s;
     cursor: default;
 }
 
 .project-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 14px 36px rgba(26, 26, 15, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25),
+                0 2px 8px rgba(0, 0, 0, 0.18);
 }
 
 /* inverted card */

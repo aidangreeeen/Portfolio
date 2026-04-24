@@ -3,16 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2D PDE Solver — Aidan Green</title>
+    <title>Computational Fluid Dynamics — Aidan Green</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <!--
     ================================================
-    CFD PROJECT 1 — 2D PDE SOLVER
-    Report: Assets/CFD-Project-1.pdf
-    Course: ME 793 — CFD · UNR · 2024
+    COMPUTATIONAL FLUID DYNAMICS — PROJECTS PAGE
+    Project 01: Lid-Driven Cavity Solver (2026)
+    Project 02: 2D PDE Solver (2024)
+    Reports: Assets/Report V1.pdf · Assets/CFD-Project-1.pdf
+    Course: ME 793 — CFD · UNR
     ================================================
     -->
     <style>
@@ -451,6 +453,117 @@
             .proj-bottom-nav { padding: 2rem 1.25rem; }
         }
 
+        /* ── CFD PROJECTS NAV ── */
+        .cfd-projects-nav {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 3rem 4rem;
+        }
+
+        .cfd-nav-card {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 2rem 2.5rem;
+            background: var(--dark);
+            border: 1px solid rgba(255,255,227,0.06);
+            text-decoration: none;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .cfd-nav-card:hover {
+            border-color: var(--accent);
+            background: #1a1a0f;
+        }
+
+        .cfd-nav-number {
+            font-family: var(--font-display);
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+
+        .cfd-nav-title {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--cream);
+        }
+
+        .cfd-nav-desc {
+            font-size: 0.78rem;
+            color: rgba(255,255,227,0.5);
+            line-height: 1.5;
+        }
+
+        /* ── PROJECT DIVIDER ── */
+        .project-divider {
+            background: var(--dark);
+            padding: 1.5rem 4rem;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,227,0.06);
+            border-bottom: 1px solid rgba(255,255,227,0.06);
+        }
+
+        .project-divider-label {
+            font-family: var(--font-display);
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        /* ── PROJECT SECTION HEADER ── */
+        .proj-section-header {
+            background: var(--dark);
+            padding: 3rem 4rem 2rem;
+        }
+
+        .proj-section-eyebrow {
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            font-weight: 600;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .proj-section-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.6rem, 4vw, 2.6rem);
+            font-weight: 700;
+            color: var(--cream);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            margin-bottom: 0.5rem;
+        }
+
+        .proj-section-subtitle {
+            font-size: 0.88rem;
+            color: rgba(255,255,227,0.55);
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 900px) {
+            .cfd-projects-nav { grid-template-columns: 1fr; padding: 2rem; }
+            .project-divider { padding: 1.5rem 2rem; }
+            .proj-section-header { padding: 2.5rem 2rem 1.5rem; }
+        }
+
+        @media (max-width: 600px) {
+            .cfd-projects-nav { padding: 1.5rem 1.25rem; }
+            .cfd-nav-card { padding: 1.5rem; }
+        }
+
         #mesh-bg {
             position: fixed;
             top: 0;
@@ -492,66 +605,278 @@
     <!-- ===== PAGE HEADER ===== -->
     <header class="page-hero">
         <span class="page-label">// Other &nbsp;&middot;&nbsp; Computational</span>
-        <h1 class="page-title">2D PDE Solver</h1>
-        <p class="page-subtitle">Poisson Equation &amp; Transient Heat Equation &mdash; MATLAB</p>
-        <div class="proj-meta-row">
-            <div class="proj-meta-item">
-                <span class="proj-meta-key">Year</span>
-                <span class="proj-meta-val">2024</span>
-            </div>
-            <div class="proj-meta-item">
-                <span class="proj-meta-key">Category</span>
-                <span class="proj-meta-val">Computational Fluid Dynamics</span>
-            </div>
-            <div class="proj-meta-item">
-                <span class="proj-meta-key">Software</span>
-                <span class="proj-meta-val">MATLAB</span>
-            </div>
-            <div class="proj-meta-item">
-                <span class="proj-meta-key">Course</span>
-                <span class="proj-meta-val">ME 793 &mdash; Computational Fluid Dynamics</span>
-            </div>
-            <div class="proj-meta-item">
-                <span class="proj-meta-key">Institution</span>
-                <span class="proj-meta-val">University of Nevada, Reno</span>
-            </div>
-            <div class="proj-meta-item">
-                <span class="proj-meta-key">Status</span>
-                <span class="proj-meta-val">Complete</span>
-            </div>
-        </div>
+        <h1 class="page-title">Computational Fluid Dynamics</h1>
+        <p class="page-subtitle">Numerical Methods &amp; CFD Solver Development &mdash; MATLAB</p>
     </header>
 
-    <!-- ===== PDF VIEWER CARD ===== -->
-    <div class="pdf-card">
-        <div class="pdf-viewer">
-            <iframe src="Assets/CFD-Project-1.pdf"
-                    width="100%"
-                    height="600px"
-                    style="border: 1px solid #CE8946;"
-                    title="CFD Project 1 Report">
-            </iframe>
-            <div class="pdf-fallback">
-                Your browser does not support embedded PDFs.
-                Use the download button below to view the report.
-            </div>
-        </div>
-        <div class="pdf-caption">
-            <div class="pdf-caption-text">
-                <span class="pdf-caption-label">// Full Report</span>
-                <span class="pdf-caption-desc">
-                    Complete project report including derivations,
-                    implementation details, and results &mdash; compiled in LaTeX
-                </span>
-            </div>
-            <a href="Assets/CFD-Project-1.pdf" download class="btn-primary">Download PDF &rarr;</a>
-        </div>
+    <!-- ===== PROJECTS OVERVIEW NAV ===== -->
+    <div class="cfd-projects-nav">
+        <a href="#lid-driven-cavity" class="cfd-nav-card">
+            <span class="cfd-nav-number">01</span>
+            <span class="cfd-nav-title">Lid-Driven Cavity Solver</span>
+            <span class="cfd-nav-desc">Fractional-step Navier-Stokes solver validated against Ghia et al. benchmark</span>
+        </a>
+        <a href="#pde-solver" class="cfd-nav-card">
+            <span class="cfd-nav-number">02</span>
+            <span class="cfd-nav-title">2D PDE Solver</span>
+            <span class="cfd-nav-desc">Poisson &amp; transient heat equation with mixed boundary conditions</span>
+        </a>
     </div>
 
-    <!-- ===== MAIN CONTENT ===== -->
-    <main>
+    <!-- ===== PROJECT 01: LID-DRIVEN CAVITY ===== -->
+    <section id="lid-driven-cavity">
 
-        <!-- ── SECTION 1: OVERVIEW ── -->
+        <div class="proj-section-header">
+            <span class="proj-section-eyebrow">// Project 01</span>
+            <h2 class="proj-section-title">Lid-Driven Cavity Flow Solver</h2>
+            <p class="proj-section-subtitle">Fractional-Step Navier-Stokes Solver &mdash; MATLAB &mdash; Validated Against Ghia et al. Benchmark</p>
+            <div class="proj-meta-row">
+                <div class="proj-meta-item">
+                    <span class="proj-meta-key">Year</span>
+                    <span class="proj-meta-val">2026</span>
+                </div>
+                <div class="proj-meta-item">
+                    <span class="proj-meta-key">Category</span>
+                    <span class="proj-meta-val">Computational Fluid Dynamics</span>
+                </div>
+                <div class="proj-meta-item">
+                    <span class="proj-meta-key">Method</span>
+                    <span class="proj-meta-val">Fractional-Step (Chorin-Temam)</span>
+                </div>
+                <div class="proj-meta-item">
+                    <span class="proj-meta-key">Grid</span>
+                    <span class="proj-meta-val">Staggered MAC &nbsp;&middot;&nbsp; 64&times;64</span>
+                </div>
+                <div class="proj-meta-item">
+                    <span class="proj-meta-key">Software</span>
+                    <span class="proj-meta-val">MATLAB</span>
+                </div>
+                <div class="proj-meta-item">
+                    <span class="proj-meta-key">Validation</span>
+                    <span class="proj-meta-val">Ghia et al. Benchmark</span>
+                </div>
+                <div class="proj-meta-item">
+                    <span class="proj-meta-key">Status</span>
+                    <span class="proj-meta-val">Complete</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── OVERVIEW ── -->
+        <div class="cfd-section">
+            <span class="section-eyebrow">// Overview</span>
+            <div class="overview-grid">
+
+                <div class="overview-desc">
+                    <p>
+                        A 2D incompressible Navier-Stokes solver for the classic lid-driven cavity
+                        problem implemented in MATLAB. The solver uses a fractional-step method
+                        with second-order central differences on a staggered MAC grid, combining
+                        Adams-Bashforth 2 advection with Crank-Nicolson diffusion via a block LU
+                        decomposition.
+                    </p>
+                    <p>
+                        The solver was validated against the benchmark data of Ghia, Ghia, and Shin
+                        for Reynolds numbers 100, 400, and 1000 on a 64&times;64 grid. Agreement with
+                        the benchmark is excellent at Re = 100 and 400, and remains good at Re = 1000
+                        where the moderate grid begins to under-resolve the thin boundary layers near
+                        the walls.
+                    </p>
+                </div>
+
+                <div class="specs-card">
+                    <div class="specs-card-title">Key Specs</div>
+                    <div class="specs-table">
+                        <div class="specs-row">
+                            <span class="specs-key">Method</span>
+                            <span class="specs-val">Fractional-Step (Chorin-Temam)</span>
+                        </div>
+                        <div class="specs-row">
+                            <span class="specs-key">Grid</span>
+                            <span class="specs-val">Staggered MAC &nbsp;&middot;&nbsp; 64&times;64</span>
+                        </div>
+                        <div class="specs-row">
+                            <span class="specs-key">Advection</span>
+                            <span class="specs-val">Adams-Bashforth 2 (AB2)</span>
+                        </div>
+                        <div class="specs-row">
+                            <span class="specs-key">Diffusion</span>
+                            <span class="specs-val">Crank-Nicolson (CN)</span>
+                        </div>
+                        <div class="specs-row">
+                            <span class="specs-key">Spatial</span>
+                            <span class="specs-val">Second-order central differences</span>
+                        </div>
+                        <div class="specs-row">
+                            <span class="specs-key">Boundary</span>
+                            <span class="specs-val">Ghost-cell method</span>
+                        </div>
+                        <div class="specs-row">
+                            <span class="specs-key">Solver</span>
+                            <span class="specs-val">Sparse LU factorization (precomputed)</span>
+                        </div>
+                        <div class="specs-row">
+                            <span class="specs-key">Reynolds Numbers</span>
+                            <span class="specs-val">100 &nbsp;&middot;&nbsp; 400 &nbsp;&middot;&nbsp; 1000</span>
+                        </div>
+                        <div class="specs-row">
+                            <span class="specs-key">Convergence</span>
+                            <span class="specs-val">&epsilon; = 10&sup7; (Re 100, 400) &nbsp;&middot;&nbsp; 5&times;10&sup7; (Re 1000)</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ── METHODOLOGY ── -->
+        <div class="cfd-section">
+            <span class="section-eyebrow">// Methodology</span>
+            <h2 class="section-title">Approach</h2>
+            <div class="timeline-steps">
+
+                <div class="timeline-step">
+                    <div class="step-node">01</div>
+                    <div>
+                        <div class="step-title">Grid Setup</div>
+                        <p class="step-desc">Staggered MAC grid with ghost cells: u velocity on (N+1)&times;(N+2) array, v velocity on (N+2)&times;(N+1) array, pressure on N&times;N array at cell centers. Wall boundary conditions imposed via ghost cells to ensure exact enforcement of no-slip.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-step">
+                    <div class="step-node">02</div>
+                    <div>
+                        <div class="step-title">Spatial Discretization</div>
+                        <p class="step-desc">Second-order central differences for all derivatives. Discrete Laplacian modified at cells adjacent to walls to account for ghost-cell boundary conditions. Advection evaluated in conservative form with fluxes computed at appropriate staggered locations.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-step">
+                    <div class="step-node">03</div>
+                    <div>
+                        <div class="step-title">Fractional-Step Method</div>
+                        <p class="step-desc">Block LU decomposition of the saddle-point system yields a three-step algorithm: intermediate velocity solve, pressure Poisson equation, velocity correction. Adams-Bashforth 2 extrapolation used for advection, Crank-Nicolson for diffusion.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-step">
+                    <div class="step-node">04</div>
+                    <div>
+                        <div class="step-title">Sparse Linear Solvers</div>
+                        <p class="step-desc">Helmholtz and pressure Poisson systems assembled via Kronecker products of 1D tridiagonal matrices with modified boundary rows. Both systems solved using sparse LU factorization precomputed once at the beginning of the simulation, making each time step efficient.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-step">
+                    <div class="step-node">05</div>
+                    <div>
+                        <div class="step-title">Time Integration</div>
+                        <p class="step-desc">Time step selected to satisfy both advective CFL condition and viscous stability limit. CFL = 0.30 for Re = 100 and 400, CFL = 0.20 for Re = 1000. Integration proceeds until steady-state criterion is met.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-step">
+                    <div class="step-node">06</div>
+                    <div>
+                        <div class="step-title">Validation</div>
+                        <p class="step-desc">Centerline velocity profiles compared against Ghia et al. benchmark data for Re = 100, 400, 1000. Streamline topology, vorticity contours, velocity magnitude, and pressure distribution all examined for physical plausibility.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ── RESULTS ── -->
+        <div class="cfd-section">
+            <span class="section-eyebrow">// Results</span>
+            <h2 class="section-title">Key Findings</h2>
+            <div class="results-grid">
+
+                <div class="result-card">
+                    <div class="result-card-title" data-num="01">Benchmark Validation</div>
+                    <p class="result-card-desc">Centerline velocity profiles show excellent agreement with Ghia et al. at Re = 100 and 400. At Re = 1000 the 64&times;64 grid begins to under-resolve thin boundary layers but captures the primary vortex shift and sharp centerline gradients qualitatively.</p>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-card-title" data-num="02">Streamline Topology</div>
+                    <p class="result-card-desc">Primary recirculating vortex nearly centered at Re = 100, migrating toward the geometric center as inertia dominates at higher Re. Secondary counter-rotating eddies develop in the lower corners, growing in size and intensity with increasing Reynolds number.</p>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-card-title" data-num="03">Vorticity &amp; Boundary Layers</div>
+                    <p class="result-card-desc">Positive vorticity generated at the moving lid, transported downward by the primary vortex. Classical boundary-layer thinning observed with increasing Re &mdash; vorticity concentrates near walls while the cavity interior approaches near-uniform vorticity.</p>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-card-title" data-num="04">Pressure Field</div>
+                    <p class="result-card-desc">Strong positive pressure in the upper-right corner where the lid-driven flow impinges on the right wall. Low-pressure region in the upper-left. Pressure minimum at the primary vortex center reflects centripetal acceleration. Gradients steepen and distribution becomes more asymmetric with increasing Re.</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ── FULL REPORT ── -->
+        <div class="pdf-card">
+            <span class="pdf-caption-label" style="display:block; margin-bottom:1.5rem;">// Full Report</span>
+            <div class="pdf-viewer">
+                <iframe src="Assets/Report V1.pdf"
+                        width="100%"
+                        height="600px"
+                        style="border: 1px solid #CE8946;"
+                        title="Lid-Driven Cavity Report">
+                </iframe>
+            </div>
+            <div class="pdf-caption">
+                <div class="pdf-caption-text">
+                    <span class="pdf-caption-desc">Complete project report including derivations, implementation details, and validation results &mdash; compiled in LaTeX</span>
+                </div>
+                <a href="Assets/Report V1.pdf" download class="btn-primary">Download Full Report &rarr;</a>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ===== PROJECT DIVIDER ===== -->
+    <div class="project-divider">
+        <span class="project-divider-label">// Project 02</span>
+    </div>
+
+    <!-- ===== PROJECT 02: 2D PDE SOLVER ===== -->
+    <section id="pde-solver">
+
+        <div class="proj-section-header">
+            <span class="proj-section-eyebrow">// Project 02</span>
+            <h2 class="proj-section-title">2D PDE Solver</h2>
+            <p class="proj-section-subtitle">Poisson Equation &amp; Transient Heat Equation</p>
+            <div class="proj-meta-row">
+                <div class="proj-meta-item">
+                    <span class="proj-meta-key">Year</span>
+                    <span class="proj-meta-val">2024</span>
+                </div>
+                <div class="proj-meta-item">
+                    <span class="proj-meta-key">Category</span>
+                    <span class="proj-meta-val">Computational Fluid Dynamics</span>
+                </div>
+                <div class="proj-meta-item">
+                    <span class="proj-meta-key">Software</span>
+                    <span class="proj-meta-val">MATLAB</span>
+                </div>
+                <div class="proj-meta-item">
+                    <span class="proj-meta-key">Course</span>
+                    <span class="proj-meta-val">ME 793 &mdash; Computational Fluid Dynamics</span>
+                </div>
+                <div class="proj-meta-item">
+                    <span class="proj-meta-key">Institution</span>
+                    <span class="proj-meta-val">University of Nevada, Reno</span>
+                </div>
+                <div class="proj-meta-item">
+                    <span class="proj-meta-key">Status</span>
+                    <span class="proj-meta-val">Complete</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── OVERVIEW ── -->
         <div class="cfd-section">
             <span class="section-eyebrow">// Overview</span>
             <div class="overview-grid">
@@ -612,7 +937,7 @@
             </div>
         </div>
 
-        <!-- ── SECTION 2: METHODOLOGY ── -->
+        <!-- ── METHODOLOGY ── -->
         <div class="cfd-section">
             <span class="section-eyebrow">// Methodology</span>
             <h2 class="section-title">Approach</h2>
@@ -694,7 +1019,7 @@
             </div>
         </div>
 
-        <!-- ── SECTION 3: RESULTS ── -->
+        <!-- ── RESULTS ── -->
         <div class="cfd-section">
             <span class="section-eyebrow">// Results</span>
             <h2 class="section-title">Key Findings</h2>
@@ -739,7 +1064,38 @@
             </div>
         </div>
 
-        <!-- ── SECTION 4: SKILLS ── -->
+        <!-- ── FULL REPORT ── -->
+        <div class="pdf-card">
+            <div class="pdf-viewer">
+                <iframe src="Assets/CFD-Project-1.pdf"
+                        width="100%"
+                        height="600px"
+                        style="border: 1px solid #CE8946;"
+                        title="CFD Project 1 Report">
+                </iframe>
+                <div class="pdf-fallback">
+                    Your browser does not support embedded PDFs.
+                    Use the download button below to view the report.
+                </div>
+            </div>
+            <div class="pdf-caption">
+                <div class="pdf-caption-text">
+                    <span class="pdf-caption-label">// Full Report</span>
+                    <span class="pdf-caption-desc">
+                        Complete project report including derivations,
+                        implementation details, and results &mdash; compiled in LaTeX
+                    </span>
+                </div>
+                <a href="Assets/CFD-Project-1.pdf" download class="btn-primary">Download PDF &rarr;</a>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main>
+
+        <!-- ── COMBINED SKILLS ── -->
         <div class="cfd-section">
             <span class="section-eyebrow">// Skills</span>
             <h2 class="section-title">Skills Demonstrated</h2>
@@ -748,11 +1104,13 @@
                 <div class="skill-card">
                     <div class="skill-card-title">Numerical Methods</div>
                     <ul class="skill-list">
+                        <li>Fractional-Step Method (Chorin-Temam)</li>
                         <li>Finite Difference Discretization</li>
-                        <li>Sparse Matrix Assembly</li>
+                        <li>Staggered MAC Grids</li>
+                        <li>Sparse LU Factorization</li>
                         <li>Crank-Nicolson Time Stepping</li>
-                        <li>L&sup2; Error Convergence Criteria</li>
-                        <li>Ghost Cell Boundary Treatment</li>
+                        <li>Adams-Bashforth 2 Advection</li>
+                        <li>Ghost-Cell Boundary Treatment</li>
                     </ul>
                 </div>
 
@@ -761,19 +1119,20 @@
                     <ul class="skill-list">
                         <li>MATLAB</li>
                         <li>Sparse Linear Systems</li>
-                        <li>UMFPACK Direct Factorization</li>
-                        <li>Backslash Operator</li>
+                        <li>Kronecker Product Assembly</li>
                         <li>LaTeX Report Writing</li>
+                        <li>Benchmark Validation</li>
                     </ul>
                 </div>
 
                 <div class="skill-card">
                     <div class="skill-card-title">Engineering Analysis</div>
                     <ul class="skill-list">
+                        <li>Incompressible Navier-Stokes</li>
                         <li>2D Heat Transfer Modeling</li>
-                        <li>Mixed Boundary Conditions</li>
-                        <li>Mesh Independence Study</li>
-                        <li>Steady-State vs. Transient Analysis</li>
+                        <li>Boundary Layer Analysis</li>
+                        <li>Reynolds Number Scaling</li>
+                        <li>Mesh Independence Studies</li>
                         <li>PDE Formulation</li>
                     </ul>
                 </div>

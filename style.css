@@ -751,11 +751,69 @@ input[type="range"]#dimmer::-moz-range-thumb {
     gap: 2rem;
 }
 
+.testimonial-quote-wrap {
+    position: relative;
+}
+
 .testimonial-quote {
     font-size: 0.92rem;
     line-height: 1.82;
     color: rgba(255,255,227,0.65);
     font-style: italic;
+    max-height: 8em;
+    overflow: hidden;
+    position: relative;
+    transition: max-height 0.4s ease;
+    margin-bottom: 0.5rem;
+}
+
+.testimonial-quote-wrap.expanded .testimonial-quote {
+    max-height: 200em;
+}
+
+.testimonial-quote::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2.5em;
+    background: linear-gradient(to bottom, transparent, #1A1A0F 90%);
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.testimonial-quote-wrap.expanded .testimonial-quote::after {
+    opacity: 0;
+}
+
+.testimonial-quote-wrap.short .testimonial-quote {
+    max-height: none;
+}
+
+.testimonial-quote-wrap.short .testimonial-quote::after {
+    display: none;
+}
+
+.testimonial-quote-wrap.short .testimonial-toggle {
+    display: none;
+}
+
+.testimonial-toggle {
+    background: none;
+    border: none;
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    cursor: pointer;
+    padding: 0.5rem 0;
+    margin-top: 0.5rem;
+}
+
+.testimonial-toggle:hover {
+    opacity: 0.75;
 }
 
 .testimonial-name {

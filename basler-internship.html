@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basler Turbo Conversions — Aidan Green</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Three.js -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <style>
+        /* ── PAGE THEME ──────────────────────────────────────────────── */
+        body {
+            background-color: #F4ECD8;
+            color: #1A1A0F;
+        }
+
+        /* ── NAV OVERRIDE ────────────────────────────────────────────── */
+        #main-nav {
+            background: #F4ECD8;
+            border-bottom: 1px solid rgba(26,26,15,0.12);
+        }
+
+        #main-nav .nav-logo {
+            color: #1A1A0F;
+        }
+
+        #main-nav .nav-links a {
+            color: rgba(26,26,15,0.65);
+        }
+
+        #main-nav .nav-links a:hover {
+            color: #1A1A0F;
+        }
+
+        #main-nav .hamburger span {
+            background: #1A1A0F;
+        }
+
+        #main-nav .nav-links.open {
+            background: #F4ECD8;
+        }
+
+        /* ── HERO TAG SECTION ────────────────────────────────────────── */
+        .tag-hero {
+            padding: 7rem 4rem 5rem;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        .tag-card {
+            position: relative;
+            background: #FFFEF5;
+            border: 1.5px solid rgba(26,26,15,0.18);
+            max-width: 860px;
+            width: 100%;
+            clip-path: polygon(36px 0%, 100% 0%, 100% 100%, 0% 100%, 0% 36px);
+            box-shadow: 4px 6px 24px rgba(26,26,15,0.10), 0 1px 0 rgba(26,26,15,0.05);
+        }
+
+        .tag-hole-corner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+        }
+
+        .tag-hole {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(26,26,15,0.3);
+            background: #F4ECD8;
+            margin: 0 6px 6px 0;
+        }
+
+        .tag-header {
+            display: flex;
+            align-items: stretch;
+            border-bottom: 1px solid rgba(26,26,15,0.10);
+        }
+
+        .tag-header-main {
+            flex: 1;
+            padding: 2rem 2.5rem;
+        }
+
+        .tag-serial {
+            font-family: var(--font-display);
+            font-size: 0.55rem;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: rgba(26,26,15,0.32);
+            margin-bottom: 0.5rem;
+        }
+
+        .tag-company {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #1A1A0F;
+            line-height: 1.05;
+        }
+
+        .tag-company-sub {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(26,26,15,0.45);
+            margin-top: 0.4rem;
+        }
+
+        .tag-header-address {
+            width: 200px;
+            flex-shrink: 0;
+            border-left: 1px solid rgba(26,26,15,0.10);
+            padding: 2rem 1.75rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .tag-addr-line {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 0.62rem;
+            line-height: 1.8;
+            color: rgba(26,26,15,0.45);
+        }
+
+        .tag-addr-line strong {
+            color: rgba(26,26,15,0.75);
+            font-weight: 600;
+        }
+
+        /* ── TAG FIELDS ─────────────────────────────────────────────── */
+        .tag-fields {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .tag-field {
+            padding: 1.25rem 2rem;
+            border-right: 1px solid rgba(26,26,15,0.08);
+            border-bottom: 1px solid rgba(26,26,15,0.08);
+        }
+
+        .tag-field:nth-child(3n) {
+            border-right: none;
+        }
+
+        .tag-field:nth-child(4),
+        .tag-field:nth-child(5),
+        .tag-field:nth-child(6) {
+            border-bottom: none;
+        }
+
+        .tag-field-key {
+            font-family: var(--font-display);
+            font-size: 0.52rem;
+            letter-spacing: 0.26em;
+            text-transform: uppercase;
+            color: rgba(26,26,15,0.35);
+            margin-bottom: 0.4rem;
+        }
+
+        .tag-field-val {
+            font-family: var(--font-display);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: #1A1A0F;
+        }
+
+        .tag-field-val.status-active {
+            color: #2E7D32;
+        }
+
+        /* ── SECTION CONTAINERS ──────────────────────────────────────── */
+        .proj-section {
+            padding: 5rem 4rem;
+        }
+
+        .proj-section.light {
+            background-color: #F4ECD8;
+            color: #1A1A0F;
+        }
+
+        .proj-section.light-alt {
+            background-color: #FFFEF5;
+            color: #1A1A0F;
+            border-top: 1px solid rgba(26,26,15,0.07);
+            border-bottom: 1px solid rgba(26,26,15,0.07);
+        }
+
+        .proj-section.dark {
+            background-color: #0a0a08;
+            color: #FFFFE3;
+        }
+
+        .proj-section-header {
+            margin-bottom: 3rem;
+        }
+
+        .section-num {
+            font-family: var(--font-display);
+            font-size: 0.55rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: rgba(26,26,15,0.3);
+            margin-bottom: 0.5rem;
+        }
+
+        .proj-section.dark .section-num {
+            color: rgba(255,255,227,0.3);
+        }
+
+        .section-title-light {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 2.5vw, 2rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: #1A1A0F;
+            line-height: 1.15;
+        }
+
+        .proj-section.dark .section-title-light {
+            color: #FFFFE3;
+        }
+
+        /* ── OVERVIEW GRID ───────────────────────────────────────────── */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .overview-desc {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 0.92rem;
+            line-height: 1.9;
+            color: rgba(26,26,15,0.70);
+        }
+
+        .overview-desc p + p {
+            margin-top: 1.25rem;
+        }
+
+        .focus-card {
+            background: #1A1A0F;
+            color: #FFFFE3;
+            padding: 2rem 2.25rem;
+        }
+
+        .focus-card-title {
+            font-family: var(--font-display);
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.26em;
+            color: rgba(255,255,227,0.32);
+            margin-bottom: 1.5rem;
+        }
+
+        .focus-item {
+            display: flex;
+            gap: 1rem;
+            padding: 0.7rem 0;
+            border-bottom: 1px solid rgba(255,255,227,0.07);
+            align-items: baseline;
+        }
+
+        .focus-item:first-of-type {
+            border-top: 1px solid rgba(255,255,227,0.07);
+        }
+
+        .focus-dot {
+            color: #CE8946;
+            font-size: 0.6rem;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        .focus-text {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 0.78rem;
+            color: rgba(255,255,227,0.6);
+            line-height: 1.55;
+        }
+
+        /* ── 3D MODEL VIEWER ──────────────────────────────────────────── */
+        .single-viewer {
+            position: relative;
+            height: 520px;
+            background-color: #09090a;
+            overflow: hidden;
+        }
+
+        .single-viewer canvas {
+            display: block;
+        }
+
+        .model-loading {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-size: 0.65rem;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: var(--accent);
+            pointer-events: none;
+        }
+
+        .viewer-label {
+            font-family: var(--font-display);
+            font-size: 0.62rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255,255,227,0.35);
+            padding: 0.75rem 0;
+            border-top: 1px solid rgba(255,255,227,0.07);
+            text-align: center;
+        }
+
+        /* ── STATUS SECTION ──────────────────────────────────────────── */
+        .status-container {
+            max-width: 560px;
+            margin: 0 auto;
+        }
+
+        .status-stamp-wrap {
+            border: 1.5px dashed rgba(26,26,15,0.2);
+            padding: 3rem 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 200px;
+            position: relative;
+        }
+
+        .status-stamp {
+            display: inline-block;
+            border: 3px solid #C84545;
+            color: #C84545;
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            padding: 0.5rem 1.5rem;
+            transform: rotate(-3deg);
+            opacity: 0.85;
+        }
+
+        .status-note {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 0.7rem;
+            color: rgba(26,26,15,0.38);
+            margin-top: 1.5rem;
+            letter-spacing: 0.08em;
+        }
+
+        /* ── SKILLS GRID ─────────────────────────────────────────────── */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            border: 1px solid rgba(26,26,15,0.12);
+        }
+
+        .skill-card {
+            padding: 2rem 2rem;
+            border-right: 1px solid rgba(26,26,15,0.12);
+        }
+
+        .skill-card:last-child {
+            border-right: none;
+        }
+
+        .skill-card-title {
+            font-family: var(--font-display);
+            font-size: 0.6rem;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: rgba(26,26,15,0.38);
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(26,26,15,0.08);
+        }
+
+        .skill-tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .skill-tag {
+            font-family: var(--font-display);
+            font-size: 0.6rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: #1A1A0F;
+            background: rgba(26,26,15,0.06);
+            border: 1px solid rgba(26,26,15,0.14);
+            padding: 0.3rem 0.65rem;
+        }
+
+        /* ── ABOUT GRID ──────────────────────────────────────────────── */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .about-desc {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 0.92rem;
+            line-height: 1.9;
+            color: rgba(26,26,15,0.70);
+        }
+
+        .about-desc p + p {
+            margin-top: 1.25rem;
+        }
+
+        .info-card {
+            border: 1px solid rgba(26,26,15,0.12);
+            overflow: hidden;
+        }
+
+        .info-card-header {
+            background: #1A1A0F;
+            color: #FFFFE3;
+            padding: 1rem 1.5rem;
+            font-family: var(--font-display);
+            font-size: 0.6rem;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+        }
+
+        .info-row {
+            display: flex;
+            padding: 0.75rem 1.5rem;
+            border-bottom: 1px solid rgba(26,26,15,0.07);
+            align-items: baseline;
+            gap: 1rem;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-key {
+            font-family: var(--font-display);
+            font-size: 0.56rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(26,26,15,0.35);
+            min-width: 90px;
+            flex-shrink: 0;
+        }
+
+        .info-val {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 0.78rem;
+            color: rgba(26,26,15,0.72);
+            line-height: 1.55;
+        }
+
+        /* ── BOTTOM NAV ──────────────────────────────────────────────── */
+        .proj-nav {
+            display: flex;
+            border-top: 1px solid rgba(26,26,15,0.10);
+        }
+
+        .proj-nav-btn {
+            flex: 1;
+            padding: 1.75rem 2.5rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            color: #1A1A0F;
+            background: #FFFEF5;
+            transition: background 0.2s;
+            gap: 1.5rem;
+            border-right: 1px solid rgba(26,26,15,0.10);
+        }
+
+        .proj-nav-btn:last-child {
+            border-right: none;
+        }
+
+        .proj-nav-btn:hover {
+            background: #F4ECD8;
+        }
+
+        .proj-nav-label {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 0.52rem;
+            letter-spacing: 0.26em;
+            text-transform: uppercase;
+            color: rgba(26,26,15,0.35);
+            margin-bottom: 0.25rem;
+        }
+
+        .proj-nav-title {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #1A1A0F;
+        }
+
+        /* ── FOOTER OVERRIDE ─────────────────────────────────────────── */
+        footer {
+            background: #1A1A0F;
+            border-top: none;
+        }
+
+        /* ── RESPONSIVE ──────────────────────────────────────────────── */
+        @media (max-width: 768px) {
+            .tag-hero { padding: 5.5rem 1.25rem 3rem; }
+            .tag-fields { grid-template-columns: repeat(2, 1fr); }
+            .tag-field:nth-child(2n) { border-right: none; }
+            .tag-field:nth-child(4),
+            .tag-field:nth-child(5) { border-bottom: 1px solid rgba(26,26,15,0.08); }
+            .tag-field:nth-child(6) { border-bottom: none; }
+            .tag-header-address { display: none; }
+            .overview-grid,
+            .about-grid,
+            .two-col { grid-template-columns: 1fr; gap: 2rem; }
+            .skills-grid { grid-template-columns: 1fr; }
+            .skill-card { border-right: none; border-bottom: 1px solid rgba(26,26,15,0.12); }
+            .skill-card:last-child { border-bottom: none; }
+            .proj-section { padding: 3.5rem 1.25rem; }
+            .proj-nav { flex-direction: column; }
+            .proj-nav-btn { border-right: none; border-bottom: 1px solid rgba(26,26,15,0.10); }
+        }
+
+        /* ── TAG HERO (new) ──────────────────────────────────────────── */
+        :root { --pad-x: 2rem; }
+
+        .tag-card-hero {
+            display: flex;
+            flex-direction: row;
+            background: #FAF3DE;
+            border: 1.5px solid #2A2A1A;
+            color: #1A1A0F;
+            clip-path: polygon(
+                44px 0, 100% 0, 100% 100%, 44px 100%, 0 50%
+            );
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .tag-hero-hole-wrap {
+            width: 80px;
+            min-width: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #FAF3DE;
+            border-right: 1px solid #2A2A1A;
+            flex-shrink: 0;
+        }
+
+        .tag-hero-hole {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #1A1A0F;
+            box-shadow:
+                0 0 0 5px #8B2020,
+                0 0 0 9px #FAF3DE,
+                0 0 0 10px #2A2A1A;
+        }
+
+        .tag-hero-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 2.5rem;
+            gap: 1.5rem;
+        }
+
+        .tag-hero-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 2rem;
+            border-bottom: 1.5px solid #1A1A0F;
+            padding-bottom: 1.5rem;
+        }
+
+        .tag-hero-label {
+            font-family: 'Courier New', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            color: #8B2020;
+            margin-bottom: 0.5rem;
+        }
+
+        .tag-hero-title {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            line-height: 1.0;
+            color: #1A1A0F;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .tag-hero-sub {
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            color: #1A1A0F;
+            opacity: 0.6;
+        }
+
+        .tag-hero-address {
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            line-height: 1.8;
+            color: #8B2020;
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .tag-hero-illustration {
+            background: #1A1A0F;
+            border: 1px solid #2A2A1A;
+            overflow: hidden;
+        }
+
+        .tag-hero-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-top: 1.5px solid #1A1A0F;
+        }
+
+        .tag-hero-cell {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            padding: 1rem 1.25rem;
+            border-right: 1px solid #2A2A1A;
+            border-bottom: 1px solid #2A2A1A;
+        }
+
+        .tag-hero-cell:nth-child(3n) {
+            border-right: none;
+        }
+
+        .tag-cell-label {
+            font-family: 'Courier New', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #1A1A0F;
+            opacity: 0.5;
+        }
+
+        .tag-cell-value {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #1A1A0F;
+        }
+
+        .tag-status-upcoming {
+            color: #8B2020;
+        }
+
+        @media (max-width: 768px) {
+            .tag-card-hero { clip-path: none; }
+            .tag-hero-hole-wrap { display: none; }
+            .tag-hero-grid { grid-template-columns: repeat(2, 1fr); }
+            .tag-hero-cell:nth-child(3n) { border-right: 1px solid #2A2A1A; }
+            .tag-hero-cell:nth-child(2n) { border-right: none; }
+        }
+
+        .tag-section {
+            display: flex;
+            justify-content: center;
+            padding: 3rem var(--pad-x);
+            background: #F4ECD8;
+        }
+
+        .tag-svg {
+            width: 100%;
+            max-width: 900px;
+            height: auto;
+            display: block;
+        }
+
+        .basler-embed-section {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem var(--pad-x);
+        }
+
+        .basler-iframe-wrap {
+            border: 1px solid var(--border);
+            background: #000;
+        }
+
+        .basler-iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            display: block;
+        }
+
+        .basler-iframe-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-top: 1px solid var(--border);
+            background: var(--bg-offset);
+        }
+
+        .basler-iframe-note {
+            font-family: var(--font-display);
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        /* ── ABOUT BASLER SECTION ────────────────────────────────────── */
+        .about-basler-section {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 5rem var(--pad-x);
+        }
+
+        .about-basler-section .section-label {
+            font-family: var(--font-display);
+            font-size: 0.6rem;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: rgba(26,26,15,0.35);
+            margin-bottom: 0.75rem;
+        }
+
+        .about-basler-section .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 2.5vw, 2rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: #1A1A0F;
+            line-height: 1.15;
+            margin-bottom: 3rem;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .col-left {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 0.92rem;
+            line-height: 1.9;
+            color: rgba(26,26,15,0.70);
+        }
+
+        .col-left p + p {
+            margin-top: 1.25rem;
+        }
+
+        .specs-card {
+            border: 1px solid rgba(26,26,15,0.12);
+            overflow: hidden;
+        }
+
+        .specs-card-dark {
+            background: #1A1A0F;
+            color: #FFFFE3;
+            border: none;
+        }
+
+        .spec-row {
+            display: flex;
+            padding: 0.85rem 1.5rem;
+            border-bottom: 1px solid rgba(255,255,227,0.08);
+            align-items: baseline;
+            gap: 1rem;
+        }
+
+        .spec-row:last-child {
+            border-bottom: none;
+        }
+
+        .spec-label {
+            font-family: var(--font-display);
+            font-size: 0.56rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255,255,227,0.35);
+            min-width: 100px;
+            flex-shrink: 0;
+        }
+
+        .spec-value {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 0.78rem;
+            color: rgba(255,255,227,0.8);
+            line-height: 1.55;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAV ===== -->
+    <nav id="main-nav">
+        <a href="index.html" class="nav-logo">Aidan Green</a>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="portfolio.html" class="nav-active">Portfolio</a></li>
+            <li><a href="Assets/Resume.pdf" target="_blank" rel="noopener noreferrer" class="nav-link">Resume</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- ===== SECTION 2 — BASLER TURBO CONVERSIONS EMBED ===== -->
+    <section class="basler-embed-section">
+      <div class="section-label">// Basler Turbo Conversions</div>
+      <div class="basler-iframe-wrap">
+        <iframe
+          src="https://www.baslerturbo.com"
+          title="Basler Turbo Conversions"
+          class="basler-iframe"
+          loading="lazy"
+          sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-top-navigation">
+        </iframe>
+        <div class="basler-iframe-footer">
+          <span class="basler-iframe-note">
+            // baslerturbo.com — navigate freely
+          </span>
+          <a href="https://www.baslerturbo.com"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="btn-primary">
+            Open in New Tab →
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION 3 — STATUS ===== -->
+    <section class="proj-section light">
+        <div style="max-width:1100px;margin:0 auto;">
+            <div class="proj-section-header">
+                <p class="section-num">03 &nbsp;—&nbsp; Status</p>
+                <h2 class="section-title-light">Project Status</h2>
+            </div>
+            <div class="status-container">
+                <div class="status-stamp-wrap">
+                    <div class="status-stamp">Pending</div>
+                    <p class="status-note">Internship begins Summer 2026 &nbsp;·&nbsp; Documentation in progress</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 4 — SKILLS ===== -->
+    <section class="about-basler-section">
+      <div class="section-label">// About</div>
+      <h2 class="section-title">Basler Turbo Conversions</h2>
+      <div class="two-col">
+        <div class="col-left">
+          <p>Founded in Oshkosh, Wisconsin, Basler Turbo
+          Conversions is the recognized world authority on
+          DC-3 modernization. The BT-67 — a Pratt &amp; Whitney
+          PT6A-67R turbine-powered conversion of the original
+          DC-3 airframe — extends the operational life of an
+          iconic platform by decades, serving polar research,
+          firefighting, cargo, and humanitarian missions across
+          the globe.</p>
+          <p>Working alongside Basler's engineering team during
+          summer 2026 represents an opportunity to engage with
+          certified aircraft modification engineering at a
+          specialized facility with deep institutional
+          expertise in legacy airframe modernization.</p>
+        </div>
+        <div class="col-right">
+          <div class="specs-card specs-card-dark">
+            <div class="spec-row">
+              <span class="spec-label">Founded</span>
+              <span class="spec-value">Oshkosh, Wisconsin</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label">Specialty</span>
+              <span class="spec-value">DC-3 Turbine Conversion</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label">Platform</span>
+              <span class="spec-value">BT-67</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label">Engines</span>
+              <span class="spec-value">Pratt &amp; Whitney PT6A-67R</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label">Operations</span>
+              <span class="spec-value">Global utility, polar,
+              firefighting, humanitarian</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label">Status</span>
+              <span class="spec-value">FAA Certified Repair Station</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== BOTTOM NAV ===== -->
+    <nav class="proj-nav">
+        <a href="portfolio.html" class="proj-nav-btn">
+            <span>
+                <span class="proj-nav-label">Back</span>
+                <span class="proj-nav-title">&larr; Portfolio</span>
+            </span>
+        </a>
+        <a href="instrumentation-panel.html" class="proj-nav-btn" style="justify-content:flex-end;text-align:right;">
+            <span>
+                <span class="proj-nav-label">Related Project</span>
+                <span class="proj-nav-title">Instrumentation Panel &rarr;</span>
+            </span>
+        </a>
+    </nav>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="footer-inner">
+            <div>
+                <p class="footer-name">Aidan Green</p>
+                <p class="footer-degree">M.S. Aerospace Engineering &nbsp;&middot;&nbsp; University of Nevada, Reno</p>
+            </div>
+            <div class="footer-right">
+                <div class="footer-links">
+                    <a href="mailto:aidangreeeen@gmail.com">Email</a>
+                    <a href="https://www.linkedin.com/in/aidangreeeen/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a href="portfolio.html">Portfolio</a>
+                    <a href="Assets/Resume.pdf" target="_blank" rel="noopener noreferrer">Resume</a>
+                </div>
+                <p class="footer-copy">&copy; 2025 Aidan Green. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== JS ===== -->
+    <script>
+        /* ---- mobile nav toggle ---- */
+        var hamburger = document.getElementById('hamburger');
+        var navLinks  = document.getElementById('nav-links');
+
+        hamburger.addEventListener('click', function () {
+            navLinks.classList.toggle('open');
+        });
+
+        navLinks.querySelectorAll('a').forEach(function (link) {
+            link.addEventListener('click', function () { navLinks.classList.remove('open'); });
+        });
+
+        /* ---- nav shadow on scroll ---- */
+        var mainNav = document.getElementById('main-nav');
+        window.addEventListener('scroll', function () {
+            mainNav.style.boxShadow = window.scrollY > 20
+                ? '0 2px 24px rgba(26,26,15,0.09)'
+                : 'none';
+        }, { passive: true });
+
+        /* ---- Three.js DC-3 viewer ---- */
+        (function () {
+            var container = document.getElementById('dc3-viewer');
+            if (!container) return;
+
+            var loadingEl = container.querySelector('.model-loading');
+
+            var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.toneMapping = THREE.NoToneMapping;
+            renderer.toneMappingExposure = 1.0;
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            renderer.setClearColor(0x09090a, 1);
+            container.appendChild(renderer.domElement);
+
+            var scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x09090a);
+            scene.environment = null;
+
+            var camera = new THREE.PerspectiveCamera(45, 1, 0.1, 200);
+            camera.position.set(0, 1, 6);
+
+            var controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.autoRotate      = true;
+            controls.autoRotateSpeed = 0.8;
+            controls.enableDamping   = true;
+            controls.dampingFactor   = 0.05;
+            controls.enableZoom      = false;
+            controls.enablePan       = false;
+            controls.target.set(0, 0, 0);
+            controls.update();
+
+            var rotateTimer;
+            controls.addEventListener('start', function () {
+                controls.autoRotate = false;
+                clearTimeout(rotateTimer);
+            });
+            controls.addEventListener('end', function () {
+                rotateTimer = setTimeout(function () { controls.autoRotate = true; }, 3000);
+            });
+
+            scene.add(new THREE.AmbientLight(0xFFFFE3, 0.35));
+
+            var keyLight = new THREE.DirectionalLight(0xffffff, 0.9);
+            keyLight.position.set(6, 8, 4);
+            scene.add(keyLight);
+
+            var fillLight = new THREE.DirectionalLight(0xCE8946, 0.25);
+            fillLight.position.set(-5, 2, -5);
+            scene.add(fillLight);
+
+            var rimLight = new THREE.DirectionalLight(0xaaaaff, 0.2);
+            rimLight.position.set(-3, -3, 3);
+            scene.add(rimLight);
+
+            var loader = new THREE.GLTFLoader();
+            loader.load(
+                'Models/DC3.glb',
+                function (gltf) {
+                    var pivot = new THREE.Group();
+                    pivot.position.set(-0.15, 0.5, 0.0);
+                    scene.add(pivot);
+
+                    var box    = new THREE.Box3().setFromObject(gltf.scene);
+                    var center = box.getCenter(new THREE.Vector3());
+                    var size   = box.getSize(new THREE.Vector3());
+                    var maxDim = Math.max(size.x, size.y, size.z);
+                    var scale  = 4.0 / maxDim;
+                    gltf.scene.scale.setScalar(scale);
+                    gltf.scene.position.sub(center.multiplyScalar(scale));
+
+                    gltf.scene.traverse(function (child) {
+                        if (child.isMesh) {
+                            var mats = Array.isArray(child.material)
+                                ? child.material
+                                : [child.material];
+                            mats.forEach(function (mat) {
+                                mat.envMapIntensity = 0.0;
+                                mat.needsUpdate     = true;
+                            });
+                        }
+                    });
+
+                    pivot.add(gltf.scene);
+
+                    camera.position.set(0, 1, 6);
+                    camera.lookAt(0, 0, 0);
+                    controls.target.set(0, 0, 0);
+                    controls.update();
+
+                    if (loadingEl) loadingEl.remove();
+                },
+                undefined,
+                function (error) {
+                    console.error('DC-3 GLB load error:', error);
+                    if (loadingEl) loadingEl.textContent = 'MODEL UNAVAILABLE';
+                }
+            );
+
+            function resize() {
+                var w = container.clientWidth;
+                var h = container.clientHeight;
+                if (!w || !h) return;
+                camera.aspect = w / h;
+                camera.updateProjectionMatrix();
+                renderer.setSize(w, h);
+            }
+
+            resize();
+            window.addEventListener('resize', resize, { passive: true });
+
+            (function animate() {
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene, camera);
+            })();
+        })();
+    </script>
+</body>
+</html>

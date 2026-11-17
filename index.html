@@ -25,6 +25,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="ski-resort.css">
     <!-- Three.js -->
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
@@ -101,6 +102,33 @@
             </div>
         </div>
 
+    </section>
+
+    <!-- ===== SKI RESORT (interactive scroll section: ski-resort.css + ski-resort.js) ===== -->
+    <section class="ski-section" id="ski" aria-label="Interactive 3D ski resort">
+        <div class="ski-sticky is-loading">
+            <canvas id="ski-canvas" aria-hidden="true"></canvas>
+            <div class="ski-fade top" id="fade-top"></div>
+            <div class="ski-fade bottom" id="fade-bottom"></div>
+            <div id="ski-status">Loading the mountain&hellip;</div>
+            <button class="ski-panel-toggle" id="ski-panel-toggle" aria-expanded="false" aria-controls="ski-panel">Customize</button>
+            <div class="ski-panel" id="ski-panel">
+                <span class="label">Lifts</span>
+                <div class="seg" id="ctl-lifts" role="group" aria-label="Number of chairlifts">
+                    <button data-v="0">0</button><button data-v="1">1</button><button data-v="2">2</button>
+                    <button data-v="3">3</button><button data-v="4" aria-pressed="true">4</button>
+                </div>
+                <label class="label" for="ctl-trees">Trees</label>
+                <input id="ctl-trees" type="range" min="0" max="100" value="100">
+                <label class="label" for="ctl-clouds">Clouds</label>
+                <input id="ctl-clouds" type="range" min="0" max="100" value="45">
+                <span class="label">Time</span>
+                <div class="seg" id="ctl-time" role="group" aria-label="Time of day">
+                    <button data-v="dawn">Dawn</button><button data-v="day" aria-pressed="true">Day</button>
+                    <button data-v="dusk">Dusk</button><button data-v="night">Night</button>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- ===== PORTFOLIO ===== -->
@@ -812,6 +840,15 @@
             });
         });
     </script>
+
+    <!-- Ski resort section: three.js r170 as an ES module (separate from the r128 used by the hero model) -->
+    <script type="importmap">
+    { "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+    } }
+    </script>
+    <script type="module" src="ski-resort.js"></script>
 
 </body>
 </html>

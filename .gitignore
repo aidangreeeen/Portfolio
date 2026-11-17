@@ -1,0 +1,3 @@
+# Blender source files (large, and contain the generator asset)
+*.blend
+*.blend1

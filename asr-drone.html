@@ -8,18 +8,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="asr-replay.css">
     <!-- Three.js -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <!--
     ================================================
     ASR DRONE — PROJECT PAGE
     Platform: PX4 X500 v2
     Status: Hardware complete · Algorithm Flight Testing
     Field testing: Summer 2026
-    Model: Models/ASR_Drone-v1.glb
     ================================================
     -->
     <style>
@@ -141,42 +137,6 @@
             line-height: 1.6;
         }
 
-        /* ── 3D VIEWER ── */
-        .single-viewer {
-            position: relative;
-            height: 500px;
-            background-color: #09090a;
-            overflow: hidden;
-        }
-
-        .single-viewer canvas {
-            display: block;
-        }
-
-        .model-loading {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: var(--font-display);
-            font-size: 0.65rem;
-            letter-spacing: 0.24em;
-            text-transform: uppercase;
-            color: var(--accent);
-            pointer-events: none;
-        }
-
-        .viewer-label {
-            font-family: var(--font-display);
-            font-size: 0.65rem;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: rgba(255,255,227,0.4);
-            padding: 0.75rem 0;
-            border-top: 1px solid rgba(255,255,227,0.07);
-            text-align: center;
-        }
 
         /* ── PHASE TIMELINE ── */
         .phase-timeline {
@@ -695,7 +655,7 @@
         .hw-val           { animation: vhs-ambient 12s infinite 2.1s; }
         .skill-card-title { animation: vhs-ambient 9s  infinite 7.1s; }
         .skill-item       { animation: vhs-ambient 11s infinite 0.4s; }
-        .viewer-label     { animation: vhs-ambient 10s infinite 5.8s; }
+
         .proj-nav-title   { animation: vhs-ambient 8s  infinite 3.2s; }
 
         /* Stagger metadata values by parent position */
@@ -761,7 +721,7 @@
             .proj-meta-row { flex-wrap: wrap; }
             .proj-meta-item { padding: 0.7rem 1.5rem 0.7rem 0; margin-right: 1.5rem; }
             .overview-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-            .single-viewer { height: 320px; }
+
             .phase-timeline { padding-left: 2rem; }
             .phase-node { left: -2rem; }
             .algorithm-grid { grid-template-columns: 1fr; }
@@ -892,16 +852,57 @@
         </div>
     </section>
 
-    <!-- ===== SECTION 2 — 3D MODEL ===== -->
+    <!-- ===== SECTION 2 — SEARCH REPLAY (asr-replay.css + asr-replay.js) ===== -->
     <section class="proj-section dark">
-        <div class="proj-section-header">
-            <span class="section-label" style="color: rgba(255,255,227,0.4);">// 3D Asset</span>
-            <h2 class="section-title" style="color: var(--cream); margin-top: 0.5rem;">Drone Assembly</h2>
+        <div>
+            <div class="proj-section-header">
+                <span class="section-label" style="color: rgba(255,255,227,0.4);">// Simulation</span>
+                <h2 class="section-title" style="color: var(--cream); margin-top: 0.5rem;">Search Replay</h2>
+            </div>
+            <p class="asr-replay-lead">Recorded flights from the PX4 + Gazebo simulation, flown over the same ski resort as the
+            homepage. The drone searches 40&nbsp;m lanes up the mountain, holding 12&nbsp;m above the snow from its rangefinder
+            and steering around trees, lift towers and cables. When the avalanche beacon comes into range it fits the
+            burial spot to every reading, then hovers over it. Pick a search to see the victim in a different place.</p>
+            <div class="asr-replay" id="asr-replay" data-src="Models/asr-replay/" data-models="Models/ski-resort/">
+                <canvas aria-label="3D replay of a simulated avalanche search flight"></canvas>
+                <div class="ar-status">Loading the flight&hellip;</div>
+
+                <div class="ar-panel ar-readout">
+                    <div class="ar-pick"><span>Search</span><div class="ar-flights" role="group" aria-label="Choose a flight"></div></div>
+                    <p class="ar-where">&nbsp;</p>
+                    <p class="ar-phase" data-sub="">Grid search</p>
+                    <dl class="ar-stats">
+                        <dt>Height above snow</dt><dd class="ar-agl">-</dd>
+                        <dt>Altitude above pad</dt><dd class="ar-alt">-</dd>
+                        <dt>Beacon signal</dt><dd class="ar-sig">-</dd>
+                    </dl>
+                    <div class="ar-sigbar"><i></i></div>
+                </div>
+
+                <div class="ar-panel ar-result" hidden>
+                    <h3>Victim located</h3>
+                    <p>Distance from the true burial spot: <b class="ar-err">-</b></p>
+                    <p>Found after: <b class="ar-dur">-</b></p>
+                    <p>Closest pass to a tree, tower or cable: <b class="ar-clear">-</b></p>
+                </div>
+
+                <p class="ar-legend">
+                    <span class="l-path">Flight path</span><br>
+                    <span class="l-sig">Beacon in range</span><br>
+                    <span class="l-lane">Search area</span>
+                </p>
+
+                <div class="ar-panel ar-controls">
+                    <button class="ar-play" aria-pressed="false">Play</button>
+                    <input class="ar-scrub" type="range" min="0" max="1" step="0.1" value="0" aria-label="Flight time">
+                    <span class="ar-time">0:00</span>
+                    <div class="ar-speed" role="group" aria-label="Playback speed">
+                        <button data-v="2">2&times;</button><button data-v="8" aria-pressed="true">8&times;</button><button data-v="20">20&times;</button>
+                    </div>
+                    <button class="ar-cam">Free camera</button>
+                </div>
+            </div>
         </div>
-        <div class="single-viewer" id="drone-container">
-            <div class="model-loading" id="drone-loading">LOADING MODEL...</div>
-        </div>
-        <p class="viewer-label">ASR Drone &mdash; PX4 X500 v2 Assembly</p>
     </section>
 
     <!-- ===== SECTION 3 — BUILD LOG ===== -->
@@ -1260,7 +1261,7 @@
                 </div>
                 <div class="hw-row">
                     <span class="hw-key">Beacon Sensor</span>
-                    <span class="hw-val">457kHz Transceiver</span>
+                    <span class="hw-val">Custom (in development)</span>
                 </div>
                 <div class="hw-row">
                     <span class="hw-key">Algorithm</span>
@@ -1383,149 +1384,15 @@
         schedulePageTear();
     </script>
 
-    <!-- ===== THREE.JS DRONE MODEL ===== -->
-    <script>
-        /*
-        ================================================
-        THREE.JS DRONE MODEL
-        Model file: Models/ASR_Drone-v1.glb
-        ================================================
-        */
-        (function () {
-            var container = document.getElementById('drone-container');
-            if (!container) return;
 
-            var loadingEl = document.getElementById('drone-loading');
-
-            /* ---- Renderer ---- */
-            var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            renderer.toneMapping = THREE.NoToneMapping;
-            renderer.toneMappingExposure = 1.0;
-            renderer.outputEncoding = THREE.sRGBEncoding;
-            renderer.setClearColor(0x000000, 0);
-            container.appendChild(renderer.domElement);
-
-            /* ---- Scene ---- */
-            var scene = new THREE.Scene();
-            scene.background = null;
-            scene.environment = null;
-
-            /* ---- Camera ---- */
-            var camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-            camera.position.set(0, 0.5, 3.5);
-
-            /* ---- Controls ---- */
-            var controls = new THREE.OrbitControls(camera, renderer.domElement);
-            controls.autoRotate      = true;
-            controls.autoRotateSpeed = 1.2;
-            controls.enableDamping   = true;
-            controls.dampingFactor   = 0.05;
-            controls.enableZoom      = false;
-            controls.enablePan       = false;
-            controls.target.set(0, 0, 0);
-            controls.update();
-
-            var rotateTimer;
-            controls.addEventListener('start', function () {
-                controls.autoRotate = false;
-                clearTimeout(rotateTimer);
-            });
-            controls.addEventListener('end', function () {
-                rotateTimer = setTimeout(function () {
-                    controls.autoRotate = true;
-                }, 3000);
-            });
-
-            /* ---- Lighting ---- */
-            scene.add(new THREE.AmbientLight(0xFFFFE3, 0.4));
-
-            var keyLight = new THREE.DirectionalLight(0xffffff, 0.8);
-            keyLight.position.set(5, 8, 5);
-            scene.add(keyLight);
-
-            var fillLight = new THREE.DirectionalLight(0xCE8946, 0.3);
-            fillLight.position.set(-4, 2, -4);
-            scene.add(fillLight);
-
-            var rimLight = new THREE.DirectionalLight(0x333333, 0.4);
-            rimLight.position.set(-2, -4, -2);
-            scene.add(rimLight);
-
-            /* ---- Load GLB model ---- */
-            var loader = new THREE.GLTFLoader();
-            var dracoLoader = new THREE.DRACOLoader();
-            dracoLoader.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/draco/');
-            loader.setDRACOLoader(dracoLoader);
-            loader.load(
-                './Models/ASR_Drone-v1.glb',
-                function (gltf) {
-                    var box    = new THREE.Box3().setFromObject(gltf.scene);
-                    var center = box.getCenter(new THREE.Vector3());
-                    var size   = box.getSize(new THREE.Vector3());
-                    var maxDim = Math.max(size.x, size.y, size.z);
-                    var scale  = 3.0 / maxDim;
-                    gltf.scene.scale.setScalar(scale);
-                    gltf.scene.position.sub(center.multiplyScalar(scale));
-
-                    gltf.scene.traverse(function (child) {
-                        if (child.isMesh) {
-                            var mats = Array.isArray(child.material)
-                                ? child.material
-                                : [child.material];
-                            mats.forEach(function (mat) {
-                                mat.metalness       = 0.7;
-                                mat.roughness       = 0.35;
-                                mat.envMapIntensity = 0.0;
-                                mat.needsUpdate     = true;
-                            });
-                        }
-                    });
-
-                    /* Create pivot group to handle orientation */
-                    var pivot = new THREE.Group();
-                    pivot.add(gltf.scene);
-                    pivot.rotation.x = -0.2;
-                    pivot.rotation.y = 0.4;
-                    pivot.rotation.z = 0.0;
-                    scene.add(pivot);
-
-                    camera.position.set(0, 0, 5);
-                    camera.lookAt(0, 0, 0);
-                    controls.target.set(0, 0, 0);
-                    controls.update();
-
-                    if (loadingEl) loadingEl.remove();
-                },
-                undefined,
-                function (error) {
-                    console.error('GLB load error:', error);
-                    if (loadingEl) loadingEl.textContent = 'MODEL UNAVAILABLE';
-                }
-            );
-
-            /* ---- Resize handler ---- */
-            function resize() {
-                var w = container.clientWidth;
-                var h = container.clientHeight;
-                if (!w || !h) return;
-                camera.aspect = w / h;
-                camera.updateProjectionMatrix();
-                renderer.setSize(w, h);
-            }
-
-            window.addEventListener('resize', resize, { passive: true });
-            resize();
-
-            /* ---- Animation loop ---- */
-            function animate() {
-                requestAnimationFrame(animate);
-                controls.update();
-                renderer.render(scene, camera);
-            }
-            animate();
-        }());
+    <!-- Search replay: three.js r170 as an ES module -->
+    <script type="importmap">
+    { "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+    } }
     </script>
+    <script type="module" src="asr-replay.js"></script>
 
 </body>
 </html>

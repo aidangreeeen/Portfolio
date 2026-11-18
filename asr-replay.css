@@ -1,0 +1,111 @@
+/* ============================================================
+   ASR drone - search replay (asr-replay.js)
+   Uses the site palette from style.css (--cream, --dark, --accent).
+   ============================================================ */
+.asr-replay {
+    position: relative;
+    height: 600px;
+    background: linear-gradient(to bottom, #9fb6cc 0%, #e6e9e4 55%);   /* same day sky as the homepage resort */
+    overflow: hidden;
+    font-family: var(--font-display, 'Oswald', sans-serif);
+    color: var(--cream, #FFFFE3);
+}
+.asr-replay canvas { display: block; width: 100%; height: 100%; }
+
+.ar-status {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    font-size: 0.65rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--dark, #1A1A0F);
+}
+
+/* HUD panels share one look: dark glass, thin cream border */
+.ar-panel {
+    position: absolute;
+    background: rgba(26, 26, 15, 0.78);
+    border: 1px solid rgba(255, 255, 227, 0.1);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    padding: 0.9rem 1.1rem;
+    opacity: 0; transition: opacity 0.6s;
+}
+.asr-replay.ready .ar-panel { opacity: 1; }
+
+/* flight picker */
+.ar-pick { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.4rem;
+    font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255, 255, 227, 0.45); }
+.ar-flights { display: flex; gap: 4px; }
+.ar-flights button {
+    width: 26px; height: 24px; padding: 0; border: 1px solid rgba(255, 255, 227, 0.18); border-radius: 2px;
+    background: transparent; color: var(--cream, #FFFFE3); font: inherit; font-size: 0.7rem; cursor: pointer;
+}
+.ar-flights button:hover { border-color: rgba(255, 255, 227, 0.45); }
+.ar-flights button[aria-pressed="true"] { background: var(--accent, #CE8946); border-color: var(--accent, #CE8946); color: var(--dark, #1A1A0F); }
+.ar-where { margin: 0 0 0.75rem; font-family: var(--font-body, 'Open Sans', sans-serif); font-size: 0.72rem; color: rgba(255, 255, 227, 0.75); }
+
+/* phase + live readouts (top left) */
+.ar-readout { top: 18px; left: 18px; min-width: 230px; }
+.ar-phase {
+    font-size: 1.05rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent, #CE8946); margin: 0;
+}
+.ar-phase::after {
+    content: attr(data-sub); display: block; margin-top: 0.3rem;
+    font-family: var(--font-body, 'Open Sans', sans-serif); font-size: 0.72rem; font-weight: 400;
+    letter-spacing: 0; text-transform: none; color: rgba(255, 255, 227, 0.6);
+}
+.ar-stats { display: grid; grid-template-columns: auto 1fr; gap: 0.35rem 1.1rem; margin-top: 0.85rem; }
+.ar-stats dt { font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255, 255, 227, 0.45); align-self: center; }
+.ar-stats dd { margin: 0; font-size: 0.9rem; letter-spacing: 0.05em; font-variant-numeric: tabular-nums; }
+.ar-sigbar { margin-top: 0.6rem; height: 4px; background: rgba(255, 255, 227, 0.12); }
+.ar-sigbar i { display: block; height: 100%; width: 0; background: var(--accent, #CE8946); transition: width 0.15s; }
+
+/* result card (top right, shown once the victim is located) */
+.ar-result { top: 18px; right: 18px; max-width: 250px; }
+.ar-result[hidden] { display: block; opacity: 0 !important; pointer-events: none; }
+.ar-result h3 { margin: 0 0 0.5rem; font-size: 0.8rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent, #CE8946); }
+.ar-result p { margin: 0.2rem 0; font-family: var(--font-body, 'Open Sans', sans-serif); font-size: 0.75rem; color: rgba(255, 255, 227, 0.75); }
+.ar-result b { color: var(--cream, #FFFFE3); font-weight: 600; }
+
+/* playback bar (bottom) */
+.ar-controls {
+    left: 18px; right: 18px; bottom: 18px; padding: 0.6rem 0.9rem;
+    display: flex; align-items: center; gap: 0.9rem;
+    font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase;
+}
+.ar-controls button {
+    height: 28px; padding: 0 0.8rem; border: 1px solid rgba(255, 255, 227, 0.18); border-radius: 2px;
+    background: transparent; color: var(--cream, #FFFFE3); font: inherit; letter-spacing: inherit; cursor: pointer;
+}
+.ar-controls button:hover { border-color: rgba(255, 255, 227, 0.45); }
+.ar-controls button[aria-pressed="true"] { background: var(--accent, #CE8946); border-color: var(--accent, #CE8946); color: var(--dark, #1A1A0F); }
+.ar-play { min-width: 76px; }
+.ar-scrub { flex: 1; min-width: 80px; accent-color: var(--accent, #CE8946); }
+.ar-time { min-width: 3.2em; font-variant-numeric: tabular-nums; color: rgba(255, 255, 227, 0.7); }
+.ar-speed { display: flex; gap: 4px; }
+.ar-speed button { padding: 0 0.55rem; }
+
+.ar-legend {
+    position: absolute; right: 18px; bottom: 74px; margin: 0;
+    font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(26, 26, 15, 0.7);
+    text-align: right; line-height: 1.8; opacity: 0; transition: opacity 0.6s;
+}
+.asr-replay.ready .ar-legend { opacity: 1; }
+.ar-legend span::before { content: ''; display: inline-block; width: 14px; height: 2px; margin-right: 6px; vertical-align: middle; background: currentColor; }
+.ar-legend .l-path::before { background: #1A1A0F; }
+.ar-legend .l-sig::before { background: #CE8946; }
+.ar-legend .l-lane::before { background: repeating-linear-gradient(90deg, rgba(26,26,15,.45) 0 3px, transparent 3px 6px); }
+
+@media (max-width: 760px) {
+    .asr-replay { height: 480px; }
+    .ar-readout { min-width: 0; left: 10px; top: 10px; padding: 0.7rem 0.8rem; }
+    .ar-phase { font-size: 0.85rem; }
+    .ar-phase::after { display: none; }
+    .ar-result { top: auto; bottom: 74px; right: 10px; left: 10px; max-width: none; }
+    .ar-controls { left: 10px; right: 10px; bottom: 10px; gap: 0.5rem; flex-wrap: wrap; }
+    .ar-scrub { order: 5; flex-basis: 100%; }
+    .ar-legend { display: none; }
+}
+
+/* intro paragraph above the replay on the project page */
+.asr-replay-lead {
+    max-width: 760px; margin: -1.25rem 0 2.25rem;
+    font-size: 0.92rem; line-height: 1.75; color: rgba(255, 255, 227, 0.62);
+}

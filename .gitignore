@@ -1,3 +1,6 @@
 # Blender source files (large, and contain the generator asset)
 *.blend
 *.blend1
+
+# raw simulation flight logs (the replay uses Models/asr-replay/flight.json)
+_flight_logs/

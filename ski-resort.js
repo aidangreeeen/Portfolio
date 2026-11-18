@@ -10,17 +10,24 @@ const MODELS = 'Models/ski-resort/';
 const gltfLoader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);   // terrain.glb is meshopt-compressed
 const params = new URLSearchParams(location.search);   // test hooks: ?p=0.5  ?time=night  ?clouds=80  ?trees=50
 
-/* ---------- Camera journey: summit -> base ----------
+/* ---------- Camera journey: a dive from the sky down onto the slopes ----------
    Scene units: the resort spans x -1.1 (valley) to +1.1 (summit), height 0 - 0.9. */
-const PATH = [
-  { cam: [ 1.10, 2.10,  0.90], look: [-0.20, 0.05, -0.10] },  // high bird's-eye over the summit, whole resort below
-  { cam: [ 0.50, 1.20,  1.25], look: [-0.40, 0.15,  0.00] },  // swinging out over the side of the mountain
-  { cam: [-0.30, 0.72,  1.15], look: [ 0.00, 0.25, -0.20] },  // mid-mountain, looking across the slopes and lifts
-  { cam: [-1.15, 0.60,  0.60], look: [ 0.40, 0.30, -0.10] },  // reaching the base, turning toward the peaks
-  { cam: [-1.55, 0.55,  0.00], look: [ 0.60, 0.30,  0.00] },  // at the base, looking back up the mountain
-];
-const camCurve  = new THREE.CatmullRomCurve3(PATH.map(k => new THREE.Vector3(...k.cam)),  false, 'centripetal');
-const lookCurve = new THREE.CatmullRomCurve3(PATH.map(k => new THREE.Vector3(...k.look)), false, 'centripetal');
+// Dive: starts high in the sky facing the mountain head-on, then dives at it and down onto the run
+// between lifts 1 and 2, the scene filling more of the frame the closer it gets. No turn.
+// Each key is [camera position], [point the camera looks at].
+const PATH = {
+  portraitPull: 0.12,           // little pull-back on phones: near the end there's terrain right behind
+  keys: [
+    { cam: [-2.40, 2.10,  0.00], look: [ 0.35, 0.30,  0.00] },  // high over the valley, the whole range head-on
+    { cam: [-1.85, 1.45,  0.02], look: [ 0.30, 0.30,  0.00] },  // starting the dive
+    { cam: [-1.35, 0.92,  0.04], look: [ 0.25, 0.32,  0.00] },  // dropping toward the forest and the base
+    { cam: [-0.95, 0.55,  0.05], look: [ 0.25, 0.36,  0.00] },  // over the treetops at the foot of the runs
+    { cam: [-0.62, 0.34,  0.06], look: [ 0.30, 0.44, -0.02] },  // low between lifts 1 and 2
+    { cam: [-0.42, 0.29,  0.05], look: [ 0.35, 0.50, -0.03] },  // on the run, towers and chairs close by
+  ],
+};
+const camCurve  = new THREE.CatmullRomCurve3(PATH.keys.map(k => new THREE.Vector3(...k.cam)),  false, 'centripetal');
+const lookCurve = new THREE.CatmullRomCurve3(PATH.keys.map(k => new THREE.Vector3(...k.look)), false, 'centripetal');
 
 const section = document.getElementById('ski');
 const sticky  = section.querySelector('.ski-sticky');
@@ -514,6 +521,8 @@ let visible = false;
 new IntersectionObserver(([e]) => { visible = e.isIntersecting; }, { rootMargin: '100px' }).observe(section);
 
 const pos = new THREE.Vector3(), look = new THREE.Vector3();
+// Mouse pan strength (scene units). Vertical is kept small: near the end of the dive the camera is close to the snow.
+const PAN = { side: 0.085, up: 0.035, turn: 0.03 };
 const debugCam = params.has('cam') ? [new THREE.Vector3(...params.get('cam').split(',').map(Number)), new THREE.Vector3(...params.get('look').split(',').map(Number))] : null;
 const clock = new THREE.Clock();
 function frame(now) {
@@ -535,12 +544,13 @@ function frame(now) {
   // tall (phone) screens: pull the camera back along its view line so the slopes still fit side to side
   // (eased in after the opening bird's-eye view, which already fits - pulling back there goes behind the summit)
   if (camera.aspect < 1) {
-    const pull = (1 / camera.aspect - 1) * 0.32 * THREE.MathUtils.smoothstep(p, 0.12, 0.4);
+    const pull = (1 / camera.aspect - 1) * PATH.portraitPull * THREE.MathUtils.smoothstep(p, 0.12, 0.4);
     pos.sub(look).multiplyScalar(1 + pull).add(look);
   }
   if (!reduceMotion) {
-    pos.z += mouse.sx * 0.05 + Math.sin(t * 0.3) * 0.006;      // subtle mouse parallax + breathing
-    pos.y += -mouse.sy * 0.025 + Math.cos(t * 0.25) * 0.004;
+    pos.z  += mouse.sx * PAN.side + Math.sin(t * 0.3) * 0.006;   // mouse pan + gentle breathing
+    pos.y  += -mouse.sy * PAN.up + Math.cos(t * 0.25) * 0.004;
+    look.z += mouse.sx * PAN.turn;                                // the view turns a little with the pan
   }
   camera.position.copy(pos);
   camera.lookAt(look);

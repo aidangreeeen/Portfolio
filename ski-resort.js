@@ -126,8 +126,9 @@ function updateTime(now) {
 }
 function applyTime() {
   const c = tod.cur;
-  sticky.style.setProperty('--sky-top', '#' + c.skyTop.getHexString());
-  sticky.style.setProperty('--sky-horizon', '#' + c.horizon.getHexString());
+  const root = document.documentElement;   // on :root so the hero's gradient follows the sky too
+  root.style.setProperty('--sky-top', '#' + c.skyTop.getHexString());
+  root.style.setProperty('--sky-horizon', '#' + c.horizon.getHexString());
   scene.fog.color.copy(c.horizon);
   sun.color.copy(c.sun); sun.intensity = c.sunI; sun.position.copy(c.sunDir);
   hemi.color.copy(c.hemiSky); hemi.groundColor.copy(c.hemiGround); hemi.intensity = c.hemiI;
@@ -489,7 +490,7 @@ let target = forced ?? scrollProgress(), progress = target;
 window.addEventListener('scroll', () => { if (forced === null) target = scrollProgress(); }, { passive: true });
 
 function updateFades(p) {
-  // opens on the hero's dark colour, fades into the scene; ends by fading into the cream portfolio section
+  // opens on the sky colour the hero shades into, fades into the scene; ends by fading into the cream portfolio section
   const s = THREE.MathUtils.smoothstep;
   const top = 1 - s(p, 0.0, 0.12), bottom = s(p, 0.88, 1.0);
   fadeTop.style.opacity = top.toFixed(3);

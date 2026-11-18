@@ -3,6 +3,15 @@
    Uses the site palette from style.css (--cream, --dark, --accent).
    ============================================================ */
 
+/* Sky colours for the current time of day. On :root (not the section) so the hero above can
+   blend its dark green down into the same sky. ski-resort.js updates them when the time changes. */
+:root { --sky-top: #9fb6cc; --sky-horizon: #e6e9e4; }
+
+/* Hero: keeps the site's dark green, then shades into the sky colour at its bottom edge */
+#hero {
+    background: linear-gradient(to bottom, var(--dark, #1A1A0F) 0%, var(--dark, #1A1A0F) 50%, var(--sky-top) 100%);
+}
+
 .ski-section {
     position: relative;
     height: 400vh;                         /* scroll length of the camera journey */
@@ -11,7 +20,6 @@
 
 .ski-sticky {
     position: sticky; top: 0; height: 100vh; overflow: hidden;
-    --sky-top: #9fb6cc; --sky-horizon: #e6e9e4;      /* updated by the script for each time of day */
     background: linear-gradient(to bottom, var(--sky-top) 0%, var(--sky-horizon) 55%);
 }
 
@@ -34,7 +42,7 @@
 /* Colour blends into the neighbouring sections (opacity driven by scroll position) */
 .ski-fade { position: absolute; inset: 0; pointer-events: none; z-index: 1; opacity: 0; }
 .ski-fade.top {
-    background: linear-gradient(to bottom, var(--dark, #1A1A0F) 0%, var(--dark, #1A1A0F) 18%, rgba(26,26,15,0) 75%);
+    background: linear-gradient(to bottom, var(--sky-top) 0%, var(--sky-top) 18%, transparent 75%);   /* continues the hero's sky colour */
     opacity: 1;
 }
 .ski-fade.bottom {

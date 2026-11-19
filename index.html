@@ -288,12 +288,19 @@
                 <div class="skills-block">
                     <div class="skills-group">
                         <span class="skills-category">Software &amp; Tools</span>
-                        <div class="skills-list">
-                            <span class="skill-tag">MATLAB</span>
-                            <span class="skill-tag">Python</span>
-                            <span class="skill-tag">LaTeX</span>
-                            <span class="skill-tag">OpenFoam</span>
-                            <span class="skill-tag">SolidWorks</span>
+                        <!-- Logos live in Assets/logos/. To add one, copy a .tool-logo line (name shows on hover).
+                             --h sets each logo's height so they look equally big: ~32px for square icons, smaller for wide wordmarks. -->
+                        <div class="skills-list tool-logos">
+                            <span class="tool-logo" tabindex="0" data-name="MATLAB"><img src="Assets/logos/matlab.svg" style="--h:30.6px" alt="MATLAB" loading="lazy"></span>
+                            <span class="tool-logo" tabindex="0" data-name="Python"><img src="Assets/logos/python.svg" style="--h:33px" alt="Python" loading="lazy"></span>
+                            <span class="tool-logo" tabindex="0" data-name="LaTeX"><img src="Assets/logos/latex.svg" style="--h:18px" alt="LaTeX" loading="lazy"></span>
+                            <span class="tool-logo" tabindex="0" data-name="OpenFOAM"><img src="Assets/logos/openfoam.png" style="--h:15.8px" alt="OpenFOAM" loading="lazy"></span>
+                            <span class="tool-logo" tabindex="0" data-name="SolidWorks"><img src="Assets/logos/solidworks.png" style="--h:28px" alt="SolidWorks" loading="lazy"></span>
+                            <span class="tool-logo" tabindex="0" data-name="Adobe Illustrator"><img src="Assets/logos/illustrator.svg" style="--h:31.6px" alt="Adobe Illustrator" loading="lazy"></span>
+                            <span class="tool-logo" tabindex="0" data-name="Gravity Sketch"><img src="Assets/logos/gravitysketch.png" style="--h:32px" alt="Gravity Sketch" loading="lazy"></span>
+                            <span class="tool-logo" tabindex="0" data-name="PX4 Autopilot"><img src="Assets/logos/px4.svg" style="--h:22.9px" alt="PX4 Autopilot" loading="lazy"></span>
+                            <span class="tool-logo" tabindex="0" data-name="OpenRocket"><img src="Assets/logos/openrocket.png" style="--h:32.6px" alt="OpenRocket" loading="lazy"></span>
+                            <span class="tool-logo" tabindex="0" data-name="Artec Studio"><img src="Assets/logos/artecstudio.png" style="--h:30.7px" alt="Artec Studio" loading="lazy"></span>
                         </div>
                     </div>
                     <div class="skills-group">
@@ -321,7 +328,7 @@
                 <div class="meta-table" style="margin-top: 2rem;">
                     <div class="meta-row">
                         <span class="meta-key">Citizenship</span>
-                        <span class="meta-val" style="display:inline-flex;flex-wrap:nowrap;align-items:center;gap:1rem;">
+                        <span class="meta-val" style="display:inline-flex;flex-wrap:wrap;align-items:center;gap:0.6rem 1rem;">
                             <span style="display:inline-flex;align-items:center;gap:0.4rem;">
                                 <span class="skill-tag">United States</span>
                                 <span class="degree-active-status">

@@ -694,6 +694,75 @@ input[type="range"]#dimmer::-moz-range-thumb {
     color: rgba(255,255,227,0.58);
 }
 
+/* software & tools — logo tiles (name shows on hover / focus) */
+.tool-logos {
+    gap: 0.5rem;
+}
+
+.tool-logo {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 96px;
+    height: 56px;
+    background: rgba(255,255,227,0.04);
+    border: 1px solid rgba(255,255,227,0.1);
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+.tool-logo img {
+    display: block;
+    height: var(--h, 32px);   /* per-logo, set inline in index.html */
+    width: auto;
+    max-width: 80px;
+    opacity: 0.85;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.tool-logo:hover,
+.tool-logo:focus-visible {
+    border-color: var(--accent);
+    background: rgba(255,255,227,0.07);
+    outline: none;
+}
+
+.tool-logo:hover img,
+.tool-logo:focus-visible img {
+    opacity: 1;
+    transform: scale(1.06);
+}
+
+.tool-logo[data-name]::after {
+    content: attr(data-name);
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translate(-50%, 4px);
+    padding: 0.25rem 0.5rem;
+    font-size: 0.58rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    background: var(--cream);
+    color: var(--dark);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s, transform 0.18s;
+    z-index: 2;
+}
+
+.tool-logo[data-name]:hover::after,
+.tool-logo[data-name]:focus-visible::after {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+.tool-logo--text {
+    font-size: 0.7rem;
+    color: rgba(255,255,227,0.58);
+}
+
 /* about photo */
 .about-photo-wrap {
     position: relative;
@@ -1478,7 +1547,7 @@ footer {
     #about { padding: 4rem 1.5rem; }
 
     .about-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         gap: 3rem;
     }
 

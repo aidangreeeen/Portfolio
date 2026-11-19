@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreeDawger's Wax — Aidan Green</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!--
+    ================================================
+    FREEDAWGER'S WAX — PROJECT PAGE
+    Product photo: Assets/freedawgers-wax.jpg (960x1200, portrait)
+    TODO: confirm year, add process details / build log / more photos
+    ================================================
+    -->
+    <style>
+        /* ── PROJECT PAGE — FREEDAWGER'S WAX ──────────────── */
+
+        /* ── METADATA ROW ── */
+        .proj-meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            border-top: 1px solid rgba(255,255,227,0.1);
+            margin-top: 2.5rem;
+        }
+
+        .proj-meta-item {
+            display: flex;
+            flex-direction: column;
+            padding: 0.9rem 2.5rem 0.9rem 0;
+            margin-right: 2.5rem;
+            border-right: 1px solid rgba(255,255,227,0.08);
+        }
+
+        .proj-meta-item:last-child {
+            border-right: none;
+            margin-right: 0;
+        }
+
+        .proj-meta-key {
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: rgba(255,255,227,0.35);
+            margin-bottom: 0.3rem;
+        }
+
+        .proj-meta-val {
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--cream);
+        }
+
+        /* ── HERO IMAGE ── */
+        .project-hero-image {
+            position: relative;
+            width: 100%;
+            max-height: 520px;
+            overflow: hidden;
+        }
+
+        .project-hero-image img {
+            width: 100%;
+            height: 520px;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+
+        .project-hero-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.25rem 2rem;
+            background: linear-gradient(transparent, rgba(10,10,8,0.72));
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+        }
+
+        .caption-tag {
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--accent);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .caption-text {
+            font-size: 0.8rem;
+            color: rgba(255,255,227,0.65);
+        }
+
+        /* ── SECTION CONTAINERS ── */
+        .proj-section {
+            padding: 5rem 4rem;
+        }
+
+        .proj-section.dark {
+            background-color: var(--dark);
+            color: var(--cream);
+        }
+
+        .proj-section-header {
+            margin-bottom: 3rem;
+        }
+
+        .proj-section.dark .section-title {
+            color: var(--cream);
+        }
+
+        /* ── TWO COLUMN OVERVIEW ── */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .overview-desc {
+            font-size: 0.95rem;
+            line-height: 1.88;
+            color: rgba(26,26,15,0.72);
+        }
+
+        .overview-desc p + p {
+            margin-top: 1.25rem;
+        }
+
+        .specs-card {
+            background-color: var(--dark);
+            color: var(--cream);
+            padding: 2rem;
+        }
+
+        .specs-card-title {
+            font-family: var(--font-display);
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: rgba(255,255,227,0.32);
+            margin-bottom: 1.25rem;
+        }
+
+        .specs-row {
+            display: flex;
+            gap: 1rem;
+            padding: 0.65rem 0;
+            border-bottom: 1px solid rgba(255,255,227,0.07);
+            align-items: baseline;
+        }
+
+        .specs-row:first-of-type {
+            border-top: 1px solid rgba(255,255,227,0.07);
+        }
+
+        .specs-key {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--accent);
+            min-width: 90px;
+            flex-shrink: 0;
+        }
+
+        .specs-val {
+            font-size: 0.82rem;
+            color: rgba(255,255,227,0.6);
+            line-height: 1.6;
+        }
+
+        /* ── VIDEO PLACEHOLDER ── */
+        .video-section {
+            padding: 5rem 4rem;
+            background-color: var(--dark);
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 320px;
+            background-color: rgba(255,255,227,0.03);
+            border: 1px solid rgba(255,255,227,0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 2rem;
+        }
+
+        .video-embed-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            border: 1px solid var(--border);
+            background: var(--text);
+        }
+
+        .placeholder-label {
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: rgba(255,255,227,0.22);
+        }
+
+        .placeholder-sub {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(255,255,227,0.14);
+        }
+
+        .placeholder-note {
+            margin-top: 1rem;
+            font-size: 0.78rem;
+            color: rgba(255,255,227,0.28);
+            text-align: center;
+        }
+
+        /* ── PHASE TIMELINE ── */
+        .phase-timeline {
+            position: relative;
+            padding-left: 3rem;
+            margin-top: 1rem;
+        }
+
+        .phase-timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #CE8946;
+        }
+
+        .phase-entry {
+            position: relative;
+            margin-bottom: 3.5rem;
+        }
+
+        .phase-entry:last-child {
+            margin-bottom: 0;
+        }
+
+        .phase-node {
+            position: absolute;
+            left: -3rem;
+            top: 0.15rem;
+            width: 20px;
+            height: 20px;
+            background: #CE8946;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .phase-label {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #CE8946;
+            margin-bottom: 0.4rem;
+            display: block;
+        }
+
+        .phase-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.2rem, 2.5vw, 1.75rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--cream);
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .phase-desc {
+            font-size: 0.88rem;
+            line-height: 1.8;
+            color: rgba(255,255,227,0.55);
+            margin-bottom: 1.25rem;
+            max-width: 68ch;
+        }
+
+        .phase-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            max-width: 60ch;
+        }
+
+        .phase-action {
+            display: flex;
+            align-items: baseline;
+            gap: 0.75rem;
+            padding: 0.55rem 0;
+            border-bottom: 1px solid rgba(255,255,227,0.06);
+            font-size: 0.82rem;
+            color: rgba(255,255,227,0.65);
+        }
+
+        .phase-action:first-child {
+            border-top: 1px solid rgba(255,255,227,0.06);
+        }
+
+        .phase-action-arrow {
+            color: #CE8946;
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            flex-shrink: 0;
+        }
+
+        /* ── DOCUMENTATION CARDS ── */
+        .doc-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .doc-card {
+            background-color: var(--bg-offset, #f5f4ec);
+            border: 1px solid var(--border, rgba(26,26,15,0.1));
+            overflow: hidden;
+        }
+
+        .doc-card-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .doc-card-body {
+            padding: 1.25rem 1.5rem 1.5rem;
+        }
+
+        .doc-card-title {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 0.65rem;
+        }
+
+        .doc-card-video video {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+            border: 1px solid var(--border);
+        }
+
+        .doc-card-desc {
+            font-size: 0.82rem;
+            line-height: 1.75;
+            color: rgba(26,26,15,0.6);
+        }
+
+        /* ── SKILLS ── */
+        .skills-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .skill-card {
+            background-color: var(--dark);
+            padding: 2rem;
+            color: var(--cream);
+        }
+
+        .skill-card-title {
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--accent);
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(255,255,227,0.09);
+        }
+
+        .skill-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .skill-item {
+            font-size: 0.82rem;
+            color: rgba(255,255,227,0.6);
+            padding: 0.45rem 0;
+            border-bottom: 1px solid rgba(255,255,227,0.05);
+        }
+
+        .skill-item:last-child { border-bottom: none; }
+
+        /* ── BOTTOM NAV ── */
+        .proj-nav {
+            background-color: var(--dark);
+            padding: 3rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            border-top: 1px solid rgba(255,255,227,0.06);
+        }
+
+        .proj-nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            padding: 1rem 1.75rem;
+            border: 1px solid rgba(255,255,227,0.18);
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .proj-nav-btn:hover {
+            border-color: var(--accent);
+        }
+
+        .proj-nav-btn:hover .proj-nav-title {
+            color: var(--accent);
+        }
+
+        .proj-nav-label {
+            display: block;
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: rgba(255,255,227,0.32);
+            margin-bottom: 0.3rem;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 300;
+        }
+
+        .proj-nav-title {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--cream);
+            transition: color 0.2s;
+        }
+
+        /* ── PRODUCT SHOT (portrait photo, shown whole) ── */
+        .product-shot {
+            background: linear-gradient(180deg, #7B6E7F 0%, #88799A 100%);
+            display: flex;
+            justify-content: center;
+            padding: 4rem 2rem;
+        }
+
+        .product-shot figure {
+            margin: 0;
+            width: min(560px, 100%);
+        }
+
+        .product-shot img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 4 / 5;
+            display: block;
+            box-shadow: 0 30px 60px -25px rgba(10,10,8,0.55);
+        }
+
+        .product-shot figcaption {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .product-shot .caption-text {
+            color: rgba(255,255,227,0.75);
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1023px) {
+            .doc-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 767px) {
+            .project-hero-image { max-height: 300px; }
+            .project-hero-image img { height: 300px; }
+            .proj-section { padding: 3.5rem 1.5rem; }
+            .video-section { padding: 3.5rem 1.5rem; }
+            .proj-meta-row { flex-wrap: wrap; }
+            .proj-meta-item { padding: 0.7rem 1.5rem 0.7rem 0; margin-right: 1.5rem; }
+            .overview-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+            .video-placeholder { height: 220px; }
+            .phase-timeline { padding-left: 2rem; }
+            .phase-node { left: -2rem; }
+            .doc-grid { grid-template-columns: 1fr; }
+            .skills-cards { grid-template-columns: 1fr; }
+            .product-shot { padding: 2.5rem 1.25rem; }
+            .page-title { font-size: clamp(2rem, 11vw, 3rem); }
+            .proj-nav { flex-direction: column; align-items: stretch; padding: 2.5rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAV ===== -->
+    <nav id="main-nav">
+        <a href="index.html" class="nav-logo" aria-label="Aidan Green, home"><img src="Assets/nav-logo.png" alt="" width="68" height="40"></a>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="portfolio.html" class="nav-active">Work</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- ===== PAGE HEADER ===== -->
+    <header class="page-hero">
+        <span class="page-label">// Other &nbsp;&middot;&nbsp; 05</span>
+        <h1 class="page-title">FreeDawger&rsquo;s Wax</h1>
+        <p class="page-subtitle">Product &amp; Packaging Design &mdash; Shaped Board Wax</p>
+        <div class="proj-meta-row">
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Year</span>
+                <span class="proj-meta-val">2026</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Category</span>
+                <span class="proj-meta-val">Product Design</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Product</span>
+                <span class="proj-meta-val">Board Wax</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Packaging</span>
+                <span class="proj-meta-val">Printed Kraft Mailer</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== PRODUCT SHOT ===== -->
+    <section class="product-shot">
+        <figure>
+            <img src="Assets/freedawgers-wax.jpg"
+                 alt="FreeDawger's Wax: two printed kraft mailer boxes beside a stack of spiky lilac, white and deep purple wax bars"
+                 width="960" height="1200">
+            <figcaption>
+                <span class="caption-tag">// Product Shot</span>
+                <span class="caption-text">Wax bars and mailer boxes</span>
+            </figcaption>
+        </figure>
+    </section>
+
+    <!-- ===== OVERVIEW ===== -->
+    <section class="proj-section">
+        <div class="proj-section-header">
+            <span class="section-label">// Overview</span>
+        </div>
+        <div class="overview-grid">
+            <!-- Left: Description -->
+            <div class="overview-desc">
+                <p>The project covered the whole product, including chemical
+                formulation of the wax itself, the design of the bar, of the mold,
+                and the packaging.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== BOTTOM NAV ===== -->
+    <nav class="proj-nav">
+        <a href="portfolio.html" class="proj-nav-btn">
+            <span style="font-size:1.1rem; color: rgba(255,255,227,0.4);">&#8592;</span>
+            <span>
+                <span class="proj-nav-label">Back to</span>
+                <span class="proj-nav-title">Portfolio</span>
+            </span>
+        </a>
+    </nav>
+
+    <!-- ===== FOOTER ===== -->
+    <footer id="main-footer">
+        <div class="footer-inner">
+            <p class="footer-name">Aidan Green</p>
+            <p class="footer-tagline">Mechanical Engineering — University of Nevada, Reno</p>
+            <div class="footer-links">
+                <a href="mailto:aidangreen@nevada.unr.edu">Email</a>
+                <a href="https://linkedin.com/in/aidan-green-engineer" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="resume.html">Resume</a>
+            </div>
+            <p class="footer-copy">&copy; 2025 Aidan Green. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- ===== NAV SCRIPT ===== -->
+    <script>
+        (function () {
+            var btn = document.getElementById('hamburger');
+            var links = document.getElementById('nav-links');
+            if (btn && links) {
+                btn.addEventListener('click', function () {
+                    links.classList.toggle('open');
+                    btn.classList.toggle('open');
+                });
+            }
+        })();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Headphone Concept — Aidan Green</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!--
+    ================================================
+    HEADPHONE CONCEPT — PROJECT PAGE
+    Video: Assets/headphones.mp4 (720x544, 5 s loop)
+    Poster: Assets/headphones-poster.jpg
+    Inspiration image: Assets/headphones-inspiration.jpg
+    CAD model: Models/Headphones_V1.0.glb (meshopt-compressed; three.js r170 viewer at bottom of page)
+    ================================================
+    -->
+    <style>
+        /* ── PROJECT PAGE — HEADPHONE CONCEPT ──────────────── */
+
+        /* ── METADATA ROW ── */
+        .proj-meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            border-top: 1px solid rgba(255,255,227,0.1);
+            margin-top: 2.5rem;
+        }
+
+        .proj-meta-item {
+            display: flex;
+            flex-direction: column;
+            padding: 0.9rem 2.5rem 0.9rem 0;
+            margin-right: 2.5rem;
+            border-right: 1px solid rgba(255,255,227,0.08);
+        }
+
+        .proj-meta-item:last-child {
+            border-right: none;
+            margin-right: 0;
+        }
+
+        .proj-meta-key {
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: rgba(255,255,227,0.35);
+            margin-bottom: 0.3rem;
+        }
+
+        .proj-meta-val {
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--cream);
+        }
+
+        /* ── HERO IMAGE ── */
+        .project-hero-image {
+            position: relative;
+            width: 100%;
+            max-height: 520px;
+            overflow: hidden;
+        }
+
+        .project-hero-image img {
+            width: 100%;
+            height: 520px;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+
+        .project-hero-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.25rem 2rem;
+            background: linear-gradient(transparent, rgba(10,10,8,0.72));
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+        }
+
+        .caption-tag {
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--accent);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .caption-text {
+            font-size: 0.8rem;
+            color: rgba(255,255,227,0.65);
+        }
+
+        /* ── SECTION CONTAINERS ── */
+        .proj-section {
+            padding: 5rem 4rem;
+        }
+
+        .proj-section.dark {
+            background-color: var(--dark);
+            color: var(--cream);
+        }
+
+        .proj-section-header {
+            margin-bottom: 3rem;
+        }
+
+        .proj-section.dark .section-title {
+            color: var(--cream);
+        }
+
+        /* ── TWO COLUMN OVERVIEW ── */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .overview-desc {
+            font-size: 0.95rem;
+            line-height: 1.88;
+            color: rgba(26,26,15,0.72);
+        }
+
+        .overview-desc p + p {
+            margin-top: 1.25rem;
+        }
+
+        .specs-card {
+            background-color: var(--dark);
+            color: var(--cream);
+            padding: 2rem;
+        }
+
+        .specs-card-title {
+            font-family: var(--font-display);
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: rgba(255,255,227,0.32);
+            margin-bottom: 1.25rem;
+        }
+
+        .specs-row {
+            display: flex;
+            gap: 1rem;
+            padding: 0.65rem 0;
+            border-bottom: 1px solid rgba(255,255,227,0.07);
+            align-items: baseline;
+        }
+
+        .specs-row:first-of-type {
+            border-top: 1px solid rgba(255,255,227,0.07);
+        }
+
+        .specs-key {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--accent);
+            min-width: 90px;
+            flex-shrink: 0;
+        }
+
+        .specs-val {
+            font-size: 0.82rem;
+            color: rgba(255,255,227,0.6);
+            line-height: 1.6;
+        }
+
+        /* ── VIDEO PLACEHOLDER ── */
+        .video-section {
+            padding: 5rem 4rem;
+            background-color: var(--dark);
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 320px;
+            background-color: rgba(255,255,227,0.03);
+            border: 1px solid rgba(255,255,227,0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 2rem;
+        }
+
+        .video-embed-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            border: 1px solid var(--border);
+            background: var(--text);
+        }
+
+        .placeholder-label {
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: rgba(255,255,227,0.22);
+        }
+
+        .placeholder-sub {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(255,255,227,0.14);
+        }
+
+        .placeholder-note {
+            margin-top: 1rem;
+            font-size: 0.78rem;
+            color: rgba(255,255,227,0.28);
+            text-align: center;
+        }
+
+        /* ── PHASE TIMELINE ── */
+        .phase-timeline {
+            position: relative;
+            padding-left: 3rem;
+            margin-top: 1rem;
+        }
+
+        .phase-timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #CE8946;
+        }
+
+        .phase-entry {
+            position: relative;
+            margin-bottom: 3.5rem;
+        }
+
+        .phase-entry:last-child {
+            margin-bottom: 0;
+        }
+
+        .phase-node {
+            position: absolute;
+            left: -3rem;
+            top: 0.15rem;
+            width: 20px;
+            height: 20px;
+            background: #CE8946;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .phase-label {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #CE8946;
+            margin-bottom: 0.4rem;
+            display: block;
+        }
+
+        .phase-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.2rem, 2.5vw, 1.75rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--cream);
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .phase-desc {
+            font-size: 0.88rem;
+            line-height: 1.8;
+            color: rgba(255,255,227,0.55);
+            margin-bottom: 1.25rem;
+            max-width: 68ch;
+        }
+
+        .phase-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            max-width: 60ch;
+        }
+
+        .phase-action {
+            display: flex;
+            align-items: baseline;
+            gap: 0.75rem;
+            padding: 0.55rem 0;
+            border-bottom: 1px solid rgba(255,255,227,0.06);
+            font-size: 0.82rem;
+            color: rgba(255,255,227,0.65);
+        }
+
+        .phase-action:first-child {
+            border-top: 1px solid rgba(255,255,227,0.06);
+        }
+
+        .phase-action-arrow {
+            color: #CE8946;
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            flex-shrink: 0;
+        }
+
+        /* ── DOCUMENTATION CARDS ── */
+        .doc-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .doc-card {
+            background-color: var(--bg-offset, #f5f4ec);
+            border: 1px solid var(--border, rgba(26,26,15,0.1));
+            overflow: hidden;
+        }
+
+        .doc-card-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .doc-card-body {
+            padding: 1.25rem 1.5rem 1.5rem;
+        }
+
+        .doc-card-title {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 0.65rem;
+        }
+
+        .doc-card-video video {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+            border: 1px solid var(--border);
+        }
+
+        .doc-card-desc {
+            font-size: 0.82rem;
+            line-height: 1.75;
+            color: rgba(26,26,15,0.6);
+        }
+
+        /* ── SKILLS ── */
+        .skills-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .skill-card {
+            background-color: var(--dark);
+            padding: 2rem;
+            color: var(--cream);
+        }
+
+        .skill-card-title {
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--accent);
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(255,255,227,0.09);
+        }
+
+        .skill-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .skill-item {
+            font-size: 0.82rem;
+            color: rgba(255,255,227,0.6);
+            padding: 0.45rem 0;
+            border-bottom: 1px solid rgba(255,255,227,0.05);
+        }
+
+        .skill-item:last-child { border-bottom: none; }
+
+        /* ── BOTTOM NAV ── */
+        .proj-nav {
+            background-color: var(--dark);
+            padding: 3rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            border-top: 1px solid rgba(255,255,227,0.06);
+        }
+
+        .proj-nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            padding: 1rem 1.75rem;
+            border: 1px solid rgba(255,255,227,0.18);
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .proj-nav-btn:hover {
+            border-color: var(--accent);
+        }
+
+        .proj-nav-btn:hover .proj-nav-title {
+            color: var(--accent);
+        }
+
+        .proj-nav-label {
+            display: block;
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: rgba(255,255,227,0.32);
+            margin-bottom: 0.3rem;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 300;
+        }
+
+        .proj-nav-title {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--cream);
+            transition: color 0.2s;
+        }
+
+        /* ── PRODUCT VIDEO (white studio render, shown whole) ── */
+        .product-shot {
+            background: #FFFFFF;
+            display: flex;
+            justify-content: center;
+            padding: 4rem 2rem;
+        }
+
+        .product-shot figure {
+            margin: 0;
+            width: min(820px, 100%);
+        }
+
+        .product-shot video {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 720 / 544;
+            display: block;
+        }
+
+        .product-shot figcaption {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .product-shot .caption-text {
+            color: rgba(26,26,15,0.55);
+        }
+
+        /* ── INSPIRATION ── */
+        .inspo-text { max-width: 68ch; margin-bottom: 3rem; }
+        .inspo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        .inspo-figure { margin: 0; }
+        .inspo-figure img {
+            width: 100%;
+            height: 520px;
+            object-fit: cover;
+            display: block;
+        }
+        .inspo-figure figcaption {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            margin-top: 0.85rem;
+        }
+        .inspo-figure .caption-text { color: rgba(26,26,15,0.55); }
+
+        /* ── CAD MODEL VIEWER ── */
+        .model-viewer {
+            position: relative;
+            width: 100%;
+            height: 560px;
+            background: radial-gradient(ellipse at 50% 40%, rgba(255,255,227,0.07), transparent 70%);
+            border: 1px solid rgba(255,255,227,0.08);
+            cursor: grab;
+            touch-action: none;
+        }
+        .model-viewer:active { cursor: grabbing; }
+        .model-viewer canvas { display: block; width: 100%; height: 100%; }
+        .model-hint, .model-status {
+            position: absolute;
+            left: 0; right: 0;
+            text-align: center;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(255,255,227,0.3);
+            pointer-events: none;
+        }
+        .model-hint { bottom: 1rem; }
+        .model-status { top: 50%; transform: translateY(-50%); }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1023px) {
+            .doc-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 767px) {
+            .project-hero-image { max-height: 300px; }
+            .project-hero-image img { height: 300px; }
+            .proj-section { padding: 3.5rem 1.5rem; }
+            .video-section { padding: 3.5rem 1.5rem; }
+            .proj-meta-row { flex-wrap: wrap; }
+            .proj-meta-item { padding: 0.7rem 1.5rem 0.7rem 0; margin-right: 1.5rem; }
+            .overview-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+            .video-placeholder { height: 220px; }
+            .phase-timeline { padding-left: 2rem; }
+            .phase-node { left: -2rem; }
+            .doc-grid { grid-template-columns: 1fr; }
+            .skills-cards { grid-template-columns: 1fr; }
+            .product-shot { padding: 2.5rem 1.25rem; }
+            .page-title { font-size: clamp(2rem, 11vw, 3rem); }
+            .model-viewer { height: 380px; }
+            .inspo-grid { grid-template-columns: 1fr; }
+            .inspo-figure img { height: auto; }
+            .proj-nav { flex-direction: column; align-items: stretch; padding: 2.5rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAV ===== -->
+    <nav id="main-nav">
+        <a href="index.html" class="nav-logo" aria-label="Aidan Green, home"><img src="Assets/nav-logo.png" alt="" width="68" height="40"></a>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="portfolio.html" class="nav-active">Work</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- ===== PAGE HEADER ===== -->
+    <header class="page-hero">
+        <span class="page-label">// Other &nbsp;&middot;&nbsp; 06</span>
+        <h1 class="page-title">Headphone Concept</h1>
+        <p class="page-subtitle">Design Exploration &mdash; SolidWorks CAD &amp; AI Rendering</p>
+        <div class="proj-meta-row">
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Year</span>
+                <span class="proj-meta-val">2026</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Category</span>
+                <span class="proj-meta-val">Product Design</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Software</span>
+                <span class="proj-meta-val">SolidWorks &nbsp;&middot;&nbsp; Midjourney</span>
+            </div>
+            <div class="proj-meta-item">
+                <span class="proj-meta-key">Status</span>
+                <span class="proj-meta-val">Design Exploration</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== PRODUCT VIDEO ===== -->
+    <section class="product-shot">
+        <figure>
+            <video autoplay muted loop playsinline preload="metadata"
+                   poster="Assets/headphones-poster.jpg"
+                   width="720" height="544"
+                   aria-label="Rotating render of translucent green over-ear headphones">
+                <source src="Assets/headphones.mp4" type="video/mp4">
+            </video>
+            <figcaption>
+                <span class="caption-tag">// Render</span>
+                <span class="caption-text">SolidWorks model, rendered with Midjourney</span>
+            </figcaption>
+        </figure>
+    </section>
+
+    <!-- ===== OVERVIEW ===== -->
+    <section class="proj-section">
+        <div class="proj-section-header">
+            <span class="section-label">// Overview</span>
+        </div>
+        <div class="overview-grid">
+            <!-- Left: Description -->
+            <div class="overview-desc">
+                <p>A design exploration for a pair of over-ear headphones. The initial
+                design was modeled in SolidWorks, then rendered in Midjourney to
+                explore materials and finish.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== INSPIRATION ===== -->
+    <section class="proj-section" style="padding-top: 0;">
+        <div class="proj-section-header">
+            <span class="section-label">// Inspiration</span>
+        </div>
+        <div class="overview-desc inspo-text">
+            <p>The design draws on the resurgence of retro design, and in
+                particular the translucent electronics of the late &rsquo;90s and
+                early 2000s, when clear shells put the internals on show instead
+                of hiding them. The colour comes from the Xbox green: a tinted,
+                see-through shell that lets the drivers, screws and structure
+                read through the surface.</p>
+        </div>
+        <div class="inspo-grid">
+            <figure class="inspo-figure">
+                <img src="Assets/headphones-inspiration.jpg"
+                     alt="Translucent green Xbox console showing its internals"
+                     width="1200" height="900" loading="lazy">
+                <figcaption>
+                    <span class="caption-tag">// Reference</span>
+                    <span class="caption-text">Translucent green Xbox console</span>
+                </figcaption>
+            </figure>
+            <figure class="inspo-figure">
+                <img src="Assets/headphones-inspiration-2.jpg"
+                     alt="Clear-shell electronics: PlayStation controller, Game Boys, MiniDisc, VHS tape and more"
+                     width="1200" height="1608" loading="lazy">
+                <figcaption>
+                    <span class="caption-tag">// Reference</span>
+                    <span class="caption-text">Translucent electronics of the &rsquo;90s and 2000s &mdash; photo: Kazzycom</span>
+                </figcaption>
+            </figure>
+        </div>
+    </section>
+
+    <!-- ===== CAD MODEL ===== -->
+    <section class="proj-section dark">
+        <div class="proj-section-header">
+            <span class="section-label" style="color: rgba(255,255,227,0.4);">// CAD Model</span>
+            <h2 class="section-title" style="color: var(--cream); margin-top: 0.5rem;">SolidWorks Model</h2>
+        </div>
+        <div class="model-viewer" id="hp-model">
+            <p class="model-status" id="hp-model-status">Loading model&hellip;</p>
+            <p class="model-hint">Drag to rotate &nbsp;&middot;&nbsp; Scroll to zoom</p>
+        </div>
+    </section>
+
+    <!-- ===== BOTTOM NAV ===== -->
+    <nav class="proj-nav">
+        <a href="portfolio.html" class="proj-nav-btn">
+            <span style="font-size:1.1rem; color: rgba(255,255,227,0.4);">&#8592;</span>
+            <span>
+                <span class="proj-nav-label">Back to</span>
+                <span class="proj-nav-title">Portfolio</span>
+            </span>
+        </a>
+    </nav>
+
+    <!-- ===== FOOTER ===== -->
+    <footer id="main-footer">
+        <div class="footer-inner">
+            <p class="footer-name">Aidan Green</p>
+            <p class="footer-tagline">Mechanical Engineering — University of Nevada, Reno</p>
+            <div class="footer-links">
+                <a href="mailto:aidangreen@nevada.unr.edu">Email</a>
+                <a href="https://linkedin.com/in/aidan-green-engineer" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="resume.html">Resume</a>
+            </div>
+            <p class="footer-copy">&copy; 2025 Aidan Green. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- ===== CAD MODEL VIEWER (three.js r170) ===== -->
+    <script type="importmap">
+    { "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+    } }
+    </script>
+    <script type="module">
+        import * as THREE from 'three';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+        import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
+
+        const wrap = document.getElementById('hp-model');
+        const status = document.getElementById('hp-model-status');
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 0.85;
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        wrap.prepend(renderer.domElement);
+
+        const scene = new THREE.Scene();
+        const pmrem = new THREE.PMREMGenerator(renderer);
+        scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+
+        const camera = new THREE.PerspectiveCamera(35, 1, 0.001, 100);
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.enablePan = false;
+        controls.autoRotate = !reduceMotion;
+        controls.autoRotateSpeed = 1.2;
+        controls.addEventListener('start', () => { controls.autoRotate = false; });
+
+        // Studio lighting: soft sky/ground fill, warm key that casts the
+        // contact shadow, cool rim from behind to pick out the silhouette
+        scene.add(new THREE.HemisphereLight(0xFFFFE3, 0x1A1A0F, 0.3));
+        const key = new THREE.DirectionalLight(0xFFF4E0, 2.2);
+        key.castShadow = true;
+        key.shadow.mapSize.set(2048, 2048);
+        key.shadow.radius = 6;
+        key.shadow.bias = -0.0005;
+        scene.add(key, key.target);
+        const rim = new THREE.DirectionalLight(0xCFE0FF, 1.4);
+        scene.add(rim);
+
+        function resize() {
+            const w = wrap.clientWidth, h = wrap.clientHeight;
+            renderer.setSize(w, h, false);
+            camera.aspect = w / h;
+            camera.updateProjectionMatrix();
+        }
+        new ResizeObserver(resize).observe(wrap);
+        resize();
+
+        new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).load('Models/Headphones_V1.0.glb', (gltf) => {
+            const model = gltf.scene;
+            // Viewport-style shading: satin warm-grey clay with dark
+            // feature edges, like a CAD shaded-with-edges view
+            const clay = new THREE.MeshStandardMaterial({
+                color: 0xB9B4A8,
+                roughness: 0.42,
+                metalness: 0.0,
+                envMapIntensity: 0.55,
+                polygonOffset: true,
+                polygonOffsetFactor: 1,
+                polygonOffsetUnits: 1
+            });
+            const edgeMat = new THREE.LineBasicMaterial({
+                color: 0x1A1A0F, transparent: true, opacity: 0.45
+            });
+            const meshes = [];
+            model.traverse((o) => { if (o.isMesh) meshes.push(o); });
+            meshes.forEach((o) => {
+                o.material = clay;
+                o.castShadow = true;
+                o.receiveShadow = true;
+                o.add(new THREE.LineSegments(new THREE.EdgesGeometry(o.geometry, 35), edgeMat));
+            });
+
+            // Centre the model and sit it on an invisible floor
+            const box = new THREE.Box3().setFromObject(model);
+            const centre = box.getCenter(new THREE.Vector3());
+            const dims = box.getSize(new THREE.Vector3());
+            const size = dims.length();
+            model.position.sub(centre);
+            scene.add(model);
+
+            const floor = new THREE.Mesh(
+                new THREE.PlaneGeometry(size * 6, size * 6),
+                new THREE.ShadowMaterial({ opacity: 0.35 })
+            );
+            floor.rotation.x = -Math.PI / 2;
+            floor.position.y = -dims.y / 2;
+            floor.receiveShadow = true;
+            scene.add(floor);
+
+            key.position.set(size * 0.8, size * 1.6, size * 1.0);
+            const sc = key.shadow.camera;
+            sc.left = sc.bottom = -size; sc.right = sc.top = size;
+            sc.near = size * 0.1; sc.far = size * 5;
+            sc.updateProjectionMatrix();
+            rim.position.set(-size * 1.2, size * 0.8, -size * 1.4);
+
+            camera.position.set(size * 0.75, size * 0.3, size * 1.6);
+            camera.near = size / 100;
+            camera.far = size * 20;
+            camera.updateProjectionMatrix();
+            controls.target.set(0, 0, 0);
+            controls.minDistance = size * 0.5;
+            controls.maxDistance = size * 3;
+            controls.maxPolarAngle = Math.PI * 0.55;
+            status.remove();
+        }, undefined, () => {
+            status.textContent = 'Model unavailable';
+        });
+
+        renderer.setAnimationLoop(() => {
+            controls.update();
+            renderer.render(scene, camera);
+        });
+    </script>
+
+    <!-- ===== NAV SCRIPT ===== -->
+    <script>
+        (function () {
+            var btn = document.getElementById('hamburger');
+            var links = document.getElementById('nav-links');
+            if (btn && links) {
+                btn.addEventListener('click', function () {
+                    links.classList.toggle('open');
+                    btn.classList.toggle('open');
+                });
+            }
+        })();
+    </script>
+
+</body>
+</html>

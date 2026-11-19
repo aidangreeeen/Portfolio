@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tribology of Biofuels — Aidan Green</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!--
+    ================================================
+    BIOFUELS JOURNAL PUBLICATION PAGE (based on fibers-publication.html)
+    Journal: Biofuels (Taylor & Francis) — under review, submitted 2026-10-01
+    Header image: Assets/biofuels-fig2.jpg (Figure 2 of the manuscript)
+    Manuscript PDF: Assets/Tribology-of-Biofuels-Green-2026.pdf (submitted version, OCR text layer)
+    When published: add DOI row, point buttons at the published version, update citation
+    ================================================
+    -->
+    <style>
+        /* ── PUBLICATION PAGE ───────────────────────────────────── */
+
+        /* ── METADATA CARD ── */
+        .publication-hero {
+            width: 100%;
+            max-height: 400px;
+            overflow: hidden;
+            border-bottom: 3px solid #CE8946;
+        }
+
+        .publication-hero img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+
+        .pub-meta-card {
+            background-color: var(--dark);
+            color: var(--cream);
+            padding: 3rem 4rem;
+            margin: 0 0 0 0;
+        }
+
+        .pub-meta-inner {
+            max-width: 960px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem 4rem;
+        }
+
+        .pub-meta-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
+
+        .pub-meta-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .pub-meta-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .pub-meta-key {
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .pub-meta-val {
+            font-size: 0.88rem;
+            color: rgba(255,255,227,0.85);
+            line-height: 1.5;
+        }
+
+        .pub-meta-val a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .pub-meta-val a:hover {
+            text-decoration: underline;
+        }
+
+        .pub-authors {
+            font-size: 0.88rem;
+            color: rgba(255,255,227,0.85);
+            line-height: 1.8;
+        }
+
+        .pub-authors .corresponding {
+            color: var(--accent);
+        }
+
+        .pub-cta-row {
+            grid-column: 1 / -1;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,227,0.08);
+        }
+
+        .pub-cta-btn {
+            display: inline-block;
+            padding: 0.7rem 1.6rem;
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-decoration: none;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .pub-cta-btn:hover {
+            background: var(--accent);
+            color: var(--dark);
+        }
+
+        .pub-cta-btn.filled {
+            background: var(--accent);
+            color: var(--dark);
+        }
+
+        .pub-cta-btn.filled:hover {
+            background: transparent;
+            color: var(--accent);
+        }
+
+        /* ── CONTENT SECTIONS ── */
+        .pub-section {
+            padding: 5rem 4rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .pub-section + .pub-section {
+            border-top: 1px solid rgba(26,26,15,0.08);
+        }
+
+        .pub-section-label {
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .pub-section-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        /* ── ABSTRACT ── */
+        .pub-abstract {
+            max-width: 70ch;
+            font-size: 1rem;
+            line-height: 1.85;
+            color: rgba(26,26,15,0.8);
+        }
+
+        /* ── KEYWORDS ── */
+        .pub-keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        /* ── TOPIC CARDS ── */
+        .topic-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .topic-card {
+            border: 1px solid rgba(26,26,15,0.1);
+            padding: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .topic-icon {
+            width: 32px;
+            height: 32px;
+            border: 2px solid var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--accent);
+            font-family: var(--font-display);
+            flex-shrink: 0;
+        }
+
+        .topic-title {
+            font-family: var(--font-display);
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--dark);
+        }
+
+        .topic-desc {
+            font-size: 0.82rem;
+            line-height: 1.6;
+            color: rgba(26,26,15,0.7);
+        }
+
+        /* ── CONTRIBUTION ── */
+        .contribution-wrap {
+            max-width: 60ch;
+        }
+
+        .contribution-text {
+            font-size: 1rem;
+            line-height: 1.85;
+            color: rgba(26,26,15,0.8);
+            margin-bottom: 2.5rem;
+        }
+
+        .contribution-meta {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 0.5rem 2rem;
+            border-top: 1px solid rgba(26,26,15,0.1);
+            padding-top: 1.5rem;
+        }
+
+        .contrib-key {
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            font-weight: 600;
+            white-space: nowrap;
+            padding: 0.3rem 0;
+        }
+
+        .contrib-val {
+            font-size: 0.82rem;
+            color: rgba(26,26,15,0.8);
+            padding: 0.3rem 0;
+        }
+
+        /* ── CITATION ── */
+        .citation-block {
+            background-color: var(--dark);
+            padding: 2rem 2.5rem;
+            max-width: 72ch;
+            position: relative;
+        }
+
+        .citation-text {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.82rem;
+            line-height: 1.9;
+            color: var(--accent);
+            white-space: pre-wrap;
+            word-break: break-word;
+            margin: 0;
+        }
+
+        .citation-copy-btn {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.55rem 1.4rem;
+            font-size: 0.68rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .citation-copy-btn:hover {
+            background: var(--accent);
+            color: var(--dark);
+        }
+
+        /* ── BOTTOM NAV ── */
+        .pub-bottom-nav {
+            background-color: var(--dark);
+            padding: 3rem 4rem;
+            border-top: 1px solid rgba(255,255,227,0.06);
+        }
+
+        .pub-back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.9rem 1.6rem;
+            border: 1px solid rgba(255,255,227,0.15);
+            text-decoration: none;
+            color: var(--cream);
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .pub-back-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .pub-back-label {
+            display: block;
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: rgba(255,255,227,0.4);
+            font-weight: 600;
+        }
+
+        .pub-back-title {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            .pub-meta-card { padding: 2.5rem 2rem; }
+            .pub-meta-inner { grid-template-columns: 1fr; gap: 1.5rem; }
+            .pub-section { padding: 3.5rem 2rem; }
+            .topic-grid { grid-template-columns: repeat(2, 1fr); }
+            .pub-bottom-nav { padding: 2.5rem 2rem; }
+        }
+
+        /* Figure, not a photo: show it whole on white */
+        .publication-hero {
+            max-height: none;
+            background: #FFFFFF;
+            padding: 2rem;
+        }
+        .publication-hero img {
+            height: 460px;
+            object-fit: contain;
+        }
+        .hero-caption {
+            max-width: 900px;
+            margin: 1rem auto 0;
+            font-size: 0.75rem;
+            line-height: 1.6;
+            color: rgba(26,26,15,0.55);
+            text-align: center;
+        }
+
+        @media (max-width: 767px) {
+            .publication-hero { padding: 1rem; }
+            .publication-hero img { height: auto; }
+        }
+
+        @media (max-width: 560px) {
+            .pub-meta-card { padding: 2rem 1.25rem; }
+            .pub-section { padding: 2.5rem 1.25rem; }
+            .topic-grid { grid-template-columns: 1fr; }
+            .pub-cta-row { flex-direction: column; }
+            .citation-block { padding: 1.5rem 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAV ===== -->
+    <nav id="main-nav">
+        <a href="index.html" class="nav-logo" aria-label="Aidan Green, home"><img src="Assets/nav-logo.png" alt="" width="68" height="40"></a>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="portfolio.html" class="nav-active">Work</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- ===== PAGE HEADER ===== -->
+    <header class="page-hero">
+        <span class="page-label">// Other &nbsp;&middot;&nbsp; Research</span>
+        <h1 class="page-title">Tribology of Biofuels</h1>
+        <p class="page-subtitle">Fuel Chemistry, Lubrication Mechanisms, and Wear Behavior</p>
+    </header>
+
+    <!-- ===== PUBLICATION METADATA CARD ===== -->
+    <div class="pub-meta-card">
+        <div class="publication-hero">
+            <img src="Assets/biofuels-fig2.jpg"
+                 alt="Figure 2: boundary lubrication in fuel-lubricated steel contacts. FAME biodiesel forms an oriented adsorbed monolayer; paraffinic HVO and HEFA-SAF have no polar anchoring group, so the film is squeezed out and asperities contact."
+                 width="1600" height="1216" loading="lazy">
+            <p class="hero-caption">Figure 2 &mdash; Boundary lubrication mechanisms in fuel-lubricated steel contacts:
+            (a) FAME biodiesel forms an oriented, adsorbed monolayer; (b) paraffinic HVO / HEFA-SAF has no
+            polar anchoring group, so asperity contact dominates.</p>
+        </div>
+        <div class="pub-meta-inner">
+
+            <div class="pub-meta-group">
+                <div class="pub-meta-row">
+                    <span class="pub-meta-key">Journal</span>
+                    <span class="pub-meta-val">
+                        <a href="https://www.tandfonline.com/journals/tbfu20" target="_blank" rel="noopener noreferrer">Biofuels</a>
+                        (Taylor &amp; Francis)
+                    </span>
+                </div>
+                <div class="pub-meta-row">
+                    <span class="pub-meta-key">Type</span>
+                    <span class="pub-meta-val">Review Article</span>
+                </div>
+                <div class="pub-meta-row">
+                    <span class="pub-meta-key">Status</span>
+                    <span class="pub-meta-val">Under Review</span>
+                </div>
+            </div>
+
+            <div class="pub-meta-group">
+                <div class="pub-meta-row">
+                    <span class="pub-meta-key">Published</span>
+                    <span class="pub-meta-val">Under Review</span>
+                </div>
+                <div class="pub-meta-row">
+                    <span class="pub-meta-key">Submitted</span>
+                    <span class="pub-meta-val">October 1, 2026</span>
+                </div>
+                <div class="pub-meta-row">
+                    <span class="pub-meta-key">Affiliation</span>
+                    <span class="pub-meta-val">
+                        Department of Mechanical Engineering,<br>
+                        University of Nevada, Reno, NV 89557, USA
+                    </span>
+                </div>
+            </div>
+
+            <div class="pub-meta-group full-width">
+                <div class="pub-meta-row">
+                    <span class="pub-meta-key">Authors</span>
+                    <p class="pub-authors">
+                        Aidan Green &nbsp;&middot;&nbsp;
+                        Lincoln Pinoski &nbsp;&middot;&nbsp;
+                        <span class="corresponding">Pradeep L. Menezes*</span>
+                    </p>
+                    <span class="pub-meta-val" style="margin-top:0.3rem; font-size:0.75rem; opacity:0.6;">
+                        * Corresponding Author
+                    </span>
+                </div>
+            </div>
+
+            <div class="pub-cta-row">
+                <a href="Assets/Tribology-of-Biofuels-Green-2026.pdf"
+                   class="pub-cta-btn filled"
+                   target="_blank" rel="noopener">
+                    Read Manuscript &rarr;
+                </a>
+                <a href="Assets/Tribology-of-Biofuels-Green-2026.pdf"
+                   class="pub-cta-btn"
+                   download>
+                    Download PDF &rarr;
+                </a>
+                <a href="https://www.tandfonline.com/journals/tbfu20"
+                   class="pub-cta-btn"
+                   target="_blank" rel="noopener noreferrer">
+                    About the Journal &rarr;
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main>
+
+        <!-- ── SECTION 1: ABSTRACT ── -->
+        <div class="pub-section">
+            <span class="pub-section-label">// Abstract</span>
+            <p class="pub-abstract">
+                As the global energy landscape transitions away from fossil fuels,
+                biofuels have become a structural component of the transportation fuel
+                supply across road, marine, and aviation sectors. A critical but
+                systematically underappreciated dimension of this transition is
+                tribology, the science of friction, wear, and lubrication. In fuel
+                injection systems, pumps, and precision components, the fuel itself
+                functions as the primary lubricant, meaning that changes in fuel
+                chemistry translate directly into changes in component durability,
+                efficiency, and service life. This review provides a comprehensive,
+                chemistry grounded account of biofuel tribology covering FAME biodiesel,
+                renewable diesel (HVO), bio oils, alcohol fuels, Fischer-Tropsch fuels,
+                and sustainable aviation fuel (SAF). It establishes how molecular
+                structure governs surface adsorption, viscosity, tribochemical film
+                formation, and boundary film performance, and evaluates friction and
+                wear characteristics through systematic analysis of HFRR, four ball,
+                and BOCLE data, and examines component level behavior in injectors,
+                pumps, piston assemblies, bearings, and aviation fuel metering systems,
+                and addresses materials compatibility including metals, elastomers, and
+                hard coatings, and analyzes degradation pathways and corrosion wear
+                synergy, and reviews additive technology and formulation strategies.
+                Sustainability, test standards, and lifecycle interactions are
+                integrated throughout, and a structured analysis of knowledge gaps
+                identifies in situ tribofilm characterization, biofuel aged fuel
+                tribology, SAF aviation hardware wear testing, and AI-assisted lubricity
+                prediction as the most urgent research priorities. Conflicting findings
+                in the literature are identified explicitly rather than reconciled by
+                silent selection.
+            </p>
+        </div>
+
+        <!-- ── SECTION 2: KEYWORDS ── -->
+        <div class="pub-section">
+            <span class="pub-section-label">// Keywords</span>
+            <div class="pub-keywords">
+                <span class="tag">Biofuels</span>
+                <span class="tag">Tribology</span>
+                <span class="tag">Lubricity</span>
+                <span class="tag">Wear</span>
+                <span class="tag">Boundary Lubrication</span>
+                <span class="tag">Biodiesel</span>
+                <span class="tag">Tribofilm</span>
+                <span class="tag">Corrosion&ndash;Wear Synergy</span>
+            </div>
+        </div>
+
+        <!-- ── SECTION 3: KEY TOPICS ── -->
+        <div class="pub-section">
+            <span class="pub-section-label">// Coverage</span>
+            <h2 class="pub-section-title">Topics Covered</h2>
+            <div class="topic-grid">
+
+                <div class="topic-card">
+                    <div class="topic-icon">01</div>
+                    <span class="topic-title">Biofuel Types &amp; Properties</span>
+                    <p class="topic-desc">
+                        FAME biodiesel, renewable diesel (HVO), bio oils, alcohols,
+                        Fischer-Tropsch fuels, SAF, and the fuel properties that
+                        govern lubrication.
+                    </p>
+                </div>
+
+                <div class="topic-card">
+                    <div class="topic-icon">02</div>
+                    <span class="topic-title">Fundamentals of Fuel Tribology</span>
+                    <p class="topic-desc">
+                        Boundary and mixed lubrication, lubricity vs. viscosity,
+                        film formation, tribochemistry, additives and contaminants.
+                    </p>
+                </div>
+
+                <div class="topic-card">
+                    <div class="topic-icon">03</div>
+                    <span class="topic-title">Friction &amp; Wear Behavior</span>
+                    <p class="topic-desc">
+                        Comparison with fossil fuels, and the effects of blend ratio,
+                        fuel aging, temperature, and load.
+                    </p>
+                </div>
+
+                <div class="topic-card">
+                    <div class="topic-icon">04</div>
+                    <span class="topic-title">Engine &amp; Aviation Components</span>
+                    <p class="topic-desc">
+                        Injectors and high-pressure pumps, piston rings and valvetrain,
+                        bearings, and aviation fuel metering at cold start.
+                    </p>
+                </div>
+
+                <div class="topic-card">
+                    <div class="topic-icon">05</div>
+                    <span class="topic-title">Materials Compatibility</span>
+                    <p class="topic-desc">
+                        Metals and alloys, elastomer and seal degradation,
+                        corrosion&ndash;wear synergy, and surface coatings.
+                    </p>
+                </div>
+
+                <div class="topic-card">
+                    <div class="topic-icon">06</div>
+                    <span class="topic-title">Degradation &amp; Stability</span>
+                    <p class="topic-desc">
+                        Oxidation and deposit formation, moisture absorption, and
+                        long-term aging and storage.
+                    </p>
+                </div>
+
+                <div class="topic-card">
+                    <div class="topic-icon">07</div>
+                    <span class="topic-title">Additives &amp; Formulation</span>
+                    <p class="topic-desc">
+                        Lubricity improvers, nanoparticle and bio-based additives,
+                        interaction with engine oils, and regulation.
+                    </p>
+                </div>
+
+                <div class="topic-card">
+                    <div class="topic-icon">08</div>
+                    <span class="topic-title">Sustainability &amp; Testing</span>
+                    <p class="topic-desc">
+                        Efficiency, emissions and engine life, HFRR / four-ball /
+                        BOCLE test standards, and life-cycle impact.
+                    </p>
+                </div>
+
+                <div class="topic-card">
+                    <div class="topic-icon">09</div>
+                    <span class="topic-title">Future Outlook</span>
+                    <p class="topic-desc">
+                        Knowledge gaps, advanced surface engineering, AI-assisted
+                        fuel and tribology optimization, next-generation biofuels.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ── SECTION 4: MY CONTRIBUTION ── -->
+        <div class="pub-section">
+            <span class="pub-section-label">// Contribution</span>
+            <h2 class="pub-section-title">My Role</h2>
+            <div class="contribution-wrap">
+                <p class="contribution-text">
+                    First author. Wrote the original draft of the review, from fuel
+                    chemistry and lubrication fundamentals through component-level wear,
+                    materials compatibility, additives, and the future research outlook,
+                    under the supervision of Dr. Pradeep L. Menezes. Lincoln Pinoski
+                    contributed to review and editing.
+                </p>
+                <div class="contribution-meta">
+                    <span class="contrib-key">Role</span>
+                    <span class="contrib-val">First Author &mdash; Original Draft</span>
+                    <span class="contrib-key">Supervisor</span>
+                    <span class="contrib-val">Dr. Pradeep L. Menezes</span>
+                    <span class="contrib-key">Institution</span>
+                    <span class="contrib-val">University of Nevada, Reno</span>
+                    <span class="contrib-key">Year</span>
+                    <span class="contrib-val">2026</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── SECTION 5: CITATION ── -->
+        <div class="pub-section">
+            <span class="pub-section-label">// Cite This Work</span>
+            <div class="citation-block">
+                <pre class="citation-text" id="citation-text">Green, A.; Pinoski, L.; Menezes, P.L.
+Tribology of Biofuels. Fuel Chemistry, Lubrication
+Mechanisms, and Wear Behavior.
+Biofuels (Taylor &amp; Francis). Under review;
+submitted October 1, 2026.</pre>
+            </div>
+            <button class="citation-copy-btn" id="copy-citation-btn">Copy Citation</button>
+        </div>
+
+    </main>
+
+    <!-- ===== BOTTOM NAVIGATION ===== -->
+    <div class="pub-bottom-nav">
+        <a href="portfolio.html" class="pub-back-btn">
+            <span>
+                <span class="pub-back-label">Back</span>
+                <span class="pub-back-title">&larr; Portfolio</span>
+            </span>
+        </a>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="footer-inner">
+            <div>
+                <p class="footer-name">Aidan Green</p>
+                <p class="footer-degree">M.S. Aerospace Engineering &nbsp;&middot;&nbsp; University of Nevada, Reno</p>
+            </div>
+            <div class="footer-right">
+                <div class="footer-links">
+                    <a href="mailto:aidangreeeen@gmail.com">Email</a>
+                    <a href="https://www.linkedin.com/in/aidangreeeen/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a href="portfolio.html">Portfolio</a>
+                    <a href="#">Resume</a>
+                </div>
+                <p class="footer-copy">&copy; 2025 Aidan Green. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== JS ===== -->
+    <script>
+        /* ---- mobile nav toggle ---- */
+        const hamburger = document.getElementById('hamburger');
+        const navLinks  = document.getElementById('nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+        });
+
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => navLinks.classList.remove('open'));
+        });
+
+        /* ---- nav shadow on scroll ---- */
+        const mainNav = document.getElementById('main-nav');
+        window.addEventListener('scroll', () => {
+            mainNav.style.boxShadow = window.scrollY > 20
+                ? '0 2px 24px rgba(26,26,15,0.09)'
+                : 'none';
+        }, { passive: true });
+
+        /* ---- copy citation ---- */
+        document.getElementById('copy-citation-btn').addEventListener('click', function () {
+            var text = document.getElementById('citation-text').textContent;
+            navigator.clipboard.writeText(text).then(function () {
+                var btn = document.getElementById('copy-citation-btn');
+                var original = btn.textContent;
+                btn.textContent = 'Copied!';
+                setTimeout(function () { btn.textContent = original; }, 2000);
+            });
+        });
+    </script>
+
+</body>
+</html>

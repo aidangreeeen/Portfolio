@@ -493,6 +493,44 @@
             color: rgba(255,255,227,0.75);
         }
 
+        /* ── PAIRED PRODUCT SHOTS (two portraits, side by side) ── */
+        .product-shot-pair {
+            background: linear-gradient(180deg, #88799A 0%, #7B6E7F 100%);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            justify-content: center;
+            align-items: start;
+            padding: 0 2rem 4rem;
+            max-width: calc(1160px + 4rem);
+            margin: 0 auto;
+        }
+
+        .product-shot-pair figure {
+            margin: 0;
+            min-width: 0;
+        }
+
+        .product-shot-pair img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 4 / 5;
+            object-fit: cover;
+            display: block;
+            box-shadow: 0 30px 60px -25px rgba(10,10,8,0.55);
+        }
+
+        .product-shot-pair figcaption {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .product-shot-pair .caption-text {
+            color: rgba(255,255,227,0.75);
+        }
+
         /* ── RESPONSIVE ── */
         @media (max-width: 1023px) {
             .doc-grid { grid-template-columns: repeat(2, 1fr); }
@@ -512,6 +550,7 @@
             .doc-grid { grid-template-columns: 1fr; }
             .skills-cards { grid-template-columns: 1fr; }
             .product-shot { padding: 2.5rem 1.25rem; }
+            .product-shot-pair { grid-template-columns: 1fr; gap: 2rem; padding: 0 1.25rem 2.5rem; }
             .page-title { font-size: clamp(2rem, 11vw, 3rem); }
             .proj-nav { flex-direction: column; align-items: stretch; padding: 2.5rem 1.5rem; }
         }
@@ -568,6 +607,28 @@
             <figcaption>
                 <span class="caption-tag">// Product Shot</span>
                 <span class="caption-text">Wax bars and mailer boxes</span>
+            </figcaption>
+        </figure>
+    </section>
+
+    <!-- ===== PAIRED PRODUCT SHOTS ===== -->
+    <section class="product-shot-pair">
+        <figure>
+            <img src="Assets/fd-wax-purple-4x5.jpg"
+                 alt="FreeDawgers wax bar in purple on snowy juniper"
+                 width="864" height="1080" loading="lazy">
+            <figcaption>
+                <span class="caption-tag">// Purple</span>
+                <span class="caption-text">Cast bar on snowy juniper</span>
+            </figcaption>
+        </figure>
+        <figure>
+            <img src="Assets/fd-wax-white-4x5.jpg"
+                 alt="FreeDawgers wax bar in white on snowy juniper"
+                 width="864" height="1080" loading="lazy">
+            <figcaption>
+                <span class="caption-tag">// White</span>
+                <span class="caption-text">Cast bar on snowy juniper</span>
             </figcaption>
         </figure>
     </section>
